@@ -4,15 +4,17 @@ import { FileQuestion } from 'lucide-react';
 export default function NotFound() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
-      <FileQuestion className="w-20 h-20 text-[#E8A020] mb-6 opacity-80" />
-      <h2 className="text-4xl font-playfair font-bold text-[#F5F0E8] mb-4">404</h2>
-      <h3 className="text-xl text-gray-300 mb-8">Page Not Found</h3>
-      <p className="text-gray-400 mb-8 max-w-md text-center">
+      <div className="w-20 h-20 bg-[#ffffff] border border-[#d0c5af] flex items-center justify-center mb-8">
+        <FileQuestion className="w-10 h-10 text-[#7f7663]" />
+      </div>
+      <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">404</p>
+      <h2 className="mt-4 text-4xl font-playfair text-[#1c1c18] mb-4">Page Not Found</h2>
+      <p className="text-sm text-[#4d4635] mb-10 max-w-md text-center">
         The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
       </p>
       <Link 
         href="/"
-        className="px-8 py-3 bg-[#E8A020] text-black font-semibold rounded-md hover:bg-[#d6901a] transition-colors"
+        className="px-10 py-4 bg-[#d4af37] text-[#1c1c18] text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
       >
         Return to Home
       </Link>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,12 +57,12 @@ function loadRazorpayScript() {
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCartStore();
   const { mongoUser } = useAuthStore();
-  const { } = useAuth();
   const router = useRouter();
   
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'razorpay'>('cod');
+  const [deliveryOption, setDeliveryOption] = useState<'concierge' | 'standard' | 'express'>('standard');
 
   const nameParts = (mongoUser?.name || '').split(' ').filter(Boolean);
   const [firstName, setFirstName] = useState(nameParts[0] || '');
@@ -79,8 +78,10 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-playfair font-bold text-[#F5F0E8] mb-4">Your Cart is Empty</h1>
-        <Link href="/shop" className="text-[#E8A020] hover:underline">Continue Shopping</Link>
+        <h1 className="text-3xl font-playfair text-[#1c1c18] mb-4">Your Bag is Empty</h1>
+        <Link href="/shop" className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]">
+          Continue Shopping
+        </Link>
       </div>
     );
   }
@@ -194,7 +195,7 @@ export default function CheckoutPage() {
         modal: {
           ondismiss: () => setLoading(false),
         },
-        theme: { color: '#E8A020' },
+        theme: { color: '#D4AF37' },
       });
 
       rzp.open();
@@ -207,156 +208,277 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-      <h1 className="text-3xl font-playfair font-bold text-[#F5F0E8] mb-8">Checkout</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-20 w-full">
+      <div className="flex items-end justify-between gap-8">
+        <div>
+          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Secure Checkout</p>
+          <h1 className="mt-4 text-3xl md:text-4xl font-playfair text-[#1c1c18]">Checkout</h1>
+        </div>
+      </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
-        <div className="flex-1 space-y-8">
-          {/* Step 1: Account */}
-          <div className={`p-6 rounded-lg border ${step === 1 ? 'border-[#E8A020] bg-gray-900/30' : 'border-gray-800 bg-[#0F0F0F] opacity-70'}`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-medium text-[#F5F0E8] flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-gray-800 text-sm flex items-center justify-center">1</span>
-                Account
-              </h2>
-              {step > 1 && <CheckCircle className="w-5 h-5 text-green-500" />}
-            </div>
-            
+      <div className="mt-10 flex flex-col lg:flex-row gap-12">
+        <div className="flex-1">
+          <div className="flex items-center gap-6 border-b border-[#d0c5af] pb-6">
+            {[
+              { n: 1, label: 'Shipping' },
+              { n: 2, label: 'Delivery' },
+              { n: 3, label: 'Payment' },
+            ].map((s) => (
+              <button
+                key={s.n}
+                type="button"
+                onClick={() => setStep(s.n)}
+                className={`text-xs tracking-[0.24em] uppercase pb-2 border-b-2 transition-colors ${
+                  step === s.n ? 'text-[#1c1c18] border-[#d4af37]' : 'text-[#7f7663] border-transparent hover:text-[#1c1c18]'
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-10">
             {step === 1 && (
-              <div className="pl-8">
-                {mongoUser ? (
-                  <div>
-                    <p className="text-gray-300 mb-4">Logged in as <span className="font-medium text-[#F5F0E8]">{mongoUser.email}</span></p>
-                    <button 
+              <div className="space-y-10">
+                <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
+                  <div className="flex items-center justify-between gap-6">
+                    <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Account</h2>
+                    {mongoUser ? <CheckCircle className="w-5 h-5 text-[#735c00]" /> : null}
+                  </div>
+                  <div className="mt-6">
+                    {mongoUser ? (
+                      <p className="text-sm text-[#4d4635]">
+                        Signed in as <span className="text-[#1c1c18]">{mongoUser.email}</span>
+                      </p>
+                    ) : (
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                        <p className="text-sm text-[#4d4635]">Please sign in to continue.</p>
+                        <Link
+                          href="/auth/login?redirect=/checkout"
+                          className="inline-flex items-center justify-center bg-[#d4af37] text-[#1c1c18] px-6 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                        >
+                          Sign In
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
+                  <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Shipping</h2>
+
+                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">First Name</label>
+                      <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Last Name</label>
+                      <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Address</label>
+                      <input value={line1} onChange={(e) => setLine1(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Address (Optional)</label>
+                      <input value={line2} onChange={(e) => setLine2(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">City</label>
+                      <input value={city} onChange={(e) => setCity(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">State</label>
+                      <input value={stateName} onChange={(e) => setStateName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">PIN</label>
+                      <input value={pincode} onChange={(e) => setPincode(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Country</label>
+                      <input value={country} onChange={(e) => setCountry(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Phone</label>
+                      <input value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                    </div>
+                  </div>
+
+                  <div className="mt-10">
+                    <button
+                      type="button"
                       onClick={() => setStep(2)}
-                      className="bg-[#E8A020] text-black font-medium px-6 py-2 rounded hover:bg-[#d6901a]"
+                      className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
                     >
-                      Continue
+                      Continue to Delivery
                     </button>
                   </div>
-                ) : (
-                  <div>
-                    <p className="text-gray-400 mb-4">Please log in to continue with your checkout.</p>
-                    <Link 
-                      href="/auth/login?redirect=/checkout"
-                      className="inline-block bg-[#E8A020] text-black font-medium px-6 py-2 rounded hover:bg-[#d6901a]"
-                    >
-                      Go to Login
-                    </Link>
-                  </div>
-                )}
+                </div>
               </div>
             )}
-          </div>
 
-          {/* Step 2: Shipping */}
-          <div className={`p-6 rounded-lg border ${step === 2 ? 'border-[#E8A020] bg-gray-900/30' : 'border-gray-800 bg-[#0F0F0F] opacity-70'}`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-medium text-[#F5F0E8] flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-gray-800 text-sm flex items-center justify-center">2</span>
-                Shipping Address
-              </h2>
-              {step > 2 && <CheckCircle className="w-5 h-5 text-green-500" />}
-            </div>
-            
             {step === 2 && (
-              <div className="pl-8 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <input type="text" placeholder="First Name" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                  <input type="text" placeholder="Last Name" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
+                <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Delivery</h2>
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    { id: 'concierge', title: 'Boutique Concierge', meta: 'White-glove delivery' },
+                    { id: 'standard', title: 'Standard', meta: '3–5 business days' },
+                    { id: 'express', title: 'Express', meta: '1–2 business days' },
+                  ].map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setDeliveryOption(opt.id as typeof deliveryOption)}
+                      className={`text-left border p-6 transition-colors ${
+                        deliveryOption === opt.id ? 'border-[#d4af37] bg-[#fcf9f3]' : 'border-[#d0c5af] hover:bg-[#f6f3ed]'
+                      }`}
+                    >
+                      <p className="text-sm font-playfair text-[#1c1c18]">{opt.title}</p>
+                      <p className="mt-2 text-xs tracking-[0.18em] uppercase text-[#7f7663]">{opt.meta}</p>
+                    </button>
+                  ))}
                 </div>
-                <input type="text" placeholder="Address Line 1" className="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white" value={line1} onChange={(e) => setLine1(e.target.value)} />
-                <input type="text" placeholder="Address Line 2 (Optional)" className="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white" value={line2} onChange={(e) => setLine2(e.target.value)} />
-                <div className="grid grid-cols-3 gap-4">
-                  <input type="text" placeholder="City" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={city} onChange={(e) => setCity(e.target.value)} />
-                  <input type="text" placeholder="State" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={stateName} onChange={(e) => setStateName(e.target.value)} />
-                  <input type="text" placeholder="PIN Code" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={pincode} onChange={(e) => setPincode(e.target.value)} />
+
+                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="flex-1 border border-[#d0c5af] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStep(3)}
+                    className="flex-1 bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                  >
+                    Continue to Payment
+                  </button>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <input type="text" placeholder="Country" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={country} onChange={(e) => setCountry(e.target.value)} />
-                  <input type="text" placeholder="Phone" className="bg-gray-900 border border-gray-700 rounded p-2 text-white" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                </div>
-                <button 
-                  onClick={() => setStep(3)}
-                  className="bg-[#E8A020] text-black font-medium px-6 py-2 rounded hover:bg-[#d6901a] mt-4"
-                >
-                  Continue to Payment
-                </button>
               </div>
             )}
-          </div>
 
-          {/* Step 3: Payment */}
-          <div className={`p-6 rounded-lg border ${step === 3 ? 'border-[#E8A020] bg-gray-900/30' : 'border-gray-800 bg-[#0F0F0F] opacity-70'}`}>
-            <h2 className="text-xl font-medium text-[#F5F0E8] flex items-center gap-2 mb-4">
-              <span className="w-6 h-6 rounded-full bg-gray-800 text-sm flex items-center justify-center">3</span>
-              Payment Method
-            </h2>
-            
             {step === 3 && (
-              <div className="pl-8 space-y-4">
-                <label className="flex items-center gap-3 p-4 border border-gray-700 rounded-md cursor-pointer hover:border-[#E8A020]">
-                  <input 
-                    type="radio" 
-                    name="payment" 
-                    value="cod" 
-                    checked={paymentMethod === 'cod'}
-                    onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
-                    className="accent-[#E8A020]"
-                  />
-                  <span className="text-white">Cash on Delivery</span>
-                </label>
-                <label className="flex items-center gap-3 p-4 border border-gray-700 rounded-md cursor-pointer hover:border-[#E8A020]">
-                  <input 
-                    type="radio" 
-                    name="payment" 
-                    value="razorpay" 
-                    checked={paymentMethod === 'razorpay'}
-                    onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
-                    className="accent-[#E8A020]"
-                  />
-                  <span className="text-white">Pay Online (Razorpay)</span>
-                </label>
-                
-                <button 
-                  onClick={handlePlaceOrder}
-                  disabled={loading}
-                  className="w-full bg-[#E8A020] text-black font-bold px-6 py-3 rounded-md hover:bg-[#d6901a] mt-6 flex justify-center items-center gap-2 disabled:opacity-70"
-                >
-                  {loading ? 'Processing...' : 'Place Order'}
-                </button>
+              <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
+                <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Payment</h2>
+                <div className="mt-8 space-y-4">
+                  <label className="flex items-center justify-between gap-4 border border-[#d0c5af] p-5 cursor-pointer hover:bg-[#f6f3ed] transition-colors">
+                    <div>
+                      <p className="text-sm text-[#1c1c18]">Cash on Delivery</p>
+                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-[#7f7663]">Pay at delivery</p>
+                    </div>
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
+                      className="accent-[#d4af37]"
+                    />
+                  </label>
+
+                  <label className="flex items-center justify-between gap-4 border border-[#d0c5af] p-5 cursor-pointer hover:bg-[#f6f3ed] transition-colors">
+                    <div>
+                      <p className="text-sm text-[#1c1c18]">Pay Online</p>
+                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-[#7f7663]">Razorpay</p>
+                    </div>
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="razorpay"
+                      checked={paymentMethod === 'razorpay'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
+                      className="accent-[#d4af37]"
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setStep(2)}
+                    className="flex-1 border border-[#d0c5af] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+                    disabled={loading}
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handlePlaceOrder}
+                    disabled={loading}
+                    className="flex-1 bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                  >
+                    {loading ? 'Processing' : 'Place Order'}
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Order Summary Sidebar */}
-        <div className="w-full lg:w-80 flex-shrink-0">
-          <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 sticky top-24">
-            <h2 className="text-lg font-medium text-[#F5F0E8] mb-4">Order Summary</h2>
-            <div className="space-y-4 mb-4">
+        <div className="w-full lg:w-[360px] flex-shrink-0">
+          <details className="lg:hidden border border-[#d0c5af] bg-[#ffffff]">
+            <summary className="cursor-pointer px-6 py-5 text-xs tracking-[0.24em] uppercase text-[#1c1c18]">
+              Order Summary
+            </summary>
+            <div className="px-6 pb-6">
+              <div className="space-y-3">
+                {items.map((item, idx) => (
+                  <div key={idx} className="flex justify-between gap-6 text-sm">
+                    <span className="text-[#4d4635] line-clamp-1">{item.quantity} × {item.name}</span>
+                    <span className="text-[#1c1c18]">₹{(item.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 border-t border-[#d0c5af] pt-5 space-y-2 text-sm">
+                <div className="flex justify-between text-[#4d4635]">
+                  <span>Subtotal</span>
+                  <span>₹{totalPrice().toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-[#4d4635]">
+                  <span>Shipping</span>
+                  <span>Free</span>
+                </div>
+              </div>
+              <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
+                <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
+                <span className="text-lg font-playfair text-[#1c1c18]">₹{totalPrice().toFixed(2)}</span>
+              </div>
+            </div>
+          </details>
+
+          <div className="hidden lg:block border border-[#d0c5af] bg-[#ffffff] p-8 sticky top-24">
+            <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Order Summary</h2>
+            <div className="mt-6 space-y-3">
               {items.map((item, idx) => (
-                <div key={idx} className="flex justify-between text-sm">
-                  <span className="text-gray-400 line-clamp-1 pr-4">{item.quantity}x {item.name}</span>
-                  <span className="text-gray-300">₹{item.price * item.quantity}</span>
+                <div key={idx} className="flex justify-between gap-6 text-sm">
+                  <span className="text-[#4d4635] line-clamp-1">{item.quantity} × {item.name}</span>
+                  <span className="text-[#1c1c18]">₹{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
-            <div className="border-t border-gray-800 pt-4 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-400">
+
+            <div className="mt-6 border-t border-[#d0c5af] pt-5 space-y-2 text-sm">
+              <div className="flex justify-between text-[#4d4635]">
                 <span>Subtotal</span>
                 <span>₹{totalPrice().toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-[#4d4635]">
                 <span>Shipping</span>
                 <span>Free</span>
               </div>
             </div>
-            <div className="border-t border-gray-800 pt-4 mt-4">
-              <div className="flex justify-between items-center">
-                <span className="text-base font-bold text-[#F5F0E8]">Total</span>
-                <span className="text-xl font-bold text-[#E8A020]">₹{totalPrice().toFixed(2)}</span>
-              </div>
+
+            <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
+              <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
+              <span className="text-lg font-playfair text-[#1c1c18]">₹{totalPrice().toFixed(2)}</span>
             </div>
           </div>
         </div>

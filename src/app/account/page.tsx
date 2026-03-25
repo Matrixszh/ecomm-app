@@ -2,6 +2,7 @@
 
 import { useAuthStore } from '@/store/authStore';
 import { CldImage } from 'next-cloudinary';
+import Image from 'next/image';
 import { User } from 'lucide-react';
 import { useState } from 'react';
 import ImageUploader from '@/components/ImageUploader';
@@ -16,12 +17,12 @@ export default function AccountProfile() {
   );
 
   return (
-    <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6 md:p-8">
+    <div className="bg-[#ffffff] border border-[#d0c5af] p-6 md:p-8">
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-xl font-medium text-[#F5F0E8]">Profile Details</h2>
+        <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Profile</h2>
         <button 
           onClick={() => setIsEditing(!isEditing)}
-          className="text-sm text-[#E8A020] hover:underline"
+          className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
         >
           {isEditing ? 'Cancel' : 'Edit Profile'}
         </button>
@@ -29,15 +30,15 @@ export default function AccountProfile() {
 
       <div className="flex flex-col md:flex-row gap-8">
         <div className="flex-shrink-0 flex flex-col items-center">
-          <div className="w-32 h-32 relative bg-gray-800 rounded-full overflow-hidden border-2 border-gray-700 mb-4 flex items-center justify-center">
+          <div className="w-32 h-32 relative bg-[#f6f3ed] overflow-hidden border border-[#d0c5af] mb-4 flex items-center justify-center">
             {avatar.length > 0 ? (
               hasCloudinary ? (
                 <CldImage src={avatar[0].url} alt="Avatar" fill className="object-cover" sizes="128px" />
               ) : (
-                <img src={avatar[0].url} alt="Avatar" className="object-cover w-full h-full" loading="lazy" />
+                <Image src={avatar[0].url} alt="Avatar" fill className="object-cover" sizes="128px" />
               )
             ) : (
-              <User className="w-12 h-12 text-gray-500" />
+              <User className="w-12 h-12 text-[#7f7663]" />
             )}
           </div>
           {isEditing && (
@@ -54,31 +55,31 @@ export default function AccountProfile() {
 
         <div className="flex-1 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Full Name</label>
             <input 
               type="text" 
               defaultValue={mongoUser?.name} 
               disabled={!isEditing}
-              className={`w-full bg-gray-900 border rounded-md py-2 px-3 text-[#F5F0E8] focus:outline-none focus:border-[#E8A020] ${isEditing ? 'border-gray-700' : 'border-transparent bg-transparent px-0'}`}
+              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Email</label>
             <input 
               type="email" 
               defaultValue={mongoUser?.email} 
               disabled
-              className="w-full bg-transparent border-transparent rounded-md py-2 px-0 text-gray-500 cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
-            <p className="text-xs text-gray-500 mt-1">Email cannot be changed.</p>
+            <p className="text-xs text-[#7f7663] mt-2">Email cannot be changed.</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Phone Number</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Phone</label>
             <input 
               type="tel" 
               placeholder="+91 " 
               disabled={!isEditing}
-              className={`w-full bg-gray-900 border rounded-md py-2 px-3 text-[#F5F0E8] focus:outline-none focus:border-[#E8A020] ${isEditing ? 'border-gray-700' : 'border-transparent bg-transparent px-0'}`}
+              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
             />
           </div>
 
@@ -86,7 +87,7 @@ export default function AccountProfile() {
             <div className="pt-4 flex justify-end">
               <button 
                 onClick={() => setIsEditing(false)}
-                className="bg-[#E8A020] text-black font-medium px-6 py-2 rounded hover:bg-[#d6901a]"
+                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
               >
                 Save Changes
               </button>

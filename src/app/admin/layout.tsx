@@ -20,11 +20,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [mongoUser, isAdmin, loading, router]);
 
   if (loading || !isAdmin) {
-    return <div className="min-h-screen flex justify-center items-center"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E8A020]"></div></div>;
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-[#fcf9f3]">
+        <div className="animate-spin h-10 w-10 border-2 border-[#d0c5af] border-t-[#d4af37]" />
+      </div>
+    );
   }
 
   return (
-    <div className="flex h-screen bg-[#0A0A0A] overflow-hidden">
+    <div className="flex h-screen bg-[#fcf9f3] overflow-hidden">
       <AdminSidebar />
       <main className="flex-1 overflow-y-auto p-4 md:p-8">
         <div className="max-w-7xl mx-auto mt-12 lg:mt-0">

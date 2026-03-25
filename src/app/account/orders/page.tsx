@@ -40,9 +40,9 @@ export default function AccountOrders() {
   }, [firebaseUser]);
 
   return (
-    <div className="bg-gray-900/30 border border-gray-800 rounded-lg overflow-hidden">
-      <div className="p-6 border-b border-gray-800">
-        <h2 className="text-xl font-medium text-[#F5F0E8]">Order History</h2>
+    <div className="bg-[#ffffff] border border-[#d0c5af] overflow-hidden">
+      <div className="p-6 border-b border-[#d0c5af]">
+        <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Order History</h2>
       </div>
 
       {loading ? (
@@ -51,20 +51,20 @@ export default function AccountOrders() {
         </div>
       ) : orders.length === 0 ? (
         <div className="p-12 text-center flex flex-col items-center">
-          <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
-            <Package className="w-8 h-8 text-gray-500" />
+          <div className="w-16 h-16 bg-[#f6f3ed] border border-[#d0c5af] flex items-center justify-center mb-6">
+            <Package className="w-8 h-8 text-[#7f7663]" />
           </div>
-          <h3 className="text-lg font-medium text-[#F5F0E8] mb-2">No orders yet</h3>
-          <p className="text-gray-500 mb-6">When you place an order, it will appear here.</p>
-          <Link href="/shop" className="bg-[#E8A020] text-black px-6 py-2 rounded font-medium hover:bg-[#d6901a]">
-            Start Shopping
+          <h3 className="text-lg font-playfair text-[#1c1c18] mb-3">No orders yet</h3>
+          <p className="text-sm text-[#4d4635] mb-8">When you place an order, it will appear here.</p>
+          <Link href="/shop" className="bg-[#d4af37] text-[#1c1c18] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors">
+            Explore Collection
           </Link>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-900/50 text-gray-400 text-sm">
+              <tr className="bg-[#fcf9f3] text-[#7f7663] text-xs tracking-[0.24em] uppercase border-b border-[#d0c5af]">
                 <th className="p-4 font-medium">Order ID</th>
                 <th className="p-4 font-medium">Date</th>
                 <th className="p-4 font-medium">Status</th>
@@ -72,11 +72,11 @@ export default function AccountOrders() {
                 <th className="p-4 font-medium text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800 text-sm">
+            <tbody className="divide-y divide-[#d0c5af] text-sm">
               {orders.map((order) => (
-                <tr key={order._id} className="hover:bg-gray-900/30 transition-colors">
-                  <td className="p-4 font-mono text-gray-300">{order.orderNumber}</td>
-                  <td className="p-4 text-gray-400">
+                <tr key={order._id} className="hover:bg-[#f6f3ed] transition-colors">
+                  <td className="p-4 font-mono text-[#1c1c18]">{order.orderNumber}</td>
+                  <td className="p-4 text-[#4d4635]">
                     {new Date(order.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric', month: 'short', day: 'numeric'
                     })}
@@ -84,11 +84,11 @@ export default function AccountOrders() {
                   <td className="p-4">
                     <OrderStatusBadge status={order.orderStatus} />
                   </td>
-                  <td className="p-4 font-medium text-[#F5F0E8]">₹{order.totalAmount}</td>
+                  <td className="p-4 font-medium text-[#1c1c18]">₹{order.totalAmount}</td>
                   <td className="p-4 text-right">
                     <Link 
                       href={`/account/orders/${order._id}`}
-                      className="inline-flex items-center gap-1 text-[#E8A020] hover:underline"
+                      className="inline-flex items-center gap-2 text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
                     >
                       <Eye className="w-4 h-4" /> View
                     </Link>

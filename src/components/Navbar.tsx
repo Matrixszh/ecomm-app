@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { ShoppingCart, Heart, User, Search as SearchIcon, Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
@@ -15,7 +17,7 @@ function CartBadge() {
   const count = itemCount();
   if (count <= 0) return null;
   return (
-    <span className="absolute -top-1 -right-1 bg-[#E8A020] text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+    <span className="absolute -top-1 -right-1 bg-[#d4af37] text-[#1c1c18] text-[10px] font-semibold h-4 w-4 flex items-center justify-center">
       {count}
     </span>
   );
@@ -27,9 +29,21 @@ export default function Navbar() {
   const { logout } = useAuth();
   const { mongoUser, loading } = useAuthStore();
   const { openSearch, openCart } = useUIStore();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const category = searchParams.get('category') || '';
+  const sort = searchParams.get('sort') || '';
+
+  const linkClass = (active: boolean) =>
+    `inline-flex items-center text-[11px] tracking-[0.24em] uppercase pb-2 border-b-2 ${
+      active
+        ? 'text-[#d4af37] border-[#d4af37]'
+        : 'text-[#4d4635] border-transparent hover:text-[#1c1c18] hover:border-[#d4af37]'
+    }`;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,103 +56,122 @@ export default function Navbar() {
   }, []);
   
   return (
-    <nav className="bg-[#0F0F0F] shadow-sm border-b border-gray-800 sticky top-0 z-50">
+    <nav className="bg-[#fcf9f3] border-b border-[#d0c5af] sticky top-0 z-50">
+      <div className="py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+          <div className="bg-[#1c1c18] text-[#fcf9f3] h-9 px-5 flex items-center justify-center rounded-full">
+            <p className="text-[10px] tracking-[0.34em] uppercase text-center">
+              Complimentary express shipping & artful gifting on all orders
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
-            <button 
-              className="md:hidden p-2 text-gray-400 hover:text-white mr-2"
+        <div className="h-16 flex items-center">
+          <div className="flex items-center gap-3 md:hidden">
+            <button
+              className="p-2 text-[#4d4635] hover:text-[#1c1c18]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
-            <Link href="/" className="text-2xl font-bold text-[#F5F0E8] font-playfair tracking-wide">
-              LUXE
-            </Link>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-300 hover:text-[#E8A020] transition-colors font-medium">Home</Link>
-            <Link href="/shop" className="text-gray-300 hover:text-[#E8A020] transition-colors font-medium">Shop</Link>
-            <Link href="/shop?category=electronics" className="text-gray-300 hover:text-[#E8A020] transition-colors font-medium">Electronics</Link>
-            <Link href="/shop?category=fashion" className="text-gray-300 hover:text-[#E8A020] transition-colors font-medium">Fashion</Link>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <button onClick={openSearch} className="text-gray-400 hover:text-[#E8A020] transition-colors p-1">
+          <div className="hidden md:flex items-center gap-8 flex-1">
+            <Link href="/shop?sort=newest" className={linkClass(pathname === '/shop' && sort === 'newest')}>
+              New Arrivals
+            </Link>
+            <Link href="/shop" className={linkClass(pathname === '/shop' && !category && sort !== 'newest')}>
+              Collections
+            </Link>
+            <Link href="/shop?category=jewelry" className={linkClass(pathname === '/shop' && category === 'jewelry')}>
+              Jewelry
+            </Link>
+          </div>
+
+          <div className="flex-1 flex justify-center">
+            <Link href="/" className="text-2xl font-playfair tracking-[0.18em] uppercase text-[#1c1c18]">
+              The Atelier
+            </Link>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8 flex-1 justify-end">
+            <Link href="/shop?category=gifts" className={linkClass(pathname === '/shop' && category === 'gifts')}>
+              Gifts
+            </Link>
+            <Link href="/account" className={linkClass(pathname.startsWith('/account'))}>
+              About
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-4 justify-end flex-1 md:flex-none md:ml-6">
+            <button onClick={openSearch} className="text-[#4d4635] hover:text-[#1c1c18] transition-colors p-1" aria-label="Search">
               <SearchIcon className="w-5 h-5" />
             </button>
-            
-            <Link href="/wishlist" className="hidden sm:block text-gray-400 hover:text-[#E8A020] transition-colors p-1">
+
+            <Link href="/wishlist" className="hidden sm:block text-[#4d4635] hover:text-[#1c1c18] transition-colors p-1" aria-label="Wishlist">
               <Heart className="w-5 h-5" />
             </Link>
-            
-            <button onClick={openCart} className="text-gray-400 hover:text-[#E8A020] transition-colors p-1 relative">
+
+            <button onClick={openCart} className="text-[#4d4635] hover:text-[#1c1c18] transition-colors p-1 relative" aria-label="Cart">
               <ShoppingCart className="w-5 h-5" />
               <CartBadgeNoSSR />
             </button>
-            
+
             {!loading && (
               <>
                 {mongoUser ? (
                   <div className="relative" ref={dropdownRef}>
-                    <button
-                      onClick={() => setDropdownOpen(!dropdownOpen)}
-                      className="flex items-center focus:outline-none"
-                    >
+                    <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center focus:outline-none" aria-label="Account menu">
                       {mongoUser.avatar ? (
-                        <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-700">
+                        <div className="w-8 h-8 overflow-hidden border border-[#d0c5af]">
                           {hasCloudinary ? (
                             <CldImage src={mongoUser.avatar} alt="Avatar" width={32} height={32} className="object-cover" />
                           ) : (
-                            <img src={mongoUser.avatar} alt="Avatar" width={32} height={32} className="object-cover w-full h-full" loading="lazy" />
+                            <Image src={mongoUser.avatar} alt="Avatar" width={32} height={32} className="object-cover w-full h-full" />
                           )}
                         </div>
                       ) : (
-                        <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center border border-gray-700 text-gray-400 hover:text-[#E8A020]">
+                        <div className="w-8 h-8 bg-[#f6f3ed] flex items-center justify-center border border-[#d0c5af] text-[#4d4635] hover:text-[#1c1c18]">
                           <User className="w-5 h-5" />
                         </div>
                       )}
                     </button>
 
                     {dropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-[#0F0F0F] border border-gray-800 rounded-md shadow-lg py-1 z-50">
-                        <div className="px-4 py-2 border-b border-gray-800">
-                          <p className="text-sm font-medium text-[#F5F0E8] truncate">{mongoUser.name}</p>
-                          <p className="text-xs text-gray-500 truncate">{mongoUser.email}</p>
+                      <div className="absolute right-0 mt-2 w-52 bg-[#fcf9f3] border border-[#d0c5af] shadow-[0_24px_48px_-12px_rgba(28,28,24,0.10)] py-1 z-50">
+                        <div className="px-4 py-3 border-b border-[#d0c5af]">
+                          <p className="text-sm font-medium text-[#1c1c18] truncate">{mongoUser.name}</p>
+                          <p className="text-xs text-[#7f7663] truncate">{mongoUser.email}</p>
                         </div>
-                        
+
                         {mongoUser.role === 'admin' && (
-                          <Link href="/admin" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-900 hover:text-[#E8A020]">
+                          <Link href="/admin" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-[#4d4635] hover:bg-[#f6f3ed] hover:text-[#1c1c18]">
                             Admin Dashboard
                           </Link>
                         )}
-                        
-                        <Link href="/account" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-900 hover:text-[#E8A020]">
+
+                        <Link href="/account" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-[#4d4635] hover:bg-[#f6f3ed] hover:text-[#1c1c18]">
                           My Profile
                         </Link>
-                        <Link href="/account/orders" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-900 hover:text-[#E8A020]">
+                        <Link href="/account/orders" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-[#4d4635] hover:bg-[#f6f3ed] hover:text-[#1c1c18]">
                           My Orders
                         </Link>
-                        <Link href="/wishlist" onClick={() => setDropdownOpen(false)} className="block sm:hidden px-4 py-2 text-sm text-gray-300 hover:bg-gray-900 hover:text-[#E8A020]">
+                        <Link href="/wishlist" onClick={() => setDropdownOpen(false)} className="block sm:hidden px-4 py-2 text-sm text-[#4d4635] hover:bg-[#f6f3ed] hover:text-[#1c1c18]">
                           Wishlist
                         </Link>
-                        
-                        <button 
-                          onClick={() => { logout(); setDropdownOpen(false); }}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-900 hover:text-red-300 border-t border-gray-800"
-                        >
+
+                        <button onClick={() => { logout(); setDropdownOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-[#8f0402] hover:bg-[#f6f3ed] border-t border-[#d0c5af]">
                           Sign out
                         </button>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <Link
-                    href="/auth/login"
-                    className="text-sm font-medium text-[#E8A020] hover:text-amber-500 transition-colors hidden sm:block"
-                  >
-                    Sign In
+                  <Link href="/auth/login" className="hidden sm:block text-[#4d4635] hover:text-[#1c1c18] transition-colors p-1" aria-label="Sign in">
+                    <User className="w-5 h-5" />
                   </Link>
                 )}
               </>
@@ -149,17 +182,18 @@ export default function Navbar() {
 
       {/* Mobile menu */}
           {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0F0F0F] border-b border-gray-800 px-4 pt-2 pb-4 space-y-1">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-[#E8A020] hover:bg-gray-900">Home</Link>
-          <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-[#E8A020] hover:bg-gray-900">Shop All</Link>
-          <Link href="/shop?category=electronics" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-[#E8A020] hover:bg-gray-900">Electronics</Link>
-          <Link href="/shop?category=fashion" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-[#E8A020] hover:bg-gray-900">Fashion</Link>
+        <div className="md:hidden bg-[#fcf9f3] border-b border-[#d0c5af] px-4 pt-2 pb-6 space-y-1">
+          <Link href="/shop?sort=newest" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#4d4635] hover:text-[#1c1c18]">New Arrivals</Link>
+          <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#4d4635] hover:text-[#1c1c18]">Collections</Link>
+          <Link href="/shop?category=jewelry" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#4d4635] hover:text-[#1c1c18]">Jewelry</Link>
+          <Link href="/shop?category=gifts" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#4d4635] hover:text-[#1c1c18]">Gifts</Link>
+          <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#4d4635] hover:text-[#1c1c18]">About</Link>
           
           {!mongoUser && !loading && (
             <Link
               href="/auth/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-[#E8A020] hover:bg-gray-900 mt-4"
+              className="block w-full text-left px-3 py-3 text-sm tracking-[0.16em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37] mt-4"
             >
               Sign In
             </Link>

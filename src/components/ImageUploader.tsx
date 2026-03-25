@@ -89,7 +89,7 @@ export default function ImageUploader({
     <div className="space-y-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {images.map((img, idx) => (
-          <div key={img.publicId ?? img.url} className="relative aspect-square bg-gray-900 rounded-md overflow-hidden border border-gray-800">
+          <div key={img.publicId ?? img.url} className="relative aspect-square bg-[#f6f3ed] overflow-hidden border border-[#d0c5af]">
             <CldImage
               src={img.url}
               alt={`Upload ${idx}`}
@@ -100,12 +100,12 @@ export default function ImageUploader({
             <button
               type="button"
               onClick={() => handleRemove(img)}
-              className="absolute top-2 right-2 p-1 bg-black/70 text-white rounded-full hover:bg-red-500 transition-colors"
+              className="absolute top-2 right-2 p-1 bg-[#fcf9f3] text-[#1c1c18] border border-[#d0c5af] hover:bg-[#8f0402] hover:text-[#fcf9f3] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
             {idx === 0 && (
-              <span className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 text-xs font-medium text-[#E8A020] rounded">
+              <span className="absolute bottom-2 left-2 px-2 py-1 bg-[#fcf9f3] border border-[#d0c5af] text-[11px] tracking-[0.18em] uppercase text-[#1c1c18]">
                 Main
               </span>
             )}
@@ -114,8 +114,8 @@ export default function ImageUploader({
         
         {images.length < maxImages && (
           <div
-            className={`relative aspect-square rounded-md border-2 border-dashed transition-colors flex flex-col items-center justify-center text-center p-4 cursor-pointer
-              ${isDragging ? 'border-[#E8A020] bg-[#E8A020]/10' : 'border-gray-700 hover:border-gray-500 bg-gray-900/50'}
+            className={`relative aspect-square border border-dashed transition-colors flex flex-col items-center justify-center text-center p-4 cursor-pointer bg-[#ffffff]
+              ${isDragging ? 'border-[#d4af37] bg-[#d4af37]/10' : 'border-[#d0c5af] hover:border-[#d4af37]'}
             `}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
@@ -127,11 +127,11 @@ export default function ImageUploader({
             onClick={() => fileInputRef.current?.click()}
           >
             {uploading ? (
-              <Loader2 className="w-8 h-8 text-[#E8A020] animate-spin mb-2" />
+              <Loader2 className="w-8 h-8 text-[#d4af37] animate-spin mb-2" />
             ) : (
               <>
-                <UploadCloud className="w-8 h-8 text-gray-500 mb-2" />
-                <span className="text-sm text-gray-400">Click or drag</span>
+                <UploadCloud className="w-8 h-8 text-[#7f7663] mb-2" />
+                <span className="text-xs tracking-[0.18em] uppercase text-[#7f7663]">Click or drag</span>
               </>
             )}
           </div>

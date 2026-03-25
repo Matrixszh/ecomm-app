@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
+import Image from 'next/image';
 import StarRating from './StarRating';
 
 interface ProductCardProps {
@@ -66,67 +67,68 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/shop/${product.slug}`} className="block group">
       <motion.div
-        className="bg-[#0F0F0F] rounded-lg overflow-hidden border border-gray-800 transition-all duration-300 hover:shadow-[0_0_20px_rgba(232,160,32,0.15)] hover:border-[#E8A020]/30 h-full flex flex-col relative"
-        whileHover={{ y: -5 }}
+        className="bg-[#ffffff] overflow-hidden border border-[#d0c5af] transition-[transform,border-color] duration-500 h-full flex flex-col relative"
+        whileHover={{ y: -3 }}
       >
         <button
           onClick={handleToggleWishlist}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/50 backdrop-blur-md text-gray-300 hover:text-[#E8A020] transition-colors"
+          className="absolute top-3 right-3 z-10 p-2 bg-[#fcf9f3]/85 backdrop-blur-[20px] text-[#4d4635] hover:text-[#1c1c18] border border-[#d0c5af] transition-colors"
         >
           <Heart
-            className={`w-5 h-5 ${wishlisted ? 'fill-[#E8A020] text-[#E8A020]' : ''}`}
+            className={`w-5 h-5 ${wishlisted ? 'fill-[#d4af37] text-[#d4af37]' : ''}`}
             suppressHydrationWarning={true}
           />
         </button>
 
-        <div className="relative aspect-square overflow-hidden bg-gray-900">
+        <div className="relative aspect-square overflow-hidden bg-[#f6f3ed]">
           {normalizedImageUrl ? (
             canUseCldImage ? (
               <CldImage
                 src={primaryPublicId}
                 alt={product.name}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
-              <img
+              <Image
                 src={normalizedImageUrl}
                 alt={product.name}
-                className="object-cover w-full h-full"
-                loading="lazy"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             )
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-700">
+            <div className="w-full h-full flex items-center justify-center text-[#7f7663] text-sm tracking-[0.18em] uppercase">
               No Image
             </div>
           )}
           
-          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10 bg-gradient-to-t from-black/80 to-transparent">
+          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10 bg-gradient-to-t from-[#fcf9f3] via-[#fcf9f3]/80 to-transparent">
             <button
               onClick={handleAddToCart}
-              className="w-full py-2.5 bg-[#E8A020] text-black font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-[#d6901a] transition-colors"
+              className="w-full py-3 bg-[#d4af37] text-[#1c1c18] text-xs tracking-[0.24em] uppercase font-medium flex items-center justify-center gap-2 hover:bg-[#c29a30] transition-colors"
             >
               <ShoppingCart className="w-4 h-4" />
-              Add to Cart
+              Add to Bag
             </button>
           </div>
         </div>
 
         <div className="p-4 flex flex-col flex-1">
-          <h3 className="text-[#F5F0E8] font-medium line-clamp-2 mb-1">{product.name}</h3>
+          <h3 className="text-[#1c1c18] font-playfair text-lg leading-tight line-clamp-2">
+            {product.name}
+          </h3>
           
-          <div className="mt-auto pt-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-baseline gap-2">
-                <span className="text-[#E8A020] font-bold">₹{product.price}</span>
-                {product.comparePrice && product.comparePrice > product.price && (
-                  <span className="text-gray-500 text-sm line-through">₹{product.comparePrice}</span>
-                )}
-              </div>
+          <div className="mt-6 flex items-baseline justify-between gap-3">
+            <div className="flex items-baseline gap-2">
+              <span className="text-sm font-medium text-[#1c1c18]">₹{product.price}</span>
+              {product.comparePrice && product.comparePrice > product.price && (
+                <span className="text-xs text-[#7f7663] line-through">₹{product.comparePrice}</span>
+              )}
             </div>
-            <div className="mt-2 flex items-center">
+            <div className="flex items-center">
               <StarRating rating={product.avgRating} size="sm" />
             </div>
           </div>

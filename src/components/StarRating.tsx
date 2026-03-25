@@ -53,16 +53,16 @@ export default function StarRating({
             className={`${isInput ? 'cursor-pointer hover:scale-110 transition-transform' : 'cursor-default'}`}
           >
             {isFilled ? (
-              <Star className={`${sizeClasses[size]} fill-[#E8A020] text-[#E8A020]`} />
+              <Star className={`${sizeClasses[size]} fill-[#d4af37] text-[#d4af37]`} />
             ) : isHalf ? (
               <div className="relative">
-                <Star className={`${sizeClasses[size]} text-gray-600`} />
+                <Star className={`${sizeClasses[size]} text-[#d0c5af]`} />
                 <div className="absolute inset-0 overflow-hidden w-[50%]">
-                  <Star className={`${sizeClasses[size]} fill-[#E8A020] text-[#E8A020]`} />
+                  <Star className={`${sizeClasses[size]} fill-[#d4af37] text-[#d4af37]`} />
                 </div>
               </div>
             ) : (
-              <Star className={`${sizeClasses[size]} text-gray-600`} />
+              <Star className={`${sizeClasses[size]} text-[#d0c5af]`} />
             )}
           </button>
         );

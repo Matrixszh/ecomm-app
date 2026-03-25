@@ -10,20 +10,20 @@ export default function RevenueChart({ data }: RevenueChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-        <XAxis dataKey="name" stroke="#888" />
-        <YAxis stroke="#888" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#d0c5af" />
+        <XAxis dataKey="name" stroke="#7f7663" />
+        <YAxis stroke="#7f7663" />
         <Tooltip 
-          contentStyle={{ backgroundColor: '#1A1A1A', border: '1px solid #333' }}
-          itemStyle={{ color: '#E8A020' }}
+          contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d0c5af', color: '#1c1c18' }}
+          itemStyle={{ color: '#1c1c18' }}
         />
         <Line 
           type="monotone" 
           dataKey="revenue" 
-          stroke="#E8A020" 
+          stroke="#d4af37" 
           strokeWidth={2}
-          dot={{ fill: '#0F0F0F', stroke: '#E8A020', strokeWidth: 2, r: 4 }}
-          activeDot={{ r: 6, fill: '#E8A020' }}
+          dot={{ fill: '#ffffff', stroke: '#d4af37', strokeWidth: 2, r: 4 }}
+          activeDot={{ r: 6, fill: '#d4af37' }}
         />
       </LineChart>
     </ResponsiveContainer>

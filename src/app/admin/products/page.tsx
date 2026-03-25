@@ -61,25 +61,28 @@ export default function AdminProducts() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <h1 className="text-3xl font-playfair font-bold text-[#F5F0E8]">Products</h1>
+        <div>
+          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Admin</p>
+          <h1 className="mt-4 text-3xl font-playfair text-[#1c1c18]">Products</h1>
+        </div>
         <Link 
           href="/admin/products/new"
-          className="bg-[#E8A020] text-black font-medium px-4 py-2 rounded-md flex items-center gap-2 hover:bg-[#d6901a] transition-colors"
+          className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase flex items-center gap-2 hover:bg-[#c29a30] transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Product
         </Link>
       </div>
 
-      <div className="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden">
-        <div className="p-4 border-b border-gray-800 flex items-center">
+      <div className="bg-[#ffffff] border border-[#d0c5af] overflow-hidden">
+        <div className="p-4 border-b border-[#d0c5af] flex items-center">
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7f7663]" />
             <input 
               type="text" 
               placeholder="Search products..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#0F0F0F] border border-gray-700 rounded-md py-2 pl-10 pr-4 text-[#F5F0E8] focus:outline-none focus:border-[#E8A020]"
+              className="w-full bg-transparent border-b border-[#d0c5af] py-3 pl-10 pr-4 text-sm text-[#1c1c18] placeholder:text-[#7f7663] focus:outline-none focus:border-[#d4af37]"
             />
           </div>
         </div>
@@ -87,7 +90,7 @@ export default function AdminProducts() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-900/80 text-gray-400 text-sm border-b border-gray-800">
+              <tr className="bg-[#fcf9f3] text-[#7f7663] text-xs tracking-[0.24em] uppercase border-b border-[#d0c5af]">
                 <th className="p-4 font-medium">Image</th>
                 <th className="p-4 font-medium">Name</th>
                 <th className="p-4 font-medium">Category</th>
@@ -97,48 +100,60 @@ export default function AdminProducts() {
                 <th className="p-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800 text-sm">
+            <tbody className="divide-y divide-[#d0c5af] text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-gray-500">
-                    <div className="flex justify-center"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#E8A020]"></div></div>
+                  <td colSpan={7} className="p-12 text-center text-[#7f7663]">
+                    <div className="flex justify-center">
+                      <div className="animate-spin h-8 w-8 border-2 border-[#d0c5af] border-t-[#d4af37]" />
+                    </div>
                   </td>
                 </tr>
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-gray-500">No products found.</td>
+                  <td colSpan={7} className="p-12 text-center text-[#7f7663]">No products found.</td>
                 </tr>
               ) : (
                 products.map((product) => (
-                  <tr key={product._id} className="hover:bg-gray-900/30 transition-colors">
+                  <tr key={product._id} className="hover:bg-[#f6f3ed] transition-colors">
                     <td className="p-4">
-                      <div className="w-12 h-12 relative bg-gray-800 rounded overflow-hidden">
+                      <div className="w-12 h-12 relative bg-[#f6f3ed] border border-[#d0c5af] overflow-hidden">
                         {product.images?.[0]?.url ? (
                           <CldImage src={product.images[0].url} alt={product.name} fill className="object-cover" sizes="48px" />
                         ) : null}
                       </div>
                     </td>
-                    <td className="p-4 font-medium text-[#F5F0E8] max-w-xs truncate">{product.name}</td>
-                    <td className="p-4 text-gray-400 capitalize">{product.category?.name || 'N/A'}</td>
-                    <td className="p-4 text-gray-300">₹{product.price}</td>
+                    <td className="p-4 font-medium text-[#1c1c18] max-w-xs truncate">{product.name}</td>
+                    <td className="p-4 text-[#4d4635] capitalize">{product.category?.name || 'N/A'}</td>
+                    <td className="p-4 text-[#1c1c18]">₹{product.price}</td>
                     <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-[10px] font-medium ${product.stock > 10 ? 'bg-green-900/30 text-green-400' : product.stock > 0 ? 'bg-yellow-900/30 text-yellow-400' : 'bg-red-900/30 text-red-400'}`}>
+                      <span className={`px-3 py-1 text-[11px] tracking-[0.18em] uppercase border ${
+                        product.stock > 10
+                          ? 'bg-[#ffffff] border-[#d0c5af] text-[#2f6f44]'
+                          : product.stock > 0
+                            ? 'bg-[#ffffff] border-[#d0c5af] text-[#735c00]'
+                            : 'bg-[#ffffff] border-[#d0c5af] text-[#8f0402]'
+                      }`}>
                         {product.stock} in stock
                       </span>
                     </td>
                     <td className="p-4">
                       {product.isActive ? (
-                        <span className="text-green-500 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> Active</span>
+                        <span className="text-[#2f6f44] text-xs tracking-[0.18em] uppercase flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-[#2f6f44]" /> Active
+                        </span>
                       ) : (
-                        <span className="text-gray-500 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-500"></span> Draft</span>
+                        <span className="text-[#7f7663] text-xs tracking-[0.18em] uppercase flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-[#7f7663]" /> Draft
+                        </span>
                       )}
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <Link href={`/admin/products/${product._id}/edit`} className="p-2 text-gray-400 hover:text-[#E8A020] transition-colors rounded hover:bg-gray-800">
+                        <Link href={`/admin/products/${product._id}/edit`} className="p-2 text-[#7f7663] hover:text-[#1c1c18] transition-colors hover:bg-[#f6f3ed]">
                           <Edit className="w-4 h-4" />
                         </Link>
-                        <button onClick={() => handleDelete(product._id)} className="p-2 text-gray-400 hover:text-red-500 transition-colors rounded hover:bg-gray-800">
+                        <button onClick={() => handleDelete(product._id)} className="p-2 text-[#7f7663] hover:text-[#8f0402] transition-colors hover:bg-[#f6f3ed]">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>

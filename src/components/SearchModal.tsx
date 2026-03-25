@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import type { ProductSummary } from '@/types';
 
 type SearchResult = Pick<ProductSummary, '_id' | 'slug' | 'name' | 'price' | 'images'>;
@@ -79,11 +80,11 @@ export default function SearchModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[80] flex flex-col items-center pt-20 px-4"
+          className="fixed inset-0 bg-[#4d4635]/18 backdrop-blur-sm z-[80] flex flex-col items-center pt-20 px-4"
         >
-          <div className="w-full max-w-3xl bg-[#0F0F0F] rounded-xl border border-gray-800 shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center p-4 border-b border-gray-800">
-              <SearchIcon className="w-6 h-6 text-gray-400 mr-3" />
+          <div className="w-full max-w-3xl bg-[#fcf9f3] border border-[#d0c5af] shadow-[0_24px_48px_-12px_rgba(28,28,24,0.18)] overflow-hidden flex flex-col">
+            <div className="flex items-center p-5 border-b border-[#d0c5af]">
+              <SearchIcon className="w-6 h-6 text-[#7f7663] mr-3" />
               <input
                 ref={inputRef}
                 type="text"
@@ -93,11 +94,11 @@ export default function SearchModal() {
                   setSelectedIndex(-1);
                 }}
                 onKeyDown={handleKeyDown}
-                placeholder="Search products, categories..."
-                className="flex-1 bg-transparent text-xl text-[#F5F0E8] outline-none placeholder:text-gray-600 font-sans"
+                placeholder="Search pieces..."
+                className="flex-1 bg-transparent text-lg text-[#1c1c18] outline-none placeholder:text-[#7f7663] font-sans"
               />
-              {loading && <Loader2 className="w-5 h-5 text-[#E8A020] animate-spin mr-3" />}
-              <button onClick={closeSearch} className="p-2 text-gray-400 hover:text-white transition-colors">
+              {loading && <Loader2 className="w-5 h-5 text-[#d4af37] animate-spin mr-3" />}
+              <button onClick={closeSearch} className="p-2 text-[#4d4635] hover:text-[#1c1c18] transition-colors">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -110,11 +111,11 @@ export default function SearchModal() {
                       <Link
                         href={`/shop/${product.slug}`}
                         onClick={closeSearch}
-                        className={`flex items-center p-4 hover:bg-gray-900 transition-colors ${
-                          idx === selectedIndex ? 'bg-gray-900' : ''
+                        className={`flex items-center p-5 hover:bg-[#f6f3ed] transition-colors ${
+                          idx === selectedIndex ? 'bg-[#f6f3ed]' : ''
                         }`}
                       >
-                        <div className="w-12 h-12 relative bg-gray-800 rounded overflow-hidden mr-4 flex-shrink-0">
+                        <div className="w-12 h-12 relative bg-[#f6f3ed] overflow-hidden mr-4 flex-shrink-0 border border-[#d0c5af]">
                           {product.images?.[0]?.url ? (
                             hasCloudinary ? (
                               <CldImage
@@ -125,39 +126,34 @@ export default function SearchModal() {
                                 sizes="48px"
                               />
                             ) : (
-                              <img
-                                src={product.images[0].url}
-                                alt={product.name}
-                                className="object-cover w-full h-full"
-                                loading="lazy"
-                              />
+                              <Image src={product.images[0].url} alt={product.name} fill className="object-cover" sizes="48px" />
                             )
                           ) : null}
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-[#F5F0E8] font-medium">{product.name}</h4>
-                          <p className="text-sm text-[#E8A020]">₹{product.price}</p>
+                          <h4 className="text-[#1c1c18] font-medium">{product.name}</h4>
+                          <p className="text-sm text-[#4d4635]">₹{product.price}</p>
                         </div>
                       </Link>
                     </li>
                   ))}
                 </ul>
               ) : query.trim().length >= 2 && !loading ? (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-10 text-center text-[#7f7663] text-sm">
                   No results found for {`"${query}"`}
                 </div>
               ) : (
-                <div className="p-8 text-center text-gray-600 text-sm">
+                <div className="p-10 text-center text-[#7f7663] text-sm">
                   Start typing to search...
                 </div>
               )}
             </div>
             {query.trim().length > 0 && (
-              <div className="p-3 bg-gray-900/50 border-t border-gray-800 text-center">
+              <div className="p-4 bg-[#ffffff] border-t border-[#d0c5af] text-center">
                 <Link
                   href={`/search?q=${encodeURIComponent(query)}`}
                   onClick={closeSearch}
-                  className="text-sm text-[#E8A020] hover:underline"
+                  className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
                 >
                   View all results
                 </Link>

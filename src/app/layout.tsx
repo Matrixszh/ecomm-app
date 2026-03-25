@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, DM_Sans } from 'next/font/google';
+import { Inter, Noto_Serif } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
@@ -7,24 +7,24 @@ import SearchModal from '@/components/SearchModal';
 import Toast from '@/components/Toast';
 import Link from 'next/link';
 
-const playfair = Playfair_Display({ 
-  subsets: ['latin'], 
+const playfair = Noto_Serif({
+  subsets: ['latin'],
   variable: '--font-playfair',
-  weight: ['400', '500', '600', '700', '800', '900']
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
-const dmSans = DM_Sans({ 
+const dmSans = Inter({
   subsets: ['latin'],
   variable: '--font-dm-sans',
-  weight: ['400', '500', '700']
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
-  title: 'LUXE | Premium E-Commerce',
-  description: 'Premium dark luxury e-commerce experience',
+  title: 'Maison | Luxury E-Commerce',
+  description: 'A luxury e-commerce experience with boutique craftsmanship.',
   openGraph: {
-    title: 'LUXE | Premium E-Commerce',
-    description: 'Premium dark luxury e-commerce experience',
+    title: 'Maison | Luxury E-Commerce',
+    description: 'A luxury e-commerce experience with boutique craftsmanship.',
     images: [{ url: 'https://res.cloudinary.com/demo/image/upload/sample.jpg' }],
   },
 };
@@ -36,45 +36,73 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
-      <body className="bg-[#0F0F0F] text-[#F5F0E8] font-sans min-h-screen flex flex-col antialiased">
+      <body className="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased">
         <Navbar />
         <main className="flex-1 flex flex-col">
           {children}
         </main>
-        
-        {/* Global Components */}
         <CartDrawer />
         <SearchModal />
         <Toast />
-        
-        <footer className="bg-black py-12 border-t border-gray-800 mt-auto">
+
+        <footer className="bg-[#fcf9f3] py-16 border-t border-[#d0c5af] mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="col-span-1 md:col-span-2">
-                <h3 className="text-2xl font-playfair font-bold text-[#F5F0E8] mb-4">LUXE</h3>
-                <p className="text-gray-400 max-w-sm">
-                  Curated premium products for the modern lifestyle. Quality without compromise.
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+              <div className="md:col-span-5">
+                <Link href="/" className="inline-block text-2xl font-playfair tracking-[0.18em] uppercase">
+                  Maison
+                </Link>
+                <p className="mt-6 text-sm leading-6 text-[#4d4635] max-w-sm">
+                  Curated pieces with an editorial sensibility. Crafted with intention, presented with restraint.
                 </p>
               </div>
-              <div>
-                <h4 className="font-bold mb-4 text-[#F5F0E8]">Shop</h4>
-                <ul className="space-y-2 text-gray-400">
-                  <li><Link href="/shop" className="hover:text-[#E8A020]">All Products</Link></li>
-                  <li><Link href="/shop?category=electronics" className="hover:text-[#E8A020]">Electronics</Link></li>
-                  <li><Link href="/shop?category=fashion" className="hover:text-[#E8A020]">Fashion</Link></li>
+
+              <div className="md:col-span-3">
+                <h4 className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Collections</h4>
+                <ul className="mt-6 space-y-3 text-sm">
+                  <li>
+                    <Link href="/shop" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      All Pieces
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/shop?category=jewelry" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      Jewelry
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/shop?category=accessories" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      Accessories
+                    </Link>
+                  </li>
                 </ul>
               </div>
-              <div>
-                <h4 className="font-bold mb-4 text-[#F5F0E8]">Support</h4>
-                <ul className="space-y-2 text-gray-400">
-                  <li><a href="#" className="hover:text-[#E8A020]">FAQ</a></li>
-                  <li><a href="#" className="hover:text-[#E8A020]">Shipping</a></li>
-                  <li><a href="#" className="hover:text-[#E8A020]">Returns</a></li>
+
+              <div className="md:col-span-4">
+                <h4 className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Client Services</h4>
+                <ul className="mt-6 space-y-3 text-sm">
+                  <li>
+                    <Link href="/account/orders" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      Order Tracking
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/account" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      Account
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="mailto:support@example.com" className="hover:underline underline-offset-4 decoration-[#d4af37]">
+                      support@example.com
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
-            <div className="mt-12 pt-8 border-t border-gray-900 text-center text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} LUXE. All rights reserved.
+
+            <div className="mt-14 pt-10 border-t border-[#d0c5af] text-xs tracking-[0.18em] uppercase text-[#7f7663] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <span>&copy; {new Date().getFullYear()} Maison</span>
+              <span>Crafted for quiet luxury</span>
             </div>
           </div>
         </footer>

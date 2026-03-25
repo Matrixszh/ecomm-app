@@ -56,21 +56,22 @@ export default function WishlistPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex-1">
-      <h1 className="text-3xl font-playfair font-bold text-[#F5F0E8] mb-8">My Wishlist</h1>
+      <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Saved</p>
+      <h1 className="mt-4 text-3xl font-playfair text-[#1c1c18] mb-10">Wishlist</h1>
 
       {loading ? (
         <ProductGridSkeleton count={4} />
       ) : products.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-gray-900/30 rounded-lg border border-gray-800">
-          <div className="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mb-6">
-            <Heart className="w-10 h-10 text-gray-500" />
+        <div className="flex flex-col items-center justify-center py-20 bg-[#ffffff] border border-[#d0c5af]">
+          <div className="w-20 h-20 bg-[#f6f3ed] border border-[#d0c5af] flex items-center justify-center mb-8">
+            <Heart className="w-9 h-9 text-[#7f7663]" />
           </div>
-          <h2 className="text-xl font-medium text-[#F5F0E8] mb-2">Your wishlist is empty</h2>
-          <p className="text-gray-400 mb-8 text-center max-w-md">
-            Save items you love to your wishlist. Review them anytime and easily move them to your cart.
+          <h2 className="text-xl font-playfair text-[#1c1c18] mb-3">Your wishlist is empty</h2>
+          <p className="text-sm text-[#4d4635] mb-10 text-center max-w-md">
+            Save pieces you love and return anytime.
           </p>
-          <Link href="/shop" className="bg-[#E8A020] text-black font-medium px-8 py-3 rounded hover:bg-[#d6901a] transition-colors">
-            Discover Products
+          <Link href="/shop" className="bg-[#d4af37] text-[#1c1c18] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors">
+            Explore Collection
           </Link>
         </div>
       ) : (

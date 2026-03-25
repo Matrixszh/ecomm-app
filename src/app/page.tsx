@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Truck, RotateCcw, ShieldCheck, Clock, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { ProductGridSkeleton } from '@/components/Skeleton';
 import type { ProductSummary } from '@/types';
@@ -27,116 +28,116 @@ export default function Home() {
     fetchFeatured();
   }, []);
 
+  const heroImageUrl = featuredProducts?.[0]?.images?.[0]?.url;
+  const normalizedHeroImageUrl =
+    heroImageUrl && !heroImageUrl.startsWith('http') && !heroImageUrl.startsWith('/')
+      ? `/${heroImageUrl}`
+      : heroImageUrl;
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[#0F0F0F] z-0">
-          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] to-transparent"></div>
+    <div className="flex flex-col">
+      <section className="relative w-full">
+        <div className="relative h-[72vh] min-h-[560px] max-h-[820px] overflow-hidden">
+          {normalizedHeroImageUrl ? (
+            <Image src={normalizedHeroImageUrl} alt="Featured piece" fill className="object-cover" sizes="100vw" priority />
+          ) : (
+            <div className="absolute inset-0 bg-[#1c1c18]" />
+          )}
+
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(28,28,24,0.18),rgba(28,28,24,0.82))]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c18]/50 via-transparent to-transparent" />
+
+          <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl text-center">
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-[11px] tracking-[0.34em] uppercase text-[#fcf9f3]/70"
+              >
+                The Art of Creation
+              </motion.p>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.08 }}
+                className="mt-8 font-playfair text-[#fcf9f3] text-5xl sm:text-6xl md:text-7xl leading-[0.95]"
+              >
+                Timeless <span className="italic">Elegance</span>,<br />
+                Defined by Hand.
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+              >
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center justify-center px-10 py-4 bg-[#fcf9f3] text-[#1c1c18] text-[11px] tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+                >
+                  Shop Collection
+                </Link>
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center justify-center px-10 py-4 border border-[#fcf9f3]/70 text-[#fcf9f3] text-[11px] tracking-[0.24em] uppercase hover:bg-[#fcf9f3]/10 transition-colors"
+                >
+                  Discover Craft
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#fcf9f3] to-transparent" />
         </div>
-        
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-playfair font-bold text-[#F5F0E8] mb-6 leading-tight"
-          >
-            Elevate Your <span className="text-[#E8A020] italic">Lifestyle</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto"
-          >
-            Discover our curated collection of premium essentials designed for the modern connoisseur.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <Link 
-              href="/shop" 
-              className="inline-flex items-center gap-2 bg-[#E8A020] text-black px-8 py-4 rounded-md font-bold text-lg hover:bg-[#d6901a] transition-colors shadow-[0_0_20px_rgba(232,160,32,0.3)] hover:shadow-[0_0_30px_rgba(232,160,32,0.5)]"
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 w-full">
+        <div className="flex items-end justify-between gap-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-playfair text-[#1c1c18]">Collections</h2>
+            <p className="mt-3 text-sm text-[#4d4635]">A focused edit, designed to be worn with intention.</p>
+          </div>
+          <Link href="/shop" className="hidden sm:inline text-xs tracking-[0.24em] uppercase text-[#4d4635] hover:text-[#1c1c18] hover:underline underline-offset-8 decoration-[#d4af37]">
+            View All
+          </Link>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { slug: 'fashion', label: 'Fashion' },
+            { slug: 'electronics', label: 'Electronics' },
+            { slug: '', label: 'All Pieces' },
+          ].map((c) => (
+            <Link
+              key={c.label}
+              href={c.slug ? `/shop?category=${c.slug}` : '/shop'}
+              className="border border-[#d0c5af] bg-[#ffffff] p-8 hover:bg-[#f6f3ed] transition-colors"
             >
-              Shop Collection <ArrowRight className="w-5 h-5" />
+              <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Explore</p>
+              <div className="mt-4 flex items-center justify-between gap-6">
+                <h3 className="text-xl font-playfair text-[#1c1c18]">{c.label}</h3>
+                <ArrowRight className="w-5 h-5 text-[#d4af37]" />
+              </div>
             </Link>
-          </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Why Us Strip */}
-      <section className="bg-gray-900/50 border-y border-gray-800 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="flex flex-col items-center justify-center">
-              <Truck className="w-8 h-8 text-[#E8A020] mb-3" />
-              <h3 className="text-[#F5F0E8] font-medium mb-1">Free Shipping</h3>
-              <p className="text-sm text-gray-500">On orders over ₹5000</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <RotateCcw className="w-8 h-8 text-[#E8A020] mb-3" />
-              <h3 className="text-[#F5F0E8] font-medium mb-1">Easy Returns</h3>
-              <p className="text-sm text-gray-500">30-day return policy</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <ShieldCheck className="w-8 h-8 text-[#E8A020] mb-3" />
-              <h3 className="text-[#F5F0E8] font-medium mb-1">Secure Payment</h3>
-              <p className="text-sm text-gray-500">100% safe checkout</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <Clock className="w-8 h-8 text-[#E8A020] mb-3" />
-              <h3 className="text-[#F5F0E8] font-medium mb-1">24/7 Support</h3>
-              <p className="text-sm text-gray-500">Always here for you</p>
-            </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 w-full">
+        <div className="flex items-end justify-between gap-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-playfair text-[#1c1c18]">Featured</h2>
+            <p className="mt-3 text-sm text-[#4d4635]">A selection chosen for craft, silhouette, and light.</p>
           </div>
+          <Link href="/shop" className="hidden sm:inline text-xs tracking-[0.24em] uppercase text-[#4d4635] hover:text-[#1c1c18] hover:underline underline-offset-8 decoration-[#d4af37]">
+            Discover
+          </Link>
         </div>
-      </section>
 
-      {/* Shop by Category */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-playfair font-bold text-[#F5F0E8] mb-4">Shop by Category</h2>
-            <div className="w-24 h-1 bg-[#E8A020] mx-auto"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {['electronics', 'fashion', 'home-living'].map((slug) => (
-              <Link key={slug} href={`/shop?category=${slug}`} className="group relative h-96 overflow-hidden rounded-xl">
-                <div className="absolute inset-0 bg-gray-900">
-                  {/* Fallback pattern if no image */}
-                  <div className="w-full h-full opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black"></div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity group-hover:opacity-90"></div>
-                <div className="absolute inset-0 flex flex-col justify-end p-8 z-20">
-                  <h3 className="text-2xl font-playfair font-bold text-white mb-2 capitalize group-hover:-translate-y-2 transition-transform duration-300">{slug.replace('-', ' ')}</h3>
-                  <span className="text-[#E8A020] font-medium opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-2">
-                    Explore <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-20 bg-gray-900/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-playfair font-bold text-[#F5F0E8] mb-4">Featured Collection</h2>
-              <div className="w-24 h-1 bg-[#E8A020]"></div>
-            </div>
-            <Link href="/shop" className="hidden md:flex items-center gap-2 text-[#E8A020] hover:text-amber-500 transition-colors font-medium">
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
+        <div className="mt-10">
           {loading ? (
             <ProductGridSkeleton count={6} />
           ) : (
@@ -144,47 +145,54 @@ export default function Home() {
               {featuredProducts.map((product, i) => (
                 <motion.div
                   key={product._id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.06 }}
                 >
                   <ProductCard product={product} />
                 </motion.div>
               ))}
             </div>
           )}
-          
-          <div className="mt-10 text-center md:hidden">
-            <Link href="/shop" className="inline-flex items-center gap-2 text-[#E8A020] border border-[#E8A020] px-6 py-3 rounded-md hover:bg-[#E8A020]/10 transition-colors font-medium">
-              View All Products
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#0F0F0F] z-0 border-t border-gray-800"></div>
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-[#F5F0E8] mb-4">Join the Inner Circle</h2>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            Subscribe to receive exclusive access to new collections, limited editions, and curated editorial content.
-          </p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); alert('Subscribed!'); }}>
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              required
-              className="flex-1 bg-gray-900 border border-gray-700 rounded-md px-4 py-3 text-[#F5F0E8] focus:outline-none focus:border-[#E8A020] transition-colors"
-            />
-            <button 
-              type="submit"
-              className="bg-[#E8A020] text-black font-bold px-8 py-3 rounded-md hover:bg-[#d6901a] transition-colors whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
+      <section className="border-t border-[#d0c5af] bg-[#ffffff]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-5">
+              <h2 className="text-2xl md:text-3xl font-playfair text-[#1c1c18]">Client List</h2>
+              <p className="mt-4 text-sm leading-7 text-[#4d4635]">
+                Receive early access to launches and boutique appointments. One email per drop.
+              </p>
+            </div>
+            <div className="lg:col-span-7">
+              <form
+                className="flex flex-col sm:flex-row gap-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  alert('Subscribed!');
+                }}
+              >
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  required
+                  className="flex-1 bg-transparent border-b border-[#d0c5af] py-4 px-2 text-sm focus:outline-none focus:border-[#d4af37]"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                >
+                  Subscribe
+                </button>
+              </form>
+              <p className="mt-4 text-xs tracking-[0.18em] uppercase text-[#7f7663]">
+                Crafted communications only.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
