@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Serif } from 'next/font/google';
 import './globals.css';
+import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import SearchModal from '@/components/SearchModal';
@@ -37,7 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased">
-        <Navbar />
+        <Suspense fallback={<div className="h-[104px] w-full border-b border-[#d0c5af] bg-[#fcf9f3]" />}>
+          <Navbar />
+        </Suspense>
         <main className="flex-1 flex flex-col">
           {children}
         </main>
