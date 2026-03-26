@@ -3,6 +3,7 @@ import { Inter, Noto_Serif } from 'next/font/google';
 import './globals.css';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
+import PageTransition from '@/components/PageTransition';
 import CartDrawer from '@/components/CartDrawer';
 import SearchModal from '@/components/SearchModal';
 import Toast from '@/components/Toast';
@@ -42,7 +43,7 @@ export default function RootLayout({
           <Navbar />
         </Suspense>
         <main className="flex-1 flex flex-col">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </main>
         <CartDrawer />
         <SearchModal />

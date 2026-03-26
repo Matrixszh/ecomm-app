@@ -100,12 +100,12 @@ export default function ImageUploader({
             <button
               type="button"
               onClick={() => handleRemove(img)}
-              className="absolute top-2 right-2 p-1 bg-[#fcf9f3] text-[#1c1c18] border border-[#d0c5af] hover:bg-[#8f0402] hover:text-[#fcf9f3] transition-colors"
+              className="absolute top-2 right-2 p-1 bg-[#ffffff] text-[#1c1c18] hover:bg-[#8f0402] hover:text-[#ffffff] transition-colors rounded-sm"
             >
               <X className="w-4 h-4" />
             </button>
             {idx === 0 && (
-              <span className="absolute bottom-2 left-2 px-2 py-1 bg-[#fcf9f3] border border-[#d0c5af] text-[11px] tracking-[0.18em] uppercase text-[#1c1c18]">
+              <span className="absolute bottom-2 left-2 px-2 py-1 bg-[#d4af37] text-[11px] tracking-[0.18em] uppercase text-[#1c1c18] rounded-sm font-medium">
                 Main
               </span>
             )}
