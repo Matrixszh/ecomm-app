@@ -93,6 +93,7 @@ export default function CheckoutPage() {
     }
     
     setLoading(true);
+    let openedRazorpay = false;
     try {
       const shippingAddress = {
         name: `${firstName} ${lastName}`.trim() || mongoUser.name || mongoUser.email,
@@ -150,9 +151,9 @@ export default function CheckoutPage() {
         return;
       }
 
-      const order = data?.order;
       const razorpay = data?.razorpay;
-      if (!order?._id || !razorpay?.keyId || !razorpay?.orderId) {
+      const orderNumber = data?.orderNumber;
+      if (!orderNumber || !razorpay?.keyId || !razorpay?.orderId) {
         throw new Error('Missing Razorpay order details');
       }
 
@@ -164,7 +165,7 @@ export default function CheckoutPage() {
         amount: razorpay.amount,
         currency: razorpay.currency,
         name: 'Checkout',
-        description: `Order ${order.orderNumber}`,
+        description: `Order ${orderNumber}`,
         order_id: razorpay.orderId,
         prefill: {
           name: shippingAddress.name,
@@ -173,21 +174,25 @@ export default function CheckoutPage() {
         },
         handler: async (response: RazorpaySuccessResponse) => {
           try {
-            const verifyRes = await fetch(`/api/orders/${order._id}`, {
+            const confirmRes = await fetch('/api/orders', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(response),
+              body: JSON.stringify({
+                ...orderPayload,
+                orderNumber,
+                ...response,
+              }),
             });
-            const verifyData = await verifyRes.json();
-            if (!verifyRes.ok) {
-              const msg = verifyData?.error ? JSON.stringify(verifyData.error) : 'Payment verification failed';
+            const confirmData = await confirmRes.json();
+            if (!confirmRes.ok) {
+              const msg = confirmData?.error ? JSON.stringify(confirmData.error) : 'Order confirmation failed';
               throw new Error(msg);
             }
             clearCart();
-            router.push(`/checkout/success?orderId=${encodeURIComponent(order.orderNumber)}`);
+            router.push(`/checkout/success?orderId=${encodeURIComponent(confirmData.orderNumber || orderNumber)}`);
           } catch (e) {
             console.error(e);
-            alert('Payment succeeded but verification failed. Please contact support.');
+            alert('Payment succeeded but order creation failed. Please contact support.');
           } finally {
             setLoading(false);
           }
@@ -199,11 +204,12 @@ export default function CheckoutPage() {
       });
 
       rzp.open();
+      openedRazorpay = true;
     } catch (error) {
       console.error(error);
       alert('Failed to place order');
     } finally {
-      if (paymentMethod === 'cod') setLoading(false);
+      if (!openedRazorpay) setLoading(false);
     }
   };
 

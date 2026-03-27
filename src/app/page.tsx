@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Sparkles } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
 import { ProductGridSkeleton } from '@/components/Skeleton';
 import type { ProductSummary } from '@/types';
@@ -129,7 +129,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+      <section className="bg-[#F0EEE8]  mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
         <div className="flex items-end justify-between gap-8 mb-12">
           <div>
             <p className="text-[10px] tracking-[0.2em] uppercase text-[#A48943] mb-3">Selected Works</p>
@@ -310,41 +310,46 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-[#d0c5af] bg-[#ffffff]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5">
-              <h2 className="text-2xl md:text-3xl font-playfair text-[#1c1c18]">Client List</h2>
-              <p className="mt-4 text-sm leading-7 text-[#4d4635]">
-                Receive early access to launches and boutique appointments. One email per drop.
-              </p>
-            </div>
-            <div className="lg:col-span-7">
-              <form
-                className="flex flex-col sm:flex-row gap-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert('Subscribed!');
-                }}
-              >
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  required
-                  className="flex-1 bg-transparent border-b border-[#d0c5af] py-4 px-2 text-sm focus:outline-none focus:border-[#d4af37]"
-                />
-                <button
-                  type="submit"
-                  className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
-              <p className="mt-4 text-xs tracking-[0.18em] uppercase text-[#7f7663]">
-                Crafted communications only.
-              </p>
-            </div>
+      <section className="border-t border-[#d0c5af] bg-[#F0EEE8]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-28 w-full text-center">
+          <div className="flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-[#d4af37]" strokeWidth={1.5} />
           </div>
+          <h2 className="mt-10 text-4xl md:text-5xl font-playfair text-[#1c1c18]">Enter The Atelier</h2>
+          <p className="mt-6 text-sm md:text-base text-[#4d4635] max-w-2xl mx-auto">
+            Be the first to explore new collections, private events, and the secrets of the workshop.
+          </p>
+
+          <form
+            className="mt-16 max-w-3xl mx-auto flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              alert('Subscribed!');
+            }}
+          >
+            <div className="flex-1">
+              <label className="block text-[10px] tracking-[0.22em] uppercase text-[#7f7663] text-left" htmlFor="atelier-email">
+                Your email address
+              </label>
+              <input
+                id="atelier-email"
+                type="email"
+                required
+                className="mt-4 w-full bg-transparent border-b border-[#d0c5af] py-4 px-0 text-sm text-[#1c1c18] placeholder:text-[#7f7663] focus:outline-none focus:border-[#1c1c18]"
+                placeholder=""
+              />
+            </div>
+            <button
+              type="submit"
+              className="sm:self-end bg-[#1c1c18] text-[#fcf9f3] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#000000] transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
+
+          <p className="mt-8 text-[10px] tracking-[0.22em] uppercase text-[#7f7663]">
+            By subscribing, you accept our privacy policy.
+          </p>
         </div>
       </section>
     </div>
