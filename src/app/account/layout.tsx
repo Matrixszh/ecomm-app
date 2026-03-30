@@ -4,13 +4,12 @@ import { useAuthStore } from '@/store/authStore';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { User, ShoppingBag, MapPin, Heart, LogOut } from 'lucide-react';
+import { User, ShoppingBag, Heart, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const navItems = [
   { name: 'Profile', href: '/account', icon: User },
   { name: 'Orders', href: '/account/orders', icon: ShoppingBag },
-  { name: 'Addresses', href: '/account/addresses', icon: MapPin },
   { name: 'Wishlist', href: '/wishlist', icon: Heart },
 ];
 
