@@ -87,41 +87,25 @@ export const platformSettingsSchema = z.object({
   maintenanceMode: z.boolean(),
 });
 
-export const VendorProfileSchema = z.object({
+export const vendorRegistrationSchema = z.object({
   storeName: z.string().min(2, 'Store name must be at least 2 characters'),
-  bio: z.string().min(10, 'Bio must be at least 10 characters'),
+  storeSlug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase letters, numbers, and hyphens only'),
+  bio: z.string().min(20, 'Bio must be at least 20 characters'),
+});
+
+export const vendorProfileUpdateSchema = z.object({
+  storeName: z.string().min(2, 'Store name must be at least 2 characters').optional(),
+  bio: z.string().min(20, 'Bio must be at least 20 characters').optional(),
   socialLinks: z.object({
     instagram: z.string().url().optional(),
     twitter: z.string().url().optional(),
     website: z.string().url().optional(),
   }).optional(),
-  applicationStatus: z.enum(['pending', 'approved', 'rejected', 'suspended']),
-  applicationNote: z.string().optional(),
-  commissionRate: z.number().min(0).max(1).optional(),
 });
 
-
-export const vendorApplicationUpdateSchema = z.object({
-  applicationStatus: z.enum(['pending', 'approved', 'rejected', 'suspended']).optional(),
-  applicationNote: z.string().optional(),
-  isActive: z.boolean().optional(),
+export const vendorSuspendSchema = z.object({
+  isActive: z.boolean(),
 });
-
-
-export const vendorReviewSchema = z.object({
-  rating: z.number().min(1).max(5),
-  title: z.string().min(1),
-  comment: z.string().min(5),
-  images: z.array(z.object({
-    url: z.string().url(),
-    publicId: z.string()
-  })).optional(),
-  commisionRate: z.number().min(0).max(1).optional(),
-  isActive: z.boolean().optional(),
-});
-
-
-
 
 // Review Validations
 export const reviewSchema = z.object({
