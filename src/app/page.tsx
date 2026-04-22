@@ -275,6 +275,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* become a seller */}
+        <section className="w-full bg-[#fcf9f3] border-t border-[#d0c5af] scroll-mt-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+          <h2 className="mt-6 font-playfair text-5xl md:text-6xl leading-[0.95] text-[#1c1c18] text-center">
+                  Become a <span className="italic">Seller.</span>
+                </h2>
+                <Link
+                  href="/vendor/register"
+                  className="mt-10 flex w-fit text-[11px] tracking-[0.24em] uppercase text-[#1c1c18] border-b border-[#1c1c18] pb-2 hover:border-[#d4af37] hover:text-[#1c1c18] transition-colors mx-auto"
+                >
+                    Join Us
+                </Link>
+
+              </div>
+       
+        
+      </section>
+
+
       <section className="w-full bg-[#0b0a0d]">
         <div className="grid grid-cols-3">
           <div className="relative h-[220px] sm:h-[320px] lg:h-[420px] overflow-hidden">
