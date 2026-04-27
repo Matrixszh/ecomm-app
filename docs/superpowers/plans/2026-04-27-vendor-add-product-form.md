@@ -6,7 +6,7 @@
 
 **Architecture:** Extend the Product model and Zod schema with `brand`, `currency`, and `availabilityStatus` fields first. Then build the form page at `src/app/vendor/products/new/page.tsx` that submits to the existing `POST /api/vendor/products` endpoint. No new API routes needed.
 
-**Tech Stack:** Next.js 14 App Router, TanStack Form (`@tanstack/react-form`), `@tanstack/zod-form-adapter`, Zod v4, Mongoose, Tailwind CSS, existing `ImageUploader` component, existing `useAuthStore` (Zustand).
+**Tech Stack:** Next.js 14 App Router, TanStack Form (`@tanstack/react-form@1.29.1`), Zod v4 (inline validation via `safeParse` — no adapter, `@tanstack/zod-form-adapter` is Zod v3 only), Mongoose, Tailwind CSS, existing `ImageUploader` component, existing `useAuthStore` (Zustand).
 
 ---
 
@@ -17,7 +17,7 @@
 | `src/models/Product.ts` | Modify | Add `brand`, `currency`, `availabilityStatus` to schema + interface |
 | `src/lib/validations/index.ts` | Modify | Extend `productSchema` with new fields |
 | `src/app/vendor/products/new/page.tsx` | Create | Full form page with TanStack Form |
-| `package.json` | Modify | Add `@tanstack/react-form`, `@tanstack/zod-form-adapter` |
+| `package.json` | Modify | Add `@tanstack/react-form` (done — v1.29.1, no adapter needed) |
 
 ---
 
@@ -26,28 +26,21 @@
 **Files:**
 - Modify: `package.json`
 
-- [ ] **Step 1: Install packages**
+- [x] **Step 1: Install packages** ✅ DONE
 
 ```bash
-npm install @tanstack/react-form @tanstack/zod-form-adapter
+npm install @tanstack/react-form
 ```
 
-Expected output: packages added, no peer dep errors.
+Note: `@tanstack/zod-form-adapter` skipped — it only supports Zod v3, project uses Zod v4. Use inline `safeParse` validators on each field instead (see Task 4).
 
-- [ ] **Step 2: Verify installation**
+- [x] **Step 2: Verify installation** ✅ DONE
 
 ```bash
 node -e "require('@tanstack/react-form'); console.log('ok')"
 ```
 
-Expected: `ok`
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add package.json package-lock.json
-git commit -m "chore: add tanstack form and zod adapter"
-```
+- [x] **Step 3: Commit** ✅ DONE — commit `d39196d`
 
 ---
 
@@ -197,7 +190,6 @@ Create `src/app/vendor/products/new/page.tsx`:
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@tanstack/react-form';
-import { zodValidator } from '@tanstack/zod-form-adapter';
 import { useAuthStore } from '@/store/authStore';
 import { useUIStore } from '@/store/uiStore';
 import ImageUploader from '@/components/ImageUploader';
@@ -276,7 +268,6 @@ export default function AddProductPage() {
       subcategory: '',
       images: [],
     },
-    validatorAdapter: zodValidator(),
     onSubmit: async ({ value }) => {
       const token = await firebaseUser?.getIdToken();
       if (!token) return;
@@ -367,7 +358,7 @@ export default function AddProductPage() {
 
             <form.Field
               name="name"
-              validators={{ onBlur: vendorProductSchema.shape.name }}
+              validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.name.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
             >
               {(field) => (
                 <div>
@@ -388,7 +379,6 @@ export default function AddProductPage() {
 
             <form.Field
               name="shortDescription"
-              validators={{ onBlur: vendorProductSchema.shape.shortDescription }}
             >
               {(field) => (
                 <div>
@@ -406,7 +396,7 @@ export default function AddProductPage() {
 
             <form.Field
               name="description"
-              validators={{ onBlur: vendorProductSchema.shape.description }}
+              validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.description.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
             >
               {(field) => (
                 <div>
@@ -434,7 +424,7 @@ export default function AddProductPage() {
             <div className="grid grid-cols-2 gap-6">
               <form.Field
                 name="price"
-                validators={{ onBlur: vendorProductSchema.shape.price }}
+                validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.price.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
               >
                 {(field) => (
                   <div>
@@ -502,7 +492,7 @@ export default function AddProductPage() {
             <div className="grid grid-cols-2 gap-6">
               <form.Field
                 name="sku"
-                validators={{ onBlur: vendorProductSchema.shape.sku }}
+                validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.sku.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
               >
                 {(field) => (
                   <div>
@@ -530,7 +520,7 @@ export default function AddProductPage() {
 
               <form.Field
                 name="stock"
-                validators={{ onBlur: vendorProductSchema.shape.stock }}
+                validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.stock.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
               >
                 {(field) => (
                   <div>
@@ -596,7 +586,7 @@ export default function AddProductPage() {
 
             <form.Field
               name="category"
-              validators={{ onBlur: vendorProductSchema.shape.category }}
+              validators={{ onBlur: ({ value }) => { const r = vendorProductSchema.shape.category.safeParse(value); return r.success ? undefined : r.error.issues[0].message; } }}
             >
               {(field) => (
                 <div>
