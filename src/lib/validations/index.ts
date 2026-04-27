@@ -20,6 +20,9 @@ export const productSchema = z.object({
   })).optional(),
   stock: z.number().int().min(0),
   sku: z.string().min(1, 'SKU is required'),
+  brand: z.string().optional(),
+  currency: z.string().default('INR'),
+  availabilityStatus: z.enum(['in_stock', 'out_of_stock', 'preorder']).default('in_stock'),
   isFeatured: z.boolean().optional(),
   isActive: z.boolean().optional(),
 });
