@@ -42,6 +42,7 @@ export default function AddProductPage() {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [parentCategories, setParentCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Category[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [categoriesError, setCategoriesError] = useState(false);
   const [images, setImages] = useState<CloudinaryImage[]>([]);
   const [skuError, setSkuError] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export default function AddProductPage() {
   useEffect(() => {
     if (!mongoUser) return;
     if (mongoUser.role !== 'vendor') {
-      router.push('/vendor/dashboard');
+      router.push('/');
     }
   }, [mongoUser, router]);
 
@@ -59,8 +60,9 @@ export default function AddProductPage() {
       .then((data: Category[]) => {
         setAllCategories(data);
         setParentCategories(data.filter((c) => !c.parentCategory));
+        setCategoriesLoading(false);
       })
-      .catch(() => setCategoriesError(true));
+      .catch(() => { setCategoriesError(true); setCategoriesLoading(false); });
   }, []);
 
   const form = useForm({
@@ -68,11 +70,11 @@ export default function AddProductPage() {
       name: '',
       shortDescription: '',
       description: '',
-      price: 0,
+      price: '' as unknown as number,
       comparePrice: undefined as number | undefined,
       currency: 'INR' as 'INR' | 'USD' | 'EUR' | 'GBP',
       sku: '',
-      stock: 0,
+      stock: '' as unknown as number,
       availabilityStatus: 'in_stock' as 'in_stock' | 'out_of_stock' | 'preorder',
       brand: '',
       category: '',
@@ -81,18 +83,21 @@ export default function AddProductPage() {
     },
     onSubmit: async ({ value }) => {
       const token = await firebaseUser?.getIdToken();
-      if (!token) return;
+      if (!token) {
+        addToast('Your session has expired. Please sign in again.', 'error');
+        return;
+      }
 
       const finalCategory = value.subcategory || value.category;
       const payload = {
         name: value.name,
         shortDescription: value.shortDescription,
         description: value.description,
-        price: value.price,
-        comparePrice: value.comparePrice,
+        price: Number(value.price),
+        comparePrice: value.comparePrice !== undefined ? Number(value.comparePrice) : undefined,
         currency: value.currency,
         sku: value.sku,
-        stock: value.stock,
+        stock: Number(value.stock),
         availabilityStatus: value.availabilityStatus,
         brand: value.brand,
         category: finalCategory,
@@ -245,7 +250,7 @@ export default function AddProductPage() {
                       className={inputClass}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(parseFloat(e.target.value) || 0)}
+                      onChange={(e) => field.handleChange(e.target.value === '' ? ('' as unknown as number) : parseFloat(e.target.value))}
                     />
                     {field.state.meta.errors[0] && (
                       <p className={errorClass}>{String(field.state.meta.errors[0])}</p>
@@ -340,7 +345,7 @@ export default function AddProductPage() {
                       className={inputClass}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(parseInt(e.target.value) || 0)}
+                      onChange={(e) => field.handleChange(e.target.value === '' ? ('' as unknown as number) : parseInt(e.target.value))}
                     />
                     {field.state.meta.errors[0] && (
                       <p className={errorClass}>{String(field.state.meta.errors[0])}</p>
@@ -403,7 +408,7 @@ export default function AddProductPage() {
                   <select
                     className={inputClass}
                     value={field.state.value}
-                    disabled={categoriesError}
+                    disabled={categoriesError || categoriesLoading}
                     onBlur={field.handleBlur}
                     onChange={(e) => {
                       field.handleChange(e.target.value);
