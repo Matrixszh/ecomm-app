@@ -21,7 +21,7 @@ export const productSchema = z.object({
   stock: z.number().int().min(0),
   sku: z.string().min(1, 'SKU is required'),
   brand: z.string().optional(),
-  currency: z.string().default('INR'),
+  currency: z.enum(['INR', 'USD', 'EUR', 'GBP']).default('INR'),
   availabilityStatus: z.enum(['in_stock', 'out_of_stock', 'preorder']).default('in_stock'),
   isFeatured: z.boolean().optional(),
   isActive: z.boolean().optional(),
@@ -154,14 +154,4 @@ export const vendorReviewSchema = z.object({
   status: z.enum(['approved', 'rejected', 'suspended']),
   applicationNote: z.string().max(500).optional(),
   commissionRate: z.number().min(0).max(1).optional(),
-});
-
-export const platformSettingsSchema = z.object({
-  commissionRate: z.number().min(0).max(1),
-  vendorRegistrationOpen: z.boolean(),
-  maintenanceMode: z.boolean(),
-});
-
-export const vendorSuspendSchema = z.object({
-  isActive: z.boolean(),
 });

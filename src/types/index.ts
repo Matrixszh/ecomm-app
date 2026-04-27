@@ -28,12 +28,16 @@ export type ProductSummary = {
   stock?: number;
   shortDescription?: string;
   category?: { _id: string; name: string; slug: string } | null;
+  brand?: string;
+  currency?: string;
+  availabilityStatus?: 'in_stock' | 'out_of_stock' | 'preorder';
 };
 
 export type ProductDetail = ProductSummary & {
   description?: string;
   variants?: { name: string; options: string[] }[];
   tags?: string[];
+  sku?: string;
 };
 
 export type Address = {
