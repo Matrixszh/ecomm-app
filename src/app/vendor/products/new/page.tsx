@@ -35,7 +35,7 @@ const vendorProductSchema = z.object({
 });
 
 export default function AddProductPage() {
-  const { mongoUser, firebaseUser } = useAuthStore();
+  const { mongoUser, firebaseUser, loading } = useAuthStore();
   const { addToast } = useUIStore();
   const router = useRouter();
 
@@ -113,7 +113,9 @@ export default function AddProductPage() {
         router.push('/vendor/dashboard');
       } else if (res.status === 400) {
         const data = await res.json();
-        addToast(data.error?.formErrors?.[0] ?? 'Validation error', 'error');
+        const fieldErrors: Record<string, string[]> = data.error?.fieldErrors ?? {};
+        const firstFieldError = Object.values(fieldErrors)[0]?.[0];
+        addToast(firstFieldError ?? data.error?.formErrors?.[0] ?? 'Validation error', 'error');
       } else {
         addToast('Something went wrong. Please try again.', 'error');
       }
@@ -146,6 +148,8 @@ export default function AddProductPage() {
   const labelClass = 'block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2';
   const errorClass = 'text-xs text-red-500 mt-1';
 
+  if (loading || !mongoUser) return null;
+
   return (
     <div className="min-h-screen bg-[#fcf9f3] py-12 px-4 sm:px-8">
       <div className="max-w-2xl mx-auto">
@@ -155,11 +159,6 @@ export default function AddProductPage() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            form.setFieldValue('images', images.map((img) => ({
-              url: img.url,
-              publicId: img.publicId ?? '',
-              alt: img.alt,
-            })));
             form.handleSubmit();
           }}
           className="space-y-10"
