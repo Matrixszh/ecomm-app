@@ -56,3 +56,64 @@ export const POST = requireVendor(async (req: NextRequest, { auth }) => {
 
   return NextResponse.json({ product }, { status: 201 });
 });
+
+export const DELETE = requireVendor(async (req: NextRequest, { auth }) => {
+  await connectDB();
+
+  const user = await User.findOne({ firebaseUid: auth.uid }).lean();
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  const { searchParams } = new URL(req.url);
+  const productId = searchParams.get('id');
+  if (!productId) return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
+
+  const product = await Product.findOneAndDelete({ _id: productId, vendor: user._id });
+  if (!product) return NextResponse.json({ error: 'Product not found or unauthorized' }, { status: 404 });
+
+  await redis.del('products:list');
+
+  return NextResponse.json({ message: 'Product deleted' });
+});
+
+export const PUT = requireVendor(async (req: NextRequest, { auth }) => {
+  try {
+    await connectDB();
+
+    const user = await User.findOne({ firebaseUid: auth.uid }).lean();
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    const { searchParams } = new URL(req.url);
+    const productId = searchParams.get('id');
+    if (!productId) return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
+
+    const body = await req.json();
+    const parsed = productSchema.partial().safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+
+    const updateData: any = { ...parsed.data };
+    if (parsed.data.category) {
+      const categorySlug = parsed.data.category;
+      const categoryDoc = await Category.findOneAndUpdate(
+        { slug: categorySlug },
+        { slug: categorySlug, name: getCategoryName(categorySlug), isActive: true },
+        { upsert: true, new: true }
+      );
+      updateData.category = categoryDoc._id;
+    }
+
+    const product = await Product.findOneAndUpdate(
+      { _id: productId, vendor: user._id },
+      updateData,
+      { new: true }
+    ).populate('category', 'name slug').lean();
+
+    if (!product) return NextResponse.json({ error: 'Product not found or unauthorized' }, { status: 404 });
+
+    await redis.del('products:list');
+
+    return NextResponse.json({ product });
+  } catch (error) {
+    console.error('Product PUT error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+});
