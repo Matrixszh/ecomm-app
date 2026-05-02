@@ -60,6 +60,9 @@ export default function VendorDashboard() {
     setProducts((prev) => prev.filter((p) => p._id !== id));
   };
 
+  const handleProductClick = (id: string) => {
+    router.push(`/vendor/products/${id}`);
+  }
   
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
@@ -105,7 +108,9 @@ export default function VendorDashboard() {
           products.map((product) => (
         
           
-            <ProductCard key={product._id} product={product} onDelete={handleDelete} />
+            <ProductCard key={product._id} product={product} onDelete={handleDelete}  onClick={()=>{
+              handleProductClick(product._id);
+            }}/>
           ))
 
         //   // TODO(human): Render the products list here.

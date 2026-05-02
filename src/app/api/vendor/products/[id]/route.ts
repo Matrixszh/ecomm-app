@@ -51,3 +51,24 @@ export const DELETE = requireVendor(async (_req: NextRequest, context) => {
 
   return NextResponse.json({ message: 'Product deleted' });
 });
+
+export const GET = requireVendor(async (_req: NextRequest, context) => {
+  try {
+    await connectDB();
+
+    const auth = (context as { auth: { uid: string } }).auth;
+    const { id } = await (context.params as Promise<{ id: string }>);
+    const user = await User.findOne({ firebaseUid: auth.uid }).lean();
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    const product = await Product.findOne({ _id: id, vendor: user._id })
+      .populate('category', 'name slug')
+      .lean();
+    if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+
+    return NextResponse.json({ product });
+  } catch (error) {
+    console.error('Error fetching product:', error);  
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+});

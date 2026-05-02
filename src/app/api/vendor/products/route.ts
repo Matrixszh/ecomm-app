@@ -117,3 +117,4 @@ export const PUT = requireVendor(async (req: NextRequest, { auth }) => {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 });
+
