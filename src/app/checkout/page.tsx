@@ -124,6 +124,7 @@ export default function CheckoutPage() {
           price: item.price,
           quantity: item.quantity,
           variant: item.selectedVariants,
+          vendor: item.vendor,
         })),
         shippingAddress,
         paymentMethod,
