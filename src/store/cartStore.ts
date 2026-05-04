@@ -8,6 +8,7 @@ export interface CartItem {
   quantity: number;
   image?: string;
   selectedVariants?: Record<string, string>;
+  vendor?: string; // vendorId
 }
 
 interface CartState {

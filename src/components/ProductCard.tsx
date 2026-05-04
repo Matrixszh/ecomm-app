@@ -19,6 +19,7 @@ interface ProductCardProps {
     comparePrice?: number;
     images: { url: string; publicId?: string }[];
     avgRating: number;
+    vendor?: string | null;
   };
 }
 
@@ -40,6 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       price: product.price,
       quantity: 1,
       image: product.images?.[0]?.url,
+      vendor: product.vendor ?? undefined,
     });
     addToast('Added to cart', 'success');
   };

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 import { auth } from '@/lib/firebase';
 import { useVendorStore } from '@/store/vendorStore';
+import ProductCard from '@/components/vendor/ProductCard';
 
 interface Product {
   _id: string;
@@ -59,6 +60,11 @@ export default function VendorDashboard() {
     setProducts((prev) => prev.filter((p) => p._id !== id));
   };
 
+  const handleProductClick = (id: string) => {
+    router.push(`/vendor/products/${id}`);
+  }
+  
+
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
 
@@ -98,11 +104,20 @@ export default function VendorDashboard() {
         {products.length === 0 ? (
           <p className="text-gray-400 text-sm">No products yet. Add your first one.</p>
         ) : (
-          // TODO(human): Render the products list here.
-          // Each row should show: product image thumbnail, name, price, stock count, active status badge, and Edit/Delete buttons.
-          // Use <table> or a flex/grid layout — your choice. Delete calls handleDelete(product._id).
-          // Edit should link to /vendor/products/[id]/edit (page doesn't exist yet, just wire the link).
-          <div />
+
+          products.map((product) => (
+        
+          
+            <ProductCard key={product._id} product={product} onDelete={handleDelete}  onClick={()=>{
+              handleProductClick(product._id);
+            }}/>
+          ))
+
+        //   // TODO(human): Render the products list here.
+        //   // Each row should show: product image thumbnail, name, price, stock count, active status badge, and Edit/Delete buttons.
+        //   // Use <table> or a flex/grid layout — your choice. Delete calls handleDelete(product._id).
+        //   // Edit should link to /vendor/products/[id]/edit (page doesn't exist yet, just wire the link).
+        //   <div />
         )}
       </div>
     </div>

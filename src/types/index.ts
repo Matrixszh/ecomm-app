@@ -31,6 +31,7 @@ export type ProductSummary = {
   brand?: string;
   currency?: string;
   availabilityStatus?: 'in_stock' | 'out_of_stock' | 'preorder';
+  vendor?: string | null;
 };
 
 export type ProductDetail = ProductSummary & {

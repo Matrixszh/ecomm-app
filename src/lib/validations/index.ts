@@ -55,7 +55,8 @@ export const orderSchema = z.object({
     image: z.string(),
     price: z.number(),
     quantity: z.number().int().min(1),
-    variant: z.record(z.string(), z.string()).optional()
+    variant: z.record(z.string(), z.string()).optional(),
+    vendor: z.string().optional(),
   })).min(1),
   shippingAddress: z.object({
     name: z.string(),

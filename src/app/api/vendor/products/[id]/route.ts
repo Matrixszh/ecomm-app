@@ -5,6 +5,8 @@ import { Product } from '@/models/Product';
 import { User } from '@/models/User';
 import { productSchema } from '@/lib/validations';
 import { redis } from '@/lib/redis';
+import { getCategoryName } from '@/lib/categories';
+import { Category } from '@/models/Category';
 
 export const PATCH = requireVendor(async (req: NextRequest, context) => {
   await connectDB();
@@ -18,6 +20,21 @@ export const PATCH = requireVendor(async (req: NextRequest, context) => {
   const user = await User.findOne({ firebaseUid: auth.uid }).lean();
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
+  try{
+
+  if (parsed.data.category) {
+    const categorySlug = parsed.data.category;
+    const categoryDoc = await Category.findOneAndUpdate(
+      { slug: categorySlug },
+      { slug: categorySlug, name: getCategoryName(categorySlug), isActive: true },
+      { upsert: true, new: true }
+    );
+    parsed.data.category = categoryDoc._id;
+  }
+  }catch(error){
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
   const product = await Product.findOneAndUpdate(
     { _id: id, vendor: user._id },
     { $set: parsed.data },
@@ -50,4 +67,25 @@ export const DELETE = requireVendor(async (_req: NextRequest, context) => {
   ]);
 
   return NextResponse.json({ message: 'Product deleted' });
+});
+
+export const GET = requireVendor(async (_req: NextRequest, context) => {
+  try {
+    await connectDB();
+
+    const auth = (context as { auth: { uid: string } }).auth;
+    const { id } = await (context.params as Promise<{ id: string }>);
+    const user = await User.findOne({ firebaseUid: auth.uid }).lean();
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    const product = await Product.findOne({ _id: id, vendor: user._id })
+      .populate('category', 'name slug')
+      .lean();
+    if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+
+    return NextResponse.json({ product });
+  } catch (error) {
+    console.error('Error fetching product:', error);  
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 });
