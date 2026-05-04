@@ -6,12 +6,18 @@ import { auth } from '@/lib/firebase';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
 import ProductCard from '@/components/vendor/ProductCard';
 import type { ProductSummary } from '@/types';
+import { useRouter } from 'next/navigation';
 
 export default function VendorProductsPage() {
   const { firebaseUser } = useAuthStore();
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+
+
+
 
   useEffect(() => {
     if (!firebaseUser) return;
@@ -30,6 +36,12 @@ export default function VendorProductsPage() {
     setProducts((prev) => prev.filter((p) => p._id !== id));
   };
 
+
+const handleProductClick = (id: string) => {
+    router.push(`/vendor/products/${id}`);
+  }
+  
+
   if (loading) return <p className="text-sm text-[#7f7663] p-8">Loading...</p>;
   if (error) return <p className="text-sm text-red-500 p-8">{error}</p>;
 
@@ -40,7 +52,7 @@ export default function VendorProductsPage() {
         <p className="text-sm text-[#7f7663]">No products yet.</p>
       ) : (
         products.map((product) => (
-          <ProductCard key={product._id} product={product} onDelete={handleDelete} />
+          <ProductCard key={product._id} product={product} onDelete={handleDelete} onClick={handleProductClick(product._id)}/>
         ))
       )}
     </div>

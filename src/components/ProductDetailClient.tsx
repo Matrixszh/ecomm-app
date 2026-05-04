@@ -59,6 +59,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
       quantity,
       image: images?.[0]?.url,
       selectedVariants,
+      vendor: product.vendor ?? undefined,
     });
     addToast('Added to cart', 'success');
   };
