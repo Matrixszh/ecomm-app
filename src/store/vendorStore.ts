@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { VendorProfileSummary } from '@/types';
+import { fetchWithAuth } from '@/lib/fetchWithAuth';
 
 interface VendorState {
   vendorProfile: VendorProfileSummary | null;
@@ -7,6 +8,7 @@ interface VendorState {
   fetchVendorProfile: (token: string) => Promise<void>;
   updateVendorProfile: (token: string, data: Partial<Pick<VendorProfileSummary, 'storeName' | 'bio' | 'socialLinks'>>) => Promise<void>;
   clearVendorProfile: () => void;
+  fetchVendorEarnings: () => Promise<void>;
 }
 
 export const useVendorStore = create<VendorState>((set) => ({
@@ -52,4 +54,14 @@ export const useVendorStore = create<VendorState>((set) => ({
   },
 
   clearVendorProfile: () => set({ vendorProfile: null }),
+
+  fetchVendorEarnings: async () => {
+    await fetchWithAuth('/api/vendor/earnings')
+      .then((data) => {
+        set((state) => ({
+          vendorProfile: state.vendorProfile ? { ...state.vendorProfile, totalEarnings: data.earnings } : null,
+        }));
+      })
+      .catch((err) => console.error('Failed to fetch vendor earnings:', err));
+  },
 }));

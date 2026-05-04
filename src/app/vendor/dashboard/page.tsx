@@ -29,7 +29,7 @@ async function fetchWithAuth(url: string) {
 export default function VendorDashboard() {
   const { mongoUser, firebaseUser } = useAuthStore();
   const router = useRouter();
-  const { vendorProfile } = useVendorStore();
+  const { vendorProfile,fetchVendorEarnings } = useVendorStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +48,7 @@ export default function VendorDashboard() {
       .then((data) => setProducts(data.products))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+
   }, [firebaseUser]);
 
   const handleDelete = async (id: string) => {
@@ -63,7 +64,14 @@ export default function VendorDashboard() {
   const handleProductClick = (id: string) => {
     router.push(`/vendor/products/${id}`);
   }
-  
+
+  useEffect(() => {
+    if (!firebaseUser) return;
+    fetchVendorEarnings().catch((err) =>
+      console.error('Failed to fetch earnings:', err)
+    );
+  }, [firebaseUser, fetchVendorEarnings]);
+
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
@@ -113,11 +121,7 @@ export default function VendorDashboard() {
             }}/>
           ))
 
-        //   // TODO(human): Render the products list here.
-        //   // Each row should show: product image thumbnail, name, price, stock count, active status badge, and Edit/Delete buttons.
-        //   // Use <table> or a flex/grid layout — your choice. Delete calls handleDelete(product._id).
-        //   // Edit should link to /vendor/products/[id]/edit (page doesn't exist yet, just wire the link).
-        //   <div />
+       
         )}
       </div>
     </div>
