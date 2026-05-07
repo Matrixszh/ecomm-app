@@ -42,7 +42,7 @@ export default function Page() {
       const token = await auth.currentUser?.getIdToken();
       if (token) {
         const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-        document.cookie = `firebaseToken=${token}; path=/vendor/dashboard; max-age=3600; SameSite=Lax${secure}`;
+        document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
       }
 
       // Sync Firebase user to MongoDB first — vendor registration depends on this
@@ -68,6 +68,23 @@ export default function Page() {
         const data = await vendorRes.json();
         throw new Error(data.error || 'Failed to create vendor profile.');
       }
+
+      // Refresh user auth to get updated vendor role
+      const refreshRes = await fetch('/api/auth/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!refreshRes.ok) {
+        throw new Error('Failed to refresh auth. Please refresh the page.');
+      }
+
+      const updatedUserData = await refreshRes.json();
+      // Update store with new vendor role
+      const { setUser } = useAuthStore.getState();
+      setUser(cred.user, updatedUserData.user);
 
       router.push('/vendor/dashboard');
     } catch (err: unknown) {

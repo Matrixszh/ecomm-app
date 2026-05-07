@@ -45,6 +45,22 @@ export default function VendorOrdersPage() {
       .finally(() => setLoading(false));
   }, [firebaseUser]);
 
+
+  const updateStatus = async (orderId: string, status: VendorOrder['orderStatus']) => {
+    await fetchWithAuth('/api/vendor/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, status }),
+    });
+    // Refresh orders after update
+    setLoading(true);
+    fetchWithAuth('/api/vendor/orders')
+      .then((data) => setOrders(data.orders))
+      .catch((err) => console.error('Error fetching orders:', err))
+      .finally(() => setLoading(false));
+  }
+
+
   if (loading) return (
     <div className="min-h-[400px] flex items-center justify-center">
       <p className="text-sm text-[#7f7663] tracking-[0.18em] uppercase">Loading...</p>
@@ -78,6 +94,21 @@ export default function VendorOrdersPage() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
+                    {/* update status */}
+                    <select
+                      value={order.orderStatus}
+                      onChange={(e) => updateStatus(order._id, e.target.value as VendorOrder['orderStatus'])}
+                      className="text-xs tracking-[0.16em] uppercase px-2 py-1 border border-[#d0c5af] bg-white"
+                    >
+                      <option value="placed">Placed</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="returned">Returned</option>
+                    </select>
+
                     <span className={`text-xs tracking-[0.16em] uppercase px-2 py-1 ${ORDER_STATUS_STYLES[order.orderStatus]}`}>
                       {order.orderStatus.replace('_', ' ')}
                     </span>
