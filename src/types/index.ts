@@ -32,6 +32,7 @@ export type ProductSummary = {
   currency?: string;
   availabilityStatus?: 'in_stock' | 'out_of_stock' | 'preorder';
   vendor?: string | null;
+  isActive?: boolean;
 };
 
 export type ProductDetail = ProductSummary & {

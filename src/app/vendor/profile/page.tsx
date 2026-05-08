@@ -29,21 +29,41 @@ const Profile = () => {
     const [avatar, setAvatar] = useState<CloudinaryImage[]>(
       mongoUser?.avatar ? [{ url: mongoUser.avatar, publicId: 'avatar' }] : []
     );
+    const [profileData, setProfileData] = useState<VendorProfileData | null>(null);
+    const [bio, setBio] = useState('');
+    const [saving, setSaving] = useState(false);
 
-    const [profileData, setProfileData] = useState<VendorProfileData | {}>({});
-
-    useEffect(  () => {
-         fetchWithAuth('/api/vendor/profile')
-          .then((data) => setProfileData(data.profile))
+    useEffect(() => {
+        fetchWithAuth('/api/vendor/profile')
+          .then((data) => {
+            setProfileData(data.profile);
+            setBio(data.profile.bio ?? '');
+          })
           .catch((err) => console.error('Error fetching profile:', err));
-      }, []);
+    }, []);
 
+    const handleSave = async () => {
+      setSaving(true);
+      try {
+        const updated = await fetchWithAuth('/api/vendor/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bio }),
+        });
+        setProfileData(updated.profile);
+        setIsEditing(false);
+      } catch (err) {
+        console.error('Error saving profile:', err);
+      } finally {
+        setSaving(false);
+      }
+    };
 
   return (
     <div className="bg-[#ffffff] border border-[#d0c5af] p-6 md:p-8">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Profile</h2>
-        <button 
+        <button
           onClick={() => setIsEditing(!isEditing)}
           className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
         >
@@ -66,11 +86,11 @@ const Profile = () => {
           </div>
           {isEditing && (
             <div className="w-full max-w-[150px]">
-              <ImageUploader 
-                images={avatar} 
-                onChange={setAvatar} 
-                maxImages={1} 
-                folder="avatars" 
+              <ImageUploader
+                images={avatar}
+                onChange={setAvatar}
+                maxImages={1}
+                folder="avatars"
               />
             </div>
           )}
@@ -79,50 +99,49 @@ const Profile = () => {
         <div className="flex-1 space-y-6">
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Full Name</label>
-            <input 
-              type="text" 
-              defaultValue={mongoUser?.name} 
-              disabled={!isEditing}
-              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
+            <input
+              type="text"
+              defaultValue={mongoUser?.name}
+              disabled
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
           </div>
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Email</label>
-            <input 
-              type="email" 
-              defaultValue={mongoUser?.email} 
+            <input
+              type="email"
+              defaultValue={mongoUser?.email}
               disabled
               className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
             <p className="text-xs text-[#7f7663] mt-2">Email cannot be changed.</p>
           </div>
 
-      
-
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store Name</label>
-            <input 
-              type="text" 
-              defaultValue={(profileData as VendorProfileData).storeName} 
-              disabled
+            <input
+              type="text"
+              value={profileData?.storeName ?? ''}
+              readOnly
               className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
           </div>
 
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store Slug</label>
-            <input 
-              type="text" 
-              defaultValue={(profileData as VendorProfileData).storeSlug} 
-              disabled
+            <input
+              type="text"
+              value={profileData?.storeSlug ?? ''}
+              readOnly
               className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
           </div>
 
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Bio</label>
-            <textarea 
-              defaultValue={(profileData as VendorProfileData).bio} 
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
               disabled={!isEditing}
               className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
               rows={4}
@@ -131,53 +150,42 @@ const Profile = () => {
 
           <div>
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Total Earnings</label>
-            <input 
-              type="text" 
-              defaultValue={`$${(profileData as VendorProfileData).totalEarnings?.toFixed(2)}`} 
-              disabled
+            <input
+              type="text"
+              value={profileData ? `$${profileData.totalEarnings?.toFixed(2)}` : ''}
+              readOnly
               className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
           </div>
 
-            <div>
-                <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Pending Payout</label>
-                <input 
-                type="text" 
-                defaultValue={`$${(profileData as VendorProfileData).pendingPayout?.toFixed(2)}`} 
-                disabled
-                className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
-                />
-            </div>
-
-            <div>
-                <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Account Status</label>
-                <input 
-                type="text" 
-                defaultValue={(profileData as VendorProfileData).isActive ? 'Active' : 'Inactive'} 
-                disabled
-                className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
-                />
-            </div>
-
-
+          <div>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Pending Payout</label>
+            <input
+              type="text"
+              value={profileData ? `$${profileData.pendingPayout?.toFixed(2)}` : ''}
+              readOnly
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+            />
+          </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Phone</label>
-            <input 
-              type="tel" 
-              placeholder="+91 " 
-              disabled={!isEditing}
-              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
+            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Account Status</label>
+            <input
+              type="text"
+              value={profileData ? (profileData.isActive ? 'Active' : 'Inactive') : ''}
+              readOnly
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
             />
           </div>
 
           {isEditing && (
             <div className="pt-4 flex justify-end">
-              <button 
-                onClick={() => setIsEditing(false)}
-                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-60"
               >
-                Save Changes
+                {saving ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           )}
