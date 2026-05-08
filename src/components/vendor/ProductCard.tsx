@@ -1,7 +1,14 @@
 import React from 'react'
 import Link from 'next/link';
+import type { ProductSummary } from '@/types';
 
-const ProductCard = ({ product, onDelete, onClick }) => {
+interface ProductCardProps {
+  product: ProductSummary;
+  onDelete: (id: string) => void;
+  onClick: () => void;
+}
+
+const ProductCard = ({ product, onDelete, onClick }: ProductCardProps) => {
   return (
       <div key={product._id} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 mb-3 hover:bg-gray-100 hover:cursor-pointer"  onClick={onClick} >
               <div className="flex items-center gap-4">
@@ -21,11 +28,12 @@ const ProductCard = ({ product, onDelete, onClick }) => {
                 </span>
                 <Link
                   href={`/vendor/products/${product._id}/edit`}
+                  onClick={(e) => e.stopPropagation()}
                   className="text-blue-600 hover:underline text-sm">
                   Edit
                 </Link>
                 <button
-                  onClick={() => onDelete(product._id)}
+                  onClick={(e) => { e.stopPropagation(); onDelete(product._id); }}
                   className="text-red-600 hover:underline text-sm"
                 >
                   Delete

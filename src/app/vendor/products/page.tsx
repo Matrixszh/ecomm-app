@@ -52,7 +52,7 @@ const handleProductClick = (id: string) => {
         <p className="text-sm text-[#7f7663]">No products yet.</p>
       ) : (
         products.map((product) => (
-          <ProductCard key={product._id} product={product} onDelete={handleDelete} onClick={handleProductClick(product._id)}/>
+          <ProductCard key={product._id} product={product} onDelete={handleDelete} onClick={() => handleProductClick(product._id)}/>
         ))
       )}
     </div>
