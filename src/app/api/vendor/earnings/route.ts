@@ -16,8 +16,8 @@ export const GET = requireVendor(async (req: NextRequest, context) => {
     const orders = await Order.find({ 'items.vendor': user._id }).lean();
 
     const earnings = orders.reduce((total, order) => {
-      const vendorItems = order.items.filter((item) => item.vendor.toString() === user._id.toString());
-      const orderEarnings = vendorItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const vendorItems = order.items.filter((item: any) => item.vendor.toString() === user._id.toString());
+      const orderEarnings = vendorItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
       return total + orderEarnings;
     }, 0);
 

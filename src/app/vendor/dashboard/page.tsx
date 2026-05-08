@@ -116,7 +116,7 @@ export default function VendorDashboard() {
           products.map((product) => (
         
           
-            <ProductCard key={product._id} product={product} onDelete={handleDelete}  onClick={()=>{
+            <ProductCard key={product._id} product={{...product, slug: product.name.toLowerCase().replace(/\s+/g, '-'), avgRating: 0} as any} onDelete={handleDelete}  onClick={()=>{
               handleProductClick(product._id);
             }}/>
           ))
