@@ -497,18 +497,15 @@ export default function CheckoutPage() {
                     className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
                   />
                   <button
-                    onClick={handleApplyPromo}
-                    disabled={promoLoading || promoApplied}
+                    onClick={promoApplied ? () => { setPromoApplied(false); setDiscount(0); setPromoCode(''); } : handleApplyPromo}
+                    disabled={promoLoading}
                     className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
                   >
-                    {promoLoading
-                      ? 'Applying...'
-                      : promoApplied
-                      ? <span className="text-xs text-green-600">Applied</span>
-                      : 'Apply'}
+                    {promoLoading ? 'Applying...' : promoApplied ? 'Remove' : 'Apply'}
                   </button>
                 </div>
                 {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
+                {promoApplied && <p className="mt-2 text-xs text-green-700">−₹{discount.toFixed(2)} discount applied</p>}
               </div>
 
               <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
@@ -550,18 +547,15 @@ export default function CheckoutPage() {
                   className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
                 />
                 <button
-                  onClick={handleApplyPromo}
-                  disabled={promoLoading || promoApplied}
+                  onClick={promoApplied ? () => { setPromoApplied(false); setDiscount(0); setPromoCode(''); } : handleApplyPromo}
+                  disabled={promoLoading}
                   className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
                 >
-                  {promoLoading
-                    ? 'Applying...'
-                    : promoApplied
-                    ? <span className="text-xs text-green-600">Applied</span>
-                    : 'Apply'}
+                  {promoLoading ? 'Applying...' : promoApplied ? 'Remove' : 'Apply'}
                 </button>
               </div>
               {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
+              {promoApplied && <p className="mt-2 text-xs text-green-700">−₹{discount.toFixed(2)} discount applied</p>}
             </div>
 
             <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
