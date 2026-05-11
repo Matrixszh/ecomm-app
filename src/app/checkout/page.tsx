@@ -64,6 +64,39 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'razorpay'>('cod');
   const [deliveryOption, setDeliveryOption] = useState<'concierge' | 'standard' | 'express'>('standard');
 
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoApplied, setPromoApplied] = useState(false);
+
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    setPromoError(null);
+    try {
+      const token = await (await import('@/lib/firebase')).auth.currentUser?.getIdToken();
+      const res = await fetch('/api/promo/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ code: promoCode.trim(), orderAmount: totalPrice() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPromoError(data.error || 'Invalid promo code');
+        setDiscount(0);
+        setPromoApplied(false);
+      } else {
+        setDiscount(data.discountAmount);
+        setPromoApplied(true);
+      }
+    } catch {
+      setPromoError('Failed to apply promo code');
+    } finally {
+      setPromoLoading(false);
+    }
+  };
+
   const nameParts = (mongoUser?.name || '').split(' ').filter(Boolean);
   const [firstName, setFirstName] = useState(nameParts[0] || '');
   const [lastName, setLastName] = useState(nameParts.slice(1).join(' ') || '');
@@ -114,7 +147,7 @@ export default function CheckoutPage() {
 
       const subtotal = totalPrice();
       const shippingCost = 0;
-      const totalAmount = subtotal + shippingCost;
+      const totalAmount = subtotal + shippingCost - discount;
 
       const orderPayload = {
         items: items.map((item) => ({
@@ -130,7 +163,7 @@ export default function CheckoutPage() {
         paymentMethod,
         subtotal,
         shippingCost,
-        discount: 0,
+        discount,
         totalAmount,
       };
 
@@ -454,9 +487,33 @@ export default function CheckoutPage() {
                   <span>Free</span>
                 </div>
               </div>
+              <div className="mt-5">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    placeholder="Promo code"
+                    className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
+                  />
+                  <button
+                    onClick={handleApplyPromo}
+                    disabled={promoLoading || promoApplied}
+                    className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                  >
+                    {promoLoading
+                      ? 'Applying...'
+                      : promoApplied
+                      ? <span className="text-xs text-green-600">Applied</span>
+                      : 'Apply'}
+                  </button>
+                </div>
+                {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
+              </div>
+
               <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
                 <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
-                <span className="text-lg font-playfair text-[#1c1c18]">₹{totalPrice().toFixed(2)}</span>
+                <span className="text-lg font-playfair text-[#1c1c18]">₹{(totalPrice() - discount).toFixed(2)}</span>
               </div>
             </div>
           </details>
@@ -483,9 +540,33 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            <div className="mt-5">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  placeholder="Promo code"
+                  className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
+                />
+                <button
+                  onClick={handleApplyPromo}
+                  disabled={promoLoading || promoApplied}
+                  className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                >
+                  {promoLoading
+                    ? 'Applying...'
+                    : promoApplied
+                    ? <span className="text-xs text-green-600">Applied</span>
+                    : 'Apply'}
+                </button>
+              </div>
+              {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
+            </div>
+
             <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
               <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
-              <span className="text-lg font-playfair text-[#1c1c18]">₹{totalPrice().toFixed(2)}</span>
+              <span className="text-lg font-playfair text-[#1c1c18]">₹{(totalPrice() - discount).toFixed(2)}</span>
             </div>
           </div>
         </div>
