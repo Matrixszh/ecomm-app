@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, ShoppingBag, Tags, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Tags, Menu, Settings,X} from 'lucide-react';
 import { useState } from 'react';
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { name: 'Products', href: '/admin/products', icon: Package },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
   { name: 'Categories', href: '/admin/categories', icon: Tags },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export default function AdminSidebar() {
