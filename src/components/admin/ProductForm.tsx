@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import type { CategorySummary, CloudinaryImage, ProductDetail } from '@/types';
+import { fetchWithAuth } from '@/lib/fetchWithAuth';
 
 const ImageUploader = dynamic(() => import('@/components/ImageUploader'), {
   ssr: false,
@@ -25,7 +26,7 @@ export default function ProductForm({ initialData = null }: ProductFormProps) {
     typeof initialData?.category === 'string' ? initialData.category : initialData?.category?._id;
 
   useEffect(() => {
-    fetch('/api/categories').then(res => res.json()).then(setCategories);
+    fetchWithAuth('/api/admin/categories').then(setCategories).catch(console.error);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
