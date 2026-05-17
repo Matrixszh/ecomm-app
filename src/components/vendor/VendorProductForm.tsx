@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@tanstack/react-form';
 import { useAuthStore } from '@/store/authStore';
@@ -8,7 +8,14 @@ import { useUIStore } from '@/store/uiStore';
 import ImageUploader from '@/components/ImageUploader';
 import type { CloudinaryImage, ProductDetail } from '@/types';
 import { z } from 'zod';
-import { PARENT_CATEGORIES, getSubcategories, type CategoryItem } from '@/lib/categories';
+
+type DBCategory = {
+  _id: string;
+  name: string;
+  slug: string;
+  parentCategory?: string;
+  isActive: boolean;
+};
 
 const vendorProductSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -39,13 +46,24 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
   const isEdit = !!initialData;
 
-  const [subcategories, setSubcategories] = useState<CategoryItem[]>(() => {
-    const slug = typeof initialData?.category === 'object'
-      ? initialData?.category?.slug
-      : initialData?.category;
-    return slug ? getSubcategories(slug) : [];
-  });
+  const [allCategories, setAllCategories] = useState<DBCategory[]>([]);
+  const [subcategories, setSubcategories] = useState<DBCategory[]>([]);
   const [images, setImages] = useState<CloudinaryImage[]>(initialData?.images ?? []);
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then((r) => r.json())
+      .then((data: DBCategory[]) => {
+        setAllCategories(data);
+        const initialCatId = typeof initialData?.category === 'object'
+          ? (initialData.category as { _id: string })?._id
+          : initialData?.category;
+        if (initialCatId) {
+          setSubcategories(data.filter((c) => c.parentCategory === initialCatId));
+        }
+      })
+      .catch(console.error);
+  }, [initialData?.category]);
   const [skuError, setSkuError] = useState<string | null>(null);
 
   const form = useForm({
@@ -60,7 +78,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
       stock: (initialData?.stock ?? '') as unknown as number,
       availabilityStatus: (initialData?.availabilityStatus ?? 'in_stock') as 'in_stock' | 'out_of_stock' | 'preorder',
       brand: initialData?.brand ?? '',
-      category: (typeof initialData?.category === 'object' ? initialData?.category?.slug : initialData?.category) ?? '',
+      category: (typeof initialData?.category === 'object' ? (initialData.category as { _id: string })?._id : initialData?.category) ?? '',
       subcategory: '',
       images: [] as { url: string; publicId: string; alt?: string }[],
     },
@@ -113,8 +131,8 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
     },
   });
 
-  const handleCategoryChange = (parentSlug: string) => {
-    setSubcategories(getSubcategories(parentSlug));
+  const handleCategoryChange = (parentId: string) => {
+    setSubcategories(allCategories.filter((c) => c.parentCategory === parentId));
     form.setFieldValue('subcategory', '');
   };
 
@@ -297,8 +315,8 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
                   <label className={labelClass}>Category</label>
                   <select className={inputClass} value={field.state.value} onBlur={field.handleBlur} onChange={(e) => { field.handleChange(e.target.value); handleCategoryChange(e.target.value); }}>
                     <option value="">Select category</option>
-                    {PARENT_CATEGORIES.map((c) => (
-                      <option key={c.slug} value={c.slug}>{c.name}</option>
+                    {allCategories.filter((c) => !c.parentCategory).map((c) => (
+                      <option key={c._id} value={c._id}>{c.name}</option>
                     ))}
                   </select>
                   {field.state.meta.errors[0] && <p className={errorClass}>{String(field.state.meta.errors[0])}</p>}
@@ -314,7 +332,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
                     <select className={inputClass} value={field.state.value ?? ''} onChange={(e) => field.handleChange(e.target.value)}>
                       <option value="">None</option>
                       {subcategories.map((c) => (
-                        <option key={c.slug} value={c.slug}>{c.name}</option>
+                        <option key={c._id} value={c._id}>{c.name}</option>
                       ))}
                     </select>
                   </div>

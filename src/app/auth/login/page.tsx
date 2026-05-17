@@ -9,16 +9,22 @@ import { auth } from '@/lib/firebase';
 
 function LoginContent() {
   const { firebaseUser, mongoUser } = useAuthStore();
+  //get role
+  const role = mongoUser?.role;
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/';
+  const redirect = role === 'vendor'
+    ? '/vendor/dashboard'
+    : role === 'admin'
+    ? '/admin'
+    : searchParams.get('redirect') || '/';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (firebaseUser || mongoUser) {
+    if (firebaseUser && mongoUser) {
       router.push(redirect);
     }
   }, [firebaseUser, mongoUser, router, redirect]);
@@ -38,7 +44,7 @@ function LoginContent() {
         const secure = window.location.protocol === 'https:' ? '; Secure' : '';
         document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
       }
-      router.push(redirect);
+      // redirect handled by useEffect once mongoUser loads with correct role
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to sign in';
       setError(msg);
