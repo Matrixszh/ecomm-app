@@ -7,14 +7,34 @@ import { User } from 'lucide-react';
 import { useState } from 'react';
 import ImageUploader from '@/components/ImageUploader';
 import type { CloudinaryImage } from '@/types';
+import { fetchWithAuth } from '@/lib/fetchWithAuth';
 
 export default function AccountProfile() {
   const hasCloudinary = !!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  const { mongoUser } = useAuthStore();
+  const { mongoUser, firebaseUser, setUser } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [avatar, setAvatar] = useState<CloudinaryImage[]>(
     mongoUser?.avatar ? [{ url: mongoUser.avatar, publicId: 'avatar' }] : []
   );
+  const [name, setName] = useState(mongoUser?.name || '');
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const data = await fetchWithAuth('/api/users/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, avatar: avatar[0]?.url || null }),
+      });
+      setUser(firebaseUser, data.user);
+      setIsEditing(false);
+    } catch {
+      // keep editing open on failure
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="bg-[#ffffff] border border-[#d0c5af] p-6 md:p-8">
@@ -58,7 +78,8 @@ export default function AccountProfile() {
             <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Full Name</label>
             <input 
               type="text" 
-              defaultValue={mongoUser?.name} 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               disabled={!isEditing}
               className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
             />
@@ -86,10 +107,11 @@ export default function AccountProfile() {
           {isEditing && (
             <div className="pt-4 flex justify-end">
               <button 
-                onClick={() => setIsEditing(false)}
-                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-60"
               >
-                Save Changes
+                {saving ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           )}
