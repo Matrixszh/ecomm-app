@@ -1,6 +1,6 @@
 # System Architecture
 
-## Overview
+## Overview.
 This application follows a serverless architecture using Next.js 14 App Router. It leverages Edge Middleware for security, Serverless Functions for API logic, and Client Components for interactive UI.
 
 ## Directory Structure
