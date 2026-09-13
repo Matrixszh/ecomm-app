@@ -35,9 +35,9 @@ export const metadata: Metadata = {
 
 function SiteFooter() {
   return (
-    <footer className="mt-auto bg-[#fbf7f2] px-3 pb-4 pt-6 sm:px-5 lg:px-6">
-      <div className="mx-auto max-w-[1420px] rounded-b-[20px] border border-t-0 border-[#eadfde] bg-[#fffdfa] px-5 py-10 sm:px-8 lg:px-10">
-        <div className="grid gap-10 border-b border-[#ece3dd] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
+    <footer className="mt-auto bg-[#fbf7f2]  ">
+      <div className="mx-auto max-w-full border border-t px-4 border-[#d0c5af] bg-[#fffdfa] py-10 ">
+        <div className="grid gap-10 border-[#ece3dd] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
           <div>
             <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[#39312a]">
               Luxe Heritage

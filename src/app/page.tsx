@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="bg-[#fbf7f2]  pb-0  ">
       <div className="mx-auto w-full overflow-hidden rounded-b-[20px] bg-[#fffdfa] shadow-[0_10px_30px_rgba(104,84,72,0.04)]">
-        <section className=" pb-6 pt-1 lg:pb-10">
+        <section className=" pb-6  lg:pb-10">
           <div className="relative overflow-hidden  bg-[#d8cab7]">
            
             <Image
