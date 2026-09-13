@@ -1,391 +1,239 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Play, Sparkles } from 'lucide-react';
-import { CldImage } from 'next-cloudinary';
-import { ProductGridSkeleton } from '@/components/Skeleton';
-import type { ProductSummary } from '@/types';
+import { ArrowRight, Heart } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 
+const categories = [
+  { name: 'Furniture', pieces: '56 Pieces', href: '/shop?category=furniture', image: '/category.jpeg' },
+  { name: 'Lighting', pieces: '34 Pieces', href: '/shop?category=lighting', image: '/cat2.jpeg' },
+  { name: 'Objects', pieces: '82 Pieces', href: '/shop?category=objects', image: '/herojewel.jpeg' },
+  { name: 'Textiles', pieces: '48 Pieces', href: '/shop?category=textiles', image: '/cat3.jpeg' },
+];
+
+const curatedProducts = [
+  { name: 'Travertine Wave Table', subtitle: 'Sculpted center piece', href: '/shop', image: '/category.jpeg' },
+  { name: 'Aurora Glass Vessel', href: '/shop', image: '/herojewel.jpeg' },
+  { name: 'Obsidia Table Lamp', href: '/shop', image: '/cat2.jpeg' },
+];
+
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<ProductSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { firebaseUser, mongoUser } = useAuthStore();
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const { mongoUser } = useAuthStore();
   const router = useRouter();
 
-
-  useEffect(() => { 
+  useEffect(() => {
     if (mongoUser?.role === 'vendor') {
       router.push('/vendor/dashboard');
-    } else if (firebaseUser || mongoUser) { 
-      router.push('/');
     }
-  }, [firebaseUser, mongoUser, router]);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const { scrollLeft, clientWidth } = carouselRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
-      carouselRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    async function fetchFeatured() {
-      try {
-        const res = await fetch('/api/products?featured=true&limit=6');
-        const data = await res.json();
-        setFeaturedProducts(data.products || []);
-      } catch (error) {
-        console.error('Failed to fetch featured products:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchFeatured();
-  }, []);
+  }, [mongoUser, router]);
 
   if (mongoUser?.role === 'vendor') return null;
 
   return (
-    <div className="flex flex-col">
-      <section className="relative w-full">
-        <div className="relative h-[90vh] w-full overflow-hidden">
-          <Image src="/category.jpeg" alt="Featured piece" fill className="object-cover" sizes="100vw" priority />
-
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(28,28,24,0.18),rgba(28,28,24,0.82))]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c18]/50 via-transparent to-transparent" />
-
-          <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl text-center">
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-[11px] tracking-[0.3em] uppercase text-[#fcf9f3]/80"
-              >
-                The Art of Creation
-              </motion.p>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.08 }}
-                className="mt-6 font-playfair text-[#ffffff] text-6xl md:text-8xl leading-[1.05]"
-              >
-                Timeless <span className="italic">Elegance</span>,<br />
-                Defined by Hand.
-              </motion.h1>
-
-              <motion.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6"
-              >
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center justify-center px-12 py-4 bg-[#ffffff] text-[#1c1c18] text-[11px] tracking-[0.2em] uppercase hover:bg-[#f6f3ed] transition-colors"
-                >
-                  Shop Collection
-                </Link>
-                <Link
-                  href="/#about"
-                  className="inline-flex items-center justify-center px-12 py-4 border border-[#ffffff] text-[#ffffff] text-[11px] tracking-[0.2em] uppercase hover:bg-[#ffffff]/10 transition-colors"
-                >
-                  Discover Craft
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="w-full py-16 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-          {/* Jewelry Category */}
-          <Link href="/shop?category=jewelry" className="group relative h-[50vh] sm:h-[60vh] overflow-hidden">
-            <div className="absolute inset-0">
-              <Image src="/herojewel.jpeg" alt="Jewelry" fill className="object-cover group-hover:grayscale-0 transition-all duration-700" sizes="(max-width: 768px) 100vw, 33vw" priority />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c18]/80 to-transparent" />
-            <div className="absolute bottom-8 left-8">
-              <h3 className="text-2xl sm:text-3xl font-playfair text-white mb-1">Jewelry</h3>
-              <p className="text-xs tracking-[0.24em] uppercase text-[#d4af37] group-hover:text-[#fcf9f3] transition-colors">EXPLORE CREATIONS</p>
-            </div>
-          </Link>
-          {/* Watches Category */}
-          <Link href="/shop?category=watches" className="group relative h-[50vh] sm:h-[60vh] overflow-hidden">
-            <div className="absolute inset-0">
-              <Image src="/cat2.jpeg" alt="Watches" fill className="object-cover  group-hover:grayscale-0 transition-all duration-700" sizes="(max-width: 768px) 100vw, 33vw" priority />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c18]/80 to-transparent" />
-            <div className="absolute bottom-8 left-8">
-              <h3 className="text-2xl sm:text-3xl font-playfair text-white mb-1">Watches</h3>
-              <p className="text-xs tracking-[0.24em] uppercase text-[#d4af37] group-hover:text-[#fcf9f3] transition-colors">THE COLLECTION</p>
-            </div>
-          </Link>
-          {/* Accessories Category */}
-          <Link href="/shop?category=accessories" className="group relative h-[50vh] sm:h-[60vh] overflow-hidden">
-            <div className="absolute inset-0">
-              <Image src="/cat3.jpeg" alt="Accessories" fill className="object-cover  group-hover:grayscale-0 transition-all duration-700" sizes="(max-width: 768px) 100vw, 33vw" priority />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c18]/80 to-transparent" />
-            <div className="absolute bottom-8 left-8">
-              <h3 className="text-2xl sm:text-3xl font-playfair text-white mb-1">Accessories</h3>
-              <p className="text-xs tracking-[0.24em] uppercase text-[#d4af37] group-hover:text-[#fcf9f3] transition-colors">SHOP ALL</p>
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      <section className="bg-[#F0EEE8]  mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-        <div className="flex items-end justify-between gap-8 mb-12">
-          <div>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[#A48943] mb-3">Selected Works</p>
-            <h2 className="text-3xl md:text-4xl font-playfair text-[#1c1c18]">Featured Curations</h2>
-          </div>
-          <div className="flex items-center gap-3 md:hidden">
-            <button onClick={() => scroll('left')} className="p-3 border border-[#d0c5af] hover:bg-[#f6f3ed] transition-colors text-[#1c1c18]">
-              <ChevronLeft className="w-5 h-5" strokeWidth={1} />
-            </button>
-            <button onClick={() => scroll('right')} className="p-3 border border-[#d0c5af] hover:bg-[#f6f3ed] transition-colors text-[#1c1c18]">
-              <ChevronRight className="w-5 h-5" strokeWidth={1} />
-            </button>
-          </div>
-        </div>
-
-        <div className="relative">
-          {loading ? (
-            <ProductGridSkeleton count={4} />
-          ) : (
-            <div 
-              ref={carouselRef}
-              className="flex md:grid md:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-6 md:gap-8 pb-8 md:pb-0 [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {featuredProducts.map((product, i) => {
-                const primaryImage = product.images?.[0];
-                const primaryImageUrl = primaryImage?.url;
-                const primaryPublicId = primaryImage?.publicId;
-                const normalizedImageUrl =
-                  primaryImageUrl && !primaryImageUrl.startsWith('http') && !primaryImageUrl.startsWith('/')
-                    ? `/${primaryImageUrl}`
-                    : primaryImageUrl;
-                
-                const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-                const hasCloudinary = !!cloudName;
-                const canUseCldImage =
-                  typeof primaryPublicId === 'string' &&
-                  (typeof primaryImageUrl !== 'string' ||
-                    primaryImageUrl.length === 0 ||
-                    (hasCloudinary && primaryImageUrl.includes(`res.cloudinary.com/${cloudName}/`)));
-
-                return (
-                  <motion.div
-                    key={product._id}
-                    className="min-w-[280px] md:min-w-0 snap-start md:snap-none flex-shrink-0 md:flex-shrink"
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06 }}
+    <div className="bg-[#fbf7f2]  pb-0  ">
+      <div className="mx-auto w-full overflow-hidden rounded-b-[20px] bg-[#fffdfa] shadow-[0_10px_30px_rgba(104,84,72,0.04)]">
+        <section className=" pb-6 pt-1 lg:pb-10">
+          <div className="relative overflow-hidden  bg-[#d8cab7]">
+           
+            <Image
+              src="/category.jpeg"
+              alt="Luxe Heritage living room"
+              width={1600}
+              height={920}
+              priority
+              className="h-[540px] w-full object-cover object-center sm:h-[640px] lg:h-[760px]"
+            />
+            <div className="absolute inset-0 px-6 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-16">
+              <div className="max-w-[360px] pt-16 sm:pt-20 lg:pt-24">
+                <p className="text-[10px] uppercase tracking-[0.34em] text-[#533a53]">Est. 1924 · Heritage Home</p>
+                <h1 className="mt-5 font-display text-[42px] leading-[0.98] text-[#ffffff] sm:text-[56px] lg:text-[64px]">
+                  Luminous Living.
+                  <br />
+                  <span className="italic">Artisan Form.</span>
+                </h1>
+                <p className="mt-5 max-w-[290px] text-[13px] leading-6 text-[#533a53] sm:text-sm">
+                  Discover the sculptural Series — a study in proportion, hand-finished in walnut, alabaster and oak.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Link
+                    href="/shop"
+                    className="inline-flex items-center justify-center rounded-full bg-[#ffffff] px-6 py-3 text-[11px] font-medium text-[#000000]"
                   >
-                    <Link href={`/shop/${product.slug}`} className="block group">
-                      <div className="relative aspect-square overflow-hidden bg-[#f9f8f6] mb-6">
-                        {normalizedImageUrl ? (
-                          canUseCldImage ? (
-                            <CldImage
-                              src={primaryPublicId}
-                              alt={product.name}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                              sizes="(max-width: 768px) 100vw, 25vw"
-                            />
-                          ) : (
-                            <Image
-                              src={normalizedImageUrl}
-                              alt={product.name}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                              sizes="(max-width: 768px) 100vw, 25vw"
-                            />
-                          )
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[#7f7663] text-sm tracking-[0.18em] uppercase">
-                            No Image
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center px-2">
-                        <h3 className="text-[#1c1c18] font-playfair text-lg md:text-xl mb-2 line-clamp-1">
-                          {product.name}
-                        </h3>
-                        <p className="text-sm text-[#A48943] tracking-wider">
-                          ₹{product.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
+                    Shop the Collection
+                  </Link>
+                  <Link
+                    href="/#design-philosophy"
+                    className="inline-flex items-center gap-2 text-[11px] tracking-[0.08em] text-[#ffffff]"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#ffffff] text-[#ffffff]">→</span>
+                    Our Atelier
+                  </Link>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section id="about" className="w-full bg-[#fcf9f3] border-t border-[#d0c5af] scroll-mt-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7 relative">
-              <div className="absolute -left-8 -top-8 h-28 w-28 bg-[#e7dfd2]" aria-hidden="true" />
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#f6f3ed] border border-[#d0c5af]">
+        <section className="px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
+          <div className="flex items-end justify-between gap-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#a6978a]">The Curation</p>
+              <h2 className="mt-4 font-display text-[34px] text-[#2f2822] sm:text-[40px]">Curated Categories</h2>
+            </div>
+            <Link href="/shop" className="hidden text-[11px] text-[#6d6259] sm:block">
+              View All Collections
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => (
+              <Link key={category.name} href={category.href} className="group block">
+                <div className="relative aspect-[0.84] overflow-hidden bg-[#efe5d9]">
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 1024px) 50vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,245,0.04)_0%,rgba(92,70,51,0.14)_100%)]" />
+                </div>
+                <div className="pt-4 text-center">
+                  <h3 className="font-display text-[22px] text-[#39312a]">{category.name}</h3>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#aa9e93]">{category.pieces}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section id="design-philosophy" className="border-t border-[#f0e7df] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+          <div className="grid items-center gap-8 lg:grid-cols-[1.45fr_0.9fr]">
+            <div className="grid gap-4 sm:grid-cols-[1.3fr_0.55fr]">
+              <div className="relative min-h-[260px] overflow-hidden bg-[#2f241d] sm:min-h-[320px]">
                 <Image
-                  src="/category.jpeg"
-                  alt="Atelier craft"
+                  src="/cat3.jpeg"
+                  alt="Architectural interior"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,246,236,0.18),rgba(22,14,10,0.45))]" />
               </div>
-
-              <div className="absolute bottom-6 right-6">
-                <Link
-                  href="/#about"
-                  className="inline-flex items-center gap-4 px-6 py-4 bg-[#ffffff] text-[#1c1c18] text-[10px] tracking-[0.22em] uppercase border border-[#d0c5af] hover:bg-[#f6f3ed] transition-colors shadow-sm"
-                >
-                  <span className="h-9 w-9 border border-[#d0c5af] flex items-center justify-center">
-                    <Play className="w-4 h-4" strokeWidth={1.5} />
-                  </span>
-                  <span>THE LEGACY FILM</span>
-                </Link>
+              <div className="relative flex min-h-[220px] items-end justify-center bg-[#f6eedf] p-5 sm:min-h-[320px]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle,#f7efd9_1px,transparent_1px)] [background-size:7px_7px] opacity-45" />
+                <div className="relative h-[155px] w-[120px] border-[10px] border-[#fffdf9] bg-[#f0e2c7] shadow-[0_10px_25px_rgba(91,68,42,0.12)] sm:h-[210px] sm:w-[150px]" />
               </div>
             </div>
 
-            <div className="lg:col-span-5">
-              <p className="text-[10px] tracking-[0.28em] uppercase text-[#A48943]">LEGACY SINCE 1894</p>
-              <h2 className="mt-6 font-playfair text-5xl md:text-6xl leading-[0.95] text-[#1c1c18]">
-                Mastery in <span className="italic">Every Facet.</span>
+            <div className="max-w-[360px] justify-self-end">
+              <h2 className="font-display text-[34px] leading-none text-[#39312a] sm:text-[40px]">
+                The Design
+                <br />
+                <span className="italic text-[#55463d]">Philosophy</span>
               </h2>
-              <p className="mt-8 text-sm leading-7 text-[#4d4635] max-w-md">
-                In the heart of the Atelier, time slows down. Every creation is a dialogue between the artisan and the rare
-                materials bestowed by nature. We don&apos;t just set stones; we capture light.
+              <p className="mt-5 text-sm leading-6 text-[#7a6f66]">
+                Every object at LUXE is curated for its soul. We partner with heritage workshops across the globe to bring you pieces that balance timeless architectural principles with modern comfort.
               </p>
-              <p className="mt-6 text-sm leading-7 text-[#4d4635] max-w-md">
-                Our commitment to excellence transcends generations. From the first sketch on vellum to the final
-                hand-polish, every step is a testament to the pursuit of perfection.
-              </p>
-              <Link
-                href="/#about"
-                className="mt-10 inline-flex text-[11px] tracking-[0.24em] uppercase text-[#1c1c18] border-b border-[#1c1c18] pb-2 hover:border-[#d4af37] hover:text-[#1c1c18] transition-colors"
-              >
-                DISCOVER OUR HISTORY
+              <ul className="mt-6 space-y-4 text-[12px] text-[#74695f]">
+                <li className="flex items-center gap-3">
+                  <span className="text-[#b19067]">λ</span>
+                  Architectural integrity
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#b19067]">□</span>
+                  Ethically sourced raw materials
+                </li>
+              </ul>
+              <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-[#7f6d61]">
+                Explore Our Atelier <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* become a seller */}
-        <section className="w-full bg-[#fcf9f3] border-t border-[#d0c5af] scroll-mt-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          <h2 className="mt-6 font-playfair text-5xl md:text-6xl leading-[0.95] text-[#1c1c18] text-center">
-                  Become a <span className="italic">Seller.</span>
-                </h2>
-                <Link
-                  href="/vendor/register"
-                  className="mt-10 flex w-fit text-[11px] tracking-[0.24em] uppercase text-[#1c1c18] border-b border-[#1c1c18] pb-2 hover:border-[#d4af37] hover:text-[#1c1c18] transition-colors mx-auto"
-                >
-                    Join Us
-                </Link>
+        <section className="border-t border-[#f0e7df] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+          <div className="text-center">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#a6978a]">Signature Series</p>
+            <h2 className="mt-4 font-display text-[34px] text-[#2f2822] sm:text-[40px]">The Curated Home</h2>
+          </div>
 
+          <div className="mt-10 grid gap-6 lg:grid-cols-[1.45fr_0.65fr] lg:items-start">
+            <Link href={curatedProducts[0].href} className="group block overflow-hidden bg-[#f0e7dc]">
+              <div className="relative aspect-[1.08] overflow-hidden lg:aspect-[1.1]">
+                <Image
+                  src={curatedProducts[0].image}
+                  alt={curatedProducts[0].name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width: 1024px) 100vw, 65vw"
+                />
               </div>
-       
-        
-      </section>
+              <div className="px-3 py-4 sm:px-5">
+                <h3 className="font-display text-[26px] text-[#312922]">{curatedProducts[0].name}</h3>
+                <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-[#998d82]">{curatedProducts[0].subtitle}</p>
+              </div>
+            </Link>
 
-
-      <section className="w-full bg-[#0b0a0d]">
-        <div className="grid grid-cols-3">
-          <div className="relative h-[220px] sm:h-[320px] lg:h-[420px] overflow-hidden">
-            <Image
-              src="/herojewel.jpeg"
-              alt="Editorial portrait"
-              fill
-              className="object-cover grayscale"
-              sizes="(max-width: 1024px) 33vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent" />
-          </div>
-          <div className="relative h-[220px] sm:h-[320px] lg:h-[420px] overflow-hidden border-x border-white/10">
-            <Image
-              src="/cat2.jpeg"
-              alt="Craft detail"
-              fill
-              className="object-cover grayscale"
-              sizes="(max-width: 1024px) 33vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/25" />
-          </div>
-          <div className="relative h-[220px] sm:h-[320px] lg:h-[420px] overflow-hidden">
-            <Image
-              src="/cat3.jpeg"
-              alt="Atelier space"
-              fill
-              className="object-cover grayscale"
-              sizes="(max-width: 1024px) 33vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-black/35 via-transparent to-transparent" />
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[#d0c5af] bg-[#F0EEE8]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-28 w-full text-center">
-          <div className="flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-[#d4af37]" strokeWidth={1.5} />
-          </div>
-          <h2 className="mt-10 text-4xl md:text-5xl font-playfair text-[#1c1c18]">Enter The Atelier</h2>
-          <p className="mt-6 text-sm md:text-base text-[#4d4635] max-w-2xl mx-auto">
-            Be the first to explore new collections, private events, and the secrets of the workshop.
-          </p>
-
-          <form
-            className="mt-16 max-w-3xl mx-auto flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6"
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert('Subscribed!');
-            }}
-          >
-            <div className="flex-1">
-              <label className="block text-[10px] tracking-[0.22em] uppercase text-[#7f7663] text-left" htmlFor="atelier-email">
-                Your email address
-              </label>
-              <input
-                id="atelier-email"
-                type="email"
-                required
-                className="mt-4 w-full bg-transparent border-b border-[#d0c5af] py-4 px-0 text-sm text-[#1c1c18] placeholder:text-[#7f7663] focus:outline-none focus:border-[#1c1c18]"
-                placeholder=""
-              />
+            <div className="space-y-5">
+              {curatedProducts.slice(1).map((product) => (
+                <Link key={product.name} href={product.href} className="group block bg-[#fcf9f5] p-4">
+                  <div className="relative aspect-[1.18] overflow-hidden bg-[#f1e7dc]">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      sizes="(max-width: 1024px) 100vw, 30vw"
+                    />
+                    <button
+                      type="button"
+                      aria-label={`Save ${product.name}`}
+                      className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-[#fffdf9]/90 text-[#9f9183]"
+                    >
+                      <Heart className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <div className="pt-3">
+                    <h3 className="font-display text-[18px] text-[#3b332d]">{product.name}</h3>
+                  </div>
+                </Link>
+              ))}
             </div>
-            <button
-              type="submit"
-              className="sm:self-end bg-[#1c1c18] text-[#fcf9f3] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#000000] transition-colors"
-            >
-              Subscribe
-            </button>
-          </form>
+          </div>
+        </section>
 
-          <p className="mt-8 text-[10px] tracking-[0.22em] uppercase text-[#7f7663]">
-            By subscribing, you accept our privacy policy.
-          </p>
-        </div>
-      </section>
+        <section className="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+          <div className="bg-[#f8e7eb] px-6 py-14 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+            <p className="text-[10px] uppercase tracking-[0.34em] text-[#b59ea3]">Collector&apos;s Circle</p>
+            <h2 className="mx-auto mt-5 max-w-[640px] font-display text-[34px] leading-[1.08] text-[#47393a] sm:text-[48px]">
+              Receive our seasonal lookbook and early access to limited editions.
+            </h2>
+
+            <form
+              className="mx-auto mt-10 flex max-w-[470px] flex-col gap-3 sm:flex-row"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <input
+                type="email"
+                placeholder="Email Address"
+                className="h-12 flex-1 rounded-full border border-[#f1dadd] bg-[#fffdfb] px-5 text-sm text-[#5d4d4f] placeholder:text-[#b9a7aa] focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="h-12 rounded-full bg-[#1f1b19] px-7 text-[11px] uppercase tracking-[0.18em] text-[#fff9f4]"
+              >
+                Join the Circle
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

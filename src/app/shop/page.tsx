@@ -5,21 +5,23 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { ProductGridSkeleton } from '@/components/Skeleton';
 import { motion } from 'framer-motion';
-import { Filter, SlidersHorizontal, X } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import type { CategorySummary, ProductSummary } from '@/types';
 
 function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategorySummary[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [total, setTotal] = useState(0);
+  const [material, setMaterial] = useState('smoked-oak');
 
   const currentCategory = searchParams.get('category') || '';
   const currentSort = searchParams.get('sort') || 'newest';
+  const currentPage = Number(searchParams.get('page') || '1');
+  const totalPages = Math.max(1, Math.ceil(total / 6));
 
   useEffect(() => {
     async function fetchCategories() {
@@ -39,6 +41,7 @@ function ShopContent() {
       setLoading(true);
       try {
         const params = new URLSearchParams(searchParams.toString());
+        params.set('limit', '6');
         const res = await fetch(`/api/products?${params.toString()}`);
         const data = await res.json();
         setProducts(data.products || []);
@@ -54,138 +57,207 @@ function ShopContent() {
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    params.delete('page'); // Reset to page 1 on filter change
+    if (value) params.set(key, value);
+    else params.delete(key);
+    params.delete('page');
+    router.push(`/shop?${params.toString()}`);
+    setShowFilters(false);
+  };
+
+  const setPage = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (page <= 1) params.delete('page');
+    else params.set('page', String(page));
     router.push(`/shop?${params.toString()}`);
   };
 
+  const categoryName = currentCategory
+    ? categories.find((category) => category.slug === currentCategory)?.name || currentCategory
+    : 'Heritage Home Collections';
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16 w-full">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-        <div>
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Collections</p>
-          <h1 className="mt-4 text-3xl md:text-4xl font-playfair text-[#1c1c18]">Shop</h1>
-          <p className="mt-3 text-sm text-[#4d4635]">Showing {products.length} of {total} pieces</p>
-        </div>
+    <div className="bg-[#fbf8f5] px-3 pb-0 sm:px-5 lg:px-6">
+      <div className="mx-auto min-h-[calc(100vh-100px)] max-w-[1420px] bg-[#fffdfb] px-6 pb-24 pt-10 sm:px-10 lg:px-14 lg:pt-12">
+        <header className="max-w-[760px]">
+          <h1 className="font-display text-[43px] leading-[1.02] text-[#29231f] sm:text-[50px] lg:text-[56px]">
+            {categoryName}
+          </h1>
+          <p className="mt-4 max-w-[650px] text-[15px] leading-6 text-[#948985] sm:text-base">
+            Curating a sanctuary of architectural silhouettes and artisanal textures for the contemporary dwelling.
+          </p>
+        </header>
 
-        <div className="flex items-center gap-4">
+        <div className="mt-12 flex items-center justify-between border-b border-[#eee7e2] pb-4 md:hidden">
           <button
-            className="md:hidden flex items-center gap-2 text-xs tracking-[0.24em] uppercase text-[#4d4635] hover:text-[#1c1c18]"
+            type="button"
             onClick={() => setShowFilters(true)}
+            className="text-[11px] uppercase tracking-[0.22em] text-[#806d52]"
           >
-            <Filter className="w-4 h-4" /> Filters
+            Filters
           </button>
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs tracking-[0.24em] uppercase text-[#7f7663]">Sort</span>
+          <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[#806d52]">
+            Sort by
             <select
               value={currentSort}
-              onChange={(e) => updateFilter('sort', e.target.value)}
-              className="bg-transparent border-b border-[#d0c5af] text-sm py-2 px-1 focus:outline-none focus:border-[#d4af37]"
+              onChange={(event) => updateFilter('sort', event.target.value)}
+              className="bg-transparent text-[11px] uppercase tracking-[0.12em] text-[#7d6c55] focus:outline-none"
             >
               <option value="newest">Newest</option>
               <option value="price_asc">Price (Low)</option>
               <option value="price_desc">Price (High)</option>
               <option value="rating">Top Rated</option>
             </select>
-          </div>
+          </label>
         </div>
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar Filters */}
-        <div className={`
-          fixed inset-0 z-50 bg-[#fcf9f3] p-6 md:static md:bg-transparent md:p-0 md:z-auto md:w-64 flex-shrink-0 transition-transform duration-300
-          overflow-y-auto md:overflow-visible
-          ${showFilters ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}>
-          <div className="flex justify-between items-center md:hidden mb-6">
-            <h2 className="text-base tracking-[0.24em] uppercase text-[#1c1c18]">Filters</h2>
-            <button onClick={() => setShowFilters(false)} className="text-[#4d4635]">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
+        <div className="mt-10 grid gap-8 md:grid-cols-[210px_minmax(0,1fr)] lg:gap-32">
+          <aside
+            className={`${
+              showFilters ? 'fixed inset-0 z-[60] translate-x-0 bg-[#fffdfb] p-8' : 'hidden'
+            } left-0 top-0 md:static md:block md:bg-transparent md:p-0`}
+          >
+            <div className="mb-8 flex items-center justify-between md:hidden">
+              <span className="text-[11px] uppercase tracking-[0.24em] text-[#806d52]">Filters</span>
+              <button type="button" onClick={() => setShowFilters(false)} aria-label="Close filters">
+                <X className="h-5 w-5 text-[#6c5e55]" />
+              </button>
+            </div>
 
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xs tracking-[0.24em] uppercase text-[#4d4635] mb-6 flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-[#d4af37]" /> Categories
-              </h3>
-              <div className="space-y-3">
-                <label className="flex items-center justify-between gap-3 cursor-pointer">
-                  <input 
-                    type="radio" 
-                    name="category" 
-                    checked={currentCategory === ''}
-                    onChange={() => updateFilter('category', '')}
-                    className="accent-[#d4af37]"
-                  />
-                  <span className={`text-sm ${currentCategory === '' ? 'text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]' : 'text-[#4d4635]'}`}>
-                    All Pieces
-                  </span>
-                </label>
-                {categories.map((cat) => (
-                  <label key={cat._id} className="flex items-center justify-between gap-3 cursor-pointer">
-                    <input 
-                      type="radio" 
-                      name="category" 
-                      checked={currentCategory === cat.slug}
-                      onChange={() => updateFilter('category', cat.slug)}
-                      className="accent-[#d4af37]"
-                    />
-                    <span className={`text-sm ${currentCategory === cat.slug ? 'text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]' : 'text-[#4d4635]'}`}>
-                      {cat.name}
-                    </span>
-                  </label>
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Material</h2>
+                <div className="mt-5 space-y-4">
+                  {['raw-marble', 'smoked-oak', 'hand-thrown-ceramic', 'brushed-brass'].map((value) => {
+                    const label = value
+                      .split('-')
+                      .map((part) => part[0].toUpperCase() + part.slice(1))
+                      .join(' ');
+                    return (
+                      <label key={value} className="flex cursor-pointer items-center gap-3 text-[14px] text-[#6d625d]">
+                        <input
+                          type="checkbox"
+                          checked={material === value}
+                          onChange={() => setMaterial(material === value ? '' : value)}
+                          className="peer sr-only"
+                        />
+                        <span className="flex h-[14px] w-[14px] items-center justify-center rounded-[2px] border border-[#d9d0cb] text-[10px] text-white peer-checked:border-[#80662e] peer-checked:bg-[#80662e]">
+                          {material === value ? '✓' : ''}
+                        </span>
+                        <span className={material === value ? 'font-medium text-[#876c32]' : ''}>{label}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Category</h2>
+                <div className="mt-5 space-y-4">
+                  <button
+                    type="button"
+                    onClick={() => updateFilter('category', '')}
+                    className={`block text-left text-[14px] ${!currentCategory ? 'font-medium text-[#876c32]' : 'text-[#6d625d]'}`}
+                  >
+                    All Collections
+                  </button>
+                  {categories.map((category) => (
+                    <button
+                      key={category._id}
+                      type="button"
+                      onClick={() => updateFilter('category', category.slug)}
+                      className={`block text-left text-[14px] ${currentCategory === category.slug ? 'font-medium text-[#876c32]' : 'text-[#6d625d]'}`}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Price Range</h2>
+                <div className="mt-5 px-1">
+                  <div className="h-[3px] rounded-full bg-[#e5dfdc]" />
+                  <div className="mt-3 flex justify-between text-[13px] text-[#6d625d]">
+                    <span>$200</span>
+                    <span>$15,000+</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMaterial('');
+                  router.push('/shop');
+                  setShowFilters(false);
+                }}
+                className="w-full bg-[#211e1d] py-3 text-[11px] uppercase tracking-[0.2em] text-[#fffaf7] transition-colors hover:bg-[#423a35]"
+              >
+                Apply Filters
+              </button>
+            </div>
+          </aside>
+
+          <section className="min-w-0">
+            <div className="mb-8 hidden items-center justify-between border-b border-[#eee7e2] pb-4 md:flex">
+              <p className="text-[14px] text-[#948985]">Showing {products.length ? (currentPage - 1) * 6 + 1 : 0}–{Math.min(currentPage * 6, total)} of {total || 0} products</p>
+              <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#806d52]">
+                Sort by:
+                <select
+                  value={currentSort}
+                  onChange={(event) => updateFilter('sort', event.target.value)}
+                  className="appearance-none bg-transparent pr-5 text-[11px] uppercase tracking-[0.18em] text-[#806d52] focus:outline-none"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="price_asc">Price (Low)</option>
+                  <option value="price_desc">Price (High)</option>
+                  <option value="rating">Top Rated</option>
+                </select>
+                <ChevronDown className="-ml-5 h-3 w-3" />
+              </label>
+            </div>
+
+            {loading ? (
+              <ProductGridSkeleton count={6} />
+            ) : products.length > 0 ? (
+              <div className="grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                {products.map((product, index) => (
+                  <motion.div
+                    key={product._id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            ) : (
+              <div className="py-24 text-center">
+                <h3 className="font-display text-2xl text-[#2f2822]">No results</h3>
+                <p className="mt-3 text-sm text-[#81756e]">Adjust filters to refine your selection.</p>
+                <button type="button" onClick={() => router.push('/shop')} className="mt-7 text-[11px] uppercase tracking-[0.2em] text-[#876c32] underline underline-offset-8">
+                  Clear all filters
+                </button>
+              </div>
+            )}
 
-            {/* Additional filters can be added here (Price, Rating, etc.) */}
-            <div className="md:hidden pt-6 border-t border-[#d0c5af]">
-              <button 
-                onClick={() => setShowFilters(false)}
-                className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
-              >
-                Apply
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          {loading ? (
-            <ProductGridSkeleton count={9} />
-          ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product, i) => (
-                <motion.div
-                  key={product._id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 bg-[#ffffff] border border-[#d0c5af]">
-              <h3 className="text-xl font-playfair text-[#1c1c18] mb-3">No results</h3>
-              <p className="text-sm text-[#4d4635]">Adjust filters to refine your selection.</p>
-              <button 
-                onClick={() => router.push('/shop')}
-                className="mt-8 text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
-              >
-                Clear all filters
-              </button>
-            </div>
-          )}
+            {totalPages > 1 && (
+              <nav className="mt-20 flex items-center justify-center gap-6 text-[11px] uppercase tracking-[0.18em] text-[#978b84]" aria-label="Pagination">
+                <button type="button" onClick={() => setPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} className="disabled:opacity-30" aria-label="Previous page">
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                {Array.from({ length: Math.min(totalPages, 3) }, (_, index) => index + 1).map((page) => (
+                  <button key={page} type="button" onClick={() => setPage(page)} className={page === currentPage ? 'border-b-2 border-[#a0803e] pb-2 font-semibold text-[#876c32]' : ''}>
+                    {String(page).padStart(2, '0')}
+                  </button>
+                ))}
+                <button type="button" onClick={() => setPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} className="disabled:opacity-30" aria-label="Next page">
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </nav>
+            )}
+          </section>
         </div>
       </div>
     </div>
@@ -194,7 +266,7 @@ function ShopContent() {
 
 export default function Shop() {
   return (
-    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-12"><ProductGridSkeleton count={12} /></div>}>
+    <Suspense fallback={<div className="bg-[#fbf8f5] px-6 py-12"><ProductGridSkeleton count={6} /></div>}>
       <ShopContent />
     </Suspense>
   );

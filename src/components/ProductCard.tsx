@@ -8,7 +8,7 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image';
-import StarRating from './StarRating';
+
 
 interface ProductCardProps {
   product: {
@@ -19,6 +19,7 @@ interface ProductCardProps {
     comparePrice?: number;
     images: { url: string; publicId?: string }[];
     avgRating: number;
+    brand?: string;
     vendor?: string | null;
   };
 }
@@ -69,20 +70,20 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/shop/${product.slug}`} className="block group">
       <motion.div
-        className="bg-[#ffffff] overflow-hidden border border-[#d0c5af] transition-[transform,border-color] duration-500 h-full flex flex-col relative"
+        className="relative flex h-full flex-col overflow-hidden bg-transparent"
         whileHover={{ y: -3 }}
       >
         <button
           onClick={handleToggleWishlist}
-          className="absolute top-3 right-3 z-10 p-2 bg-[#fcf9f3]/85 backdrop-blur-[20px] text-[#4d4635] hover:text-[#1c1c18] border border-[#d0c5af] transition-colors"
+          className="absolute right-3 top-3 z-10 rounded-full bg-[#fffdfb]/85 p-2 text-[#8e8179] backdrop-blur-[20px] transition-colors hover:text-[#2f2822]"
         >
           <Heart
-            className={`w-5 h-5 ${wishlisted ? 'fill-[#d4af37] text-[#d4af37]' : ''}`}
+            className={`h-[17px] w-[17px] ${wishlisted ? 'fill-[#b58d48] text-[#b58d48]' : ''}`}
             suppressHydrationWarning={true}
           />
         </button>
 
-        <div className="relative aspect-square overflow-hidden bg-[#f6f3ed]">
+        <div className="relative aspect-[0.9] overflow-hidden rounded-[15px] bg-[#f1ece8]">
           {normalizedImageUrl ? (
             canUseCldImage ? (
               <CldImage
@@ -107,32 +108,29 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
           
-          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10 bg-gradient-to-t from-[#fcf9f3] via-[#fcf9f3]/80 to-transparent">
+          <div className="absolute inset-x-0 bottom-0 z-10 translate-y-2 bg-gradient-to-t from-[#fffdfb] via-[#fffdfb]/80 to-transparent p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <button
               onClick={handleAddToCart}
-              className="w-full py-3 bg-[#d4af37] text-[#1c1c18] text-xs tracking-[0.24em] uppercase font-medium flex items-center justify-center gap-2 hover:bg-[#c29a30] transition-colors"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#211e1d] py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#fffaf7] hover:bg-[#423a35]"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="h-4 w-4" />
               Add to Bag
             </button>
           </div>
         </div>
 
-        <div className="p-4 flex flex-col flex-1">
-          <h3 className="text-[#1c1c18] font-playfair text-lg leading-tight line-clamp-2">
+        <div className="flex flex-1 flex-col px-0 pt-4">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8c7449]">
+            {product.brand || product.vendor || 'Luxe Heritage'}
+          </p>
+          <h3 className="mt-2 line-clamp-2 font-display text-[22px] leading-[1.05] text-[#332a25]">
             {product.name}
           </h3>
-          
-          <div className="mt-6 flex items-baseline justify-between gap-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-medium text-[#1c1c18]">₹{product.price}</span>
-              {product.comparePrice && product.comparePrice > product.price && (
-                <span className="text-xs text-[#7f7663] line-through">₹{product.comparePrice}</span>
-              )}
-            </div>
-            <div className="flex items-center">
-              <StarRating rating={product.avgRating} size="sm" />
-            </div>
+          <div className="mt-2 flex items-baseline gap-2">
+            <span className="font-display text-[16px] italic text-[#998d86]">₹{product.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+            {product.comparePrice && product.comparePrice > product.price && (
+              <span className="text-xs text-[#a69b94] line-through">₹{product.comparePrice.toLocaleString('en-IN')}</span>
+            )}
           </div>
         </div>
       </motion.div>

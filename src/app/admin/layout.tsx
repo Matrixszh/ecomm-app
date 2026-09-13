@@ -3,7 +3,7 @@
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import AdminSidebar from '@/components/AdminSidebar';
+import SidebarDemo from '@/components/sidebar-demo';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { mongoUser, isAdmin, loading } = useAuthStore();
@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex h-screen bg-[#fcf9f3] overflow-hidden">
-      <AdminSidebar />
+      <SidebarDemo />
       <main className="flex-1 overflow-y-auto p-4 md:p-8">
         <div className="max-w-7xl mx-auto mt-12 lg:mt-0">
           {children}
