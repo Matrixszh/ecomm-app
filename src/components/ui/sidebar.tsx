@@ -114,11 +114,11 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "flex h-12 w-full flex-row items-center justify-between bg-[#fffdf9] px-4 py-2 shadow-sm md:hidden"
+          "flex h-12 w-full flex-row items-center justify-between bg-[#d4af37] px-4 py-2 shadow-sm md:hidden"
         )}
         {...props}
       >
-        <div className="flex w-[50vw] justify-end">
+        <div className="flex w-[6vw] justify-end">
           <button
             type="button"
             className="relative z-20 rounded-md p-2 text-neutral-800 transition-colors hover:bg-black/5 dark:text-neutral-200 dark:hover:bg-white/10"
