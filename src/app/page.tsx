@@ -37,7 +37,7 @@ export default function Home() {
       <div className="mx-auto w-full overflow-hidden rounded-b-[20px] bg-[#fffdfa] shadow-[0_10px_30px_rgba(104,84,72,0.04)]">
         <section className=" pb-6  lg:pb-10">
           <div className="relative overflow-hidden  bg-[#d8cab7]">
-           
+
             <Image
               src="/category.jpeg"
               alt="Luxe Heritage living room"
@@ -111,26 +111,22 @@ export default function Home() {
         </section>
 
         <section id="design-philosophy" className="border-t border-[#f0e7df] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid items-center gap-8 lg:grid-cols-[1.45fr_0.9fr]">
-            <div className="grid gap-4 sm:grid-cols-[1.3fr_0.55fr]">
-              <div className="relative min-h-[260px] overflow-hidden bg-[#2f241d] sm:min-h-[320px]">
+          <div className="grid items-center gap-1 lg:grid-cols-[1.45fr_0.9fr] h-[50vh]">
+            <div className="grid gap-1 sm:grid-cols-1 pr-0 sm:pr-5 ">
+              <div className="relative min-h-[260px] overflow-hidden bg-[#2f241d] sm:min-h-[500px]">
                 <Image
                   src="/cat3.jpeg"
                   alt="Architectural interior"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,246,236,0.18),rgba(22,14,10,0.45))]" />
               </div>
-              <div className="relative flex min-h-[220px] items-end justify-center bg-[#f6eedf] p-5 sm:min-h-[320px]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle,#f7efd9_1px,transparent_1px)] [background-size:7px_7px] opacity-45" />
-                <div className="relative h-[155px] w-[120px] border-[10px] border-[#fffdf9] bg-[#f0e2c7] shadow-[0_10px_25px_rgba(91,68,42,0.12)] sm:h-[210px] sm:w-[150px]" />
-              </div>
+
             </div>
 
-            <div className="max-w-[360px] justify-self-end">
-              <h2 className="font-display text-[34px] leading-none text-[#39312a] sm:text-[40px]">
+            <div className="justify-self-end">
+              <h2 className="font-display center text-[34px] leading-none text-[#39312a] sm:text-[40px]">
                 The Design
                 <br />
                 <span className="italic text-[#55463d]">Philosophy</span>
@@ -162,7 +158,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-[1.45fr_0.65fr] lg:items-start">
-            <Link href={curatedProducts[0].href} className="group block overflow-hidden bg-[#f0e7dc]">
+            <Link href={curatedProducts[0].href} className="group block overflow-hidden">
               <div className="relative aspect-[1.08] overflow-hidden lg:aspect-[1.1]">
                 <Image
                   src={curatedProducts[0].image}
@@ -206,7 +202,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <section className=" py-8 lg:py-10">
           <div className="bg-[#f8e7eb] px-6 py-14 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
             <p className="text-[10px] uppercase tracking-[0.34em] text-[#b59ea3]">Collector&apos;s Circle</p>
             <h2 className="mx-auto mt-5 max-w-[640px] font-display text-[34px] leading-[1.08] text-[#47393a] sm:text-[48px]">

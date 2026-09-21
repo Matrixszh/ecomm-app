@@ -22,7 +22,8 @@ const adminLinks = [
 
 export default function SidebarDemo() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
+  // Start closed so the mobile drawer does not cover the admin content on first render.
+  const [open, setOpen] = useState(false);
 
   return (
     <Sidebar open={open} setOpen={setOpen} animate>

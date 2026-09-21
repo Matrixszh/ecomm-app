@@ -187,8 +187,9 @@ export default function AdminCategories() {
       )}
 
       {/* Category list */}
-      <div className="bg-[#ffffff] border border-[#d0c5af] overflow-hidden">
-        <table className="w-full text-left border-collapse">
+      <div className="overflow-hidden border border-[#d0c5af] bg-[#ffffff]">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[560px] text-left border-collapse">
           <thead>
             <tr className="bg-[#fcf9f3] text-[#7f7663] text-xs tracking-[0.24em] uppercase border-b border-[#d0c5af]">
               <th className="p-4 font-medium">Name</th>
@@ -235,7 +236,8 @@ export default function AdminCategories() {
               ))
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );

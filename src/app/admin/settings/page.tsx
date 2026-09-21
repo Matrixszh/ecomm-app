@@ -101,7 +101,7 @@ export default function AdminSettings() {
 
         {/* Commission Rate */}
         <div className="bg-[#ffffff] border border-[#d0c5af] p-6">
-          <div className="flex items-start justify-between gap-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-sm tracking-[0.18em] uppercase text-[#1c1c18]">Vendor Commission Rate</h2>
               <p className="mt-1 text-xs text-[#7f7663]">Percentage taken from each vendor sale.</p>
@@ -125,7 +125,7 @@ export default function AdminSettings() {
 
         {/* Vendor Registration */}
         <div className="bg-[#ffffff] border border-[#d0c5af] p-6">
-          <div className="flex items-start justify-between gap-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-sm tracking-[0.18em] uppercase text-[#1c1c18]">Vendor Registration</h2>
               <p className="mt-1 text-xs text-[#7f7663]">Allow new vendors to apply to the platform.</p>
@@ -139,7 +139,7 @@ export default function AdminSettings() {
 
         {/* Maintenance Mode */}
         <div className={`border p-6 ${settings.maintenanceMode ? 'bg-[#fff8f0] border-[#c07a00]' : 'bg-[#ffffff] border-[#d0c5af]'}`}>
-          <div className="flex items-start justify-between gap-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-sm tracking-[0.18em] uppercase text-[#1c1c18]">Maintenance Mode</h2>

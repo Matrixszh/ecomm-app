@@ -114,15 +114,20 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
+          "flex h-12 w-full flex-row items-center justify-between bg-[#fffdf9] px-4 py-2 shadow-sm md:hidden"
         )}
         {...props}
       >
-        <div className="flex justify-end z-20 w-full">
-          <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
+        <div className="flex w-[50vw] justify-end">
+          <button
+            type="button"
+            className="relative z-20 rounded-md p-2 text-neutral-800 transition-colors hover:bg-black/5 dark:text-neutral-200 dark:hover:bg-white/10"
             onClick={() => setOpen(!open)}
-          />
+            aria-label={open ? 'Close admin navigation' : 'Open admin navigation'}
+            aria-expanded={open}
+          >
+            <IconMenu2 className="h-6 w-6" />
+          </button>
         </div>
         <AnimatePresence>
           {open && (
