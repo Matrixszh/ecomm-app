@@ -46,7 +46,18 @@ function LoginContent() {
       }
       // redirect handled by useEffect once mongoUser loads with correct role
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to sign in';
+      const firebaseCode = typeof err === 'object' && err !== null && 'code' in err
+        ? String((err as { code?: unknown }).code)
+        : '';
+      const messages: Record<string, string> = {
+        'auth/invalid-credential': 'Incorrect email or password.',
+        'auth/invalid-login-credentials': 'Incorrect email or password.',
+        'auth/user-not-found': 'Incorrect email or password.',
+        'auth/wrong-password': 'Incorrect email or password.',
+        'auth/too-many-requests': 'Too many sign-in attempts. Please try again later.',
+        'auth/operation-not-allowed': 'Email/password sign-in is not enabled for this Firebase project.',
+      };
+      const msg = messages[firebaseCode] || (err instanceof Error ? err.message : 'Failed to sign in');
       setError(msg);
     } finally {
       setSubmitting(false);

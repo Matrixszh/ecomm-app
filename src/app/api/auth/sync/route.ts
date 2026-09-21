@@ -9,15 +9,6 @@ const JWKS = createRemoteJWKSet(
 );
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for') || 'anonymous';
-  const isDev = process.env.NODE_ENV !== 'production';
-  if (!isDev) {
-    const rateLimitResult = rateLimit(ip, 'login', 5, 15 * 60 * 1000);
-    if (!rateLimitResult.success) {
-      return NextResponse.json({ error: 'Too many login attempts' }, { status: 429 });
-    }
-  }
-
   try {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
@@ -46,8 +37,18 @@ export async function POST(req: NextRequest) {
     const name = typeof payload.name === 'string' ? payload.name : undefined;
     const picture = typeof payload.picture === 'string' ? payload.picture : undefined;
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    if (!uid || !email) {
+      return NextResponse.json({ error: 'A valid authenticated user is required' }, { status: 400 });
+    }
+
+    // Sync is called whenever Firebase refreshes a token. Rate-limit the
+    // authenticated user rather than the shared Vercel proxy IP so one user
+    // cannot block every session sharing the same serverless instance.
+    if (process.env.NODE_ENV === 'production') {
+      const rateLimitResult = rateLimit(uid, 'auth-sync', 30, 15 * 60 * 1000);
+      if (!rateLimitResult.success) {
+        return NextResponse.json({ error: 'Too many sync requests' }, { status: 429 });
+      }
     }
 
     await connectDB();

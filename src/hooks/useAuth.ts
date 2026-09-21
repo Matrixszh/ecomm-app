@@ -5,7 +5,8 @@ import { useAuthStore } from '@/store/authStore';
 import axios from 'axios';
 
 export function useAuth() {
-  const { firebaseUser, mongoUser, isAdmin, loading, setUser, clearUser, setLoading } = useAuthStore();
+  const { firebaseUser, isAdmin, loading, setUser, clearUser, setLoading } = useAuthStore();
+  const mongoUser = useAuthStore((state) => state.mongoUser);
   const lastSyncedUidRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -17,25 +18,44 @@ export function useAuth() {
           document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
 
           if (lastSyncedUidRef.current !== user.uid) {
-            const response = await axios.post(
-              '/api/auth/sync',
-              {},
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            let response;
+            let lastError: unknown;
 
+            // Vercel/serverless instances can briefly return 429 while the
+            // auth token listener and the login page sync at the same time.
+            for (let attempt = 0; attempt < 3; attempt += 1) {
+              try {
+                response = await axios.post(
+                  '/api/auth/sync',
+                  {},
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+                break;
+              } catch (error) {
+                lastError = error;
+                const isRetryable = axios.isAxiosError(error) && [429, 500, 503].includes(error.response?.status ?? 0);
+                if (!isRetryable || attempt === 2) throw error;
+                await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)));
+              }
+            }
+
+            if (!response) throw lastError ?? new Error('Unable to sync authenticated user');
             lastSyncedUidRef.current = user.uid;
             setUser(user, response.data.user);
           } else {
-            setUser(user, mongoUser);
+            // Read the latest store value without making the auth listener
+            // re-subscribe every time mongoUser is updated.
+            setUser(user, useAuthStore.getState().mongoUser);
           }
         } catch (error) {
           console.error('Error syncing user:', error);
-          lastSyncedUidRef.current = user.uid;
-          setUser(user, null); // Still set firebase user even if sync fails
+          // Keep any previously synced profile instead of replacing it with
+          // null on a transient API/rate-limit failure.
+          setUser(user, useAuthStore.getState().mongoUser);
         }
       } else {
         lastSyncedUidRef.current = null;
@@ -45,7 +65,7 @@ export function useAuth() {
     });
 
     return () => unsubscribe();
-  }, [setUser, clearUser, setLoading, mongoUser]);
+  }, [setUser, clearUser, setLoading]);
 
   const logout = async () => {
     try {

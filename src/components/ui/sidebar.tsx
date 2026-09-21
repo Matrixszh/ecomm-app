@@ -118,7 +118,7 @@ export const MobileSidebar = ({
         )}
         {...props}
       >
-        <div className="flex w-[6vw] justify-end">
+        <div className="flex w-[50vw] justify-end">
           <button
             type="button"
             className="relative z-20 rounded-md p-2 text-neutral-800 transition-colors hover:bg-black/5 dark:text-neutral-200 dark:hover:bg-white/10"
