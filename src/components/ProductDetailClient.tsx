@@ -69,10 +69,11 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
               <div className="mt-5 grid grid-cols-2 gap-5">
                 {images.map((image, index) => {
                   const imageUrl = image.url && !image.url.startsWith('http') && !image.url.startsWith('/') ? `/${image.url}` : image.url;
-                  const useCloudinary = hasCloudinary && image.publicId && image.url.includes(`res.cloudinary.com/${cloudName}/`);
+                  const publicId = image.publicId;
+                  const useCloudinary = typeof publicId === 'string' && publicId.length > 0 && hasCloudinary && image.url.includes(`res.cloudinary.com/${cloudName}/`);
                   return (
-                    <button key={image.publicId ?? `${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={`relative aspect-[1.08] overflow-hidden rounded-[5px] bg-[#f0e5df] ${index === activeImage ? 'ring-2 ring-[#b18a4f] ring-offset-2' : ''}`}>
-                      {useCloudinary ? <CldImage src={image.publicId} alt={`${product.name} ${index + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" /> : <Image src={imageUrl} alt={`${product.name} ${index + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" />}
+                    <button key={publicId ?? `${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={`relative aspect-[1.08] overflow-hidden rounded-[5px] bg-[#f0e5df] ${index === activeImage ? 'ring-2 ring-[#b18a4f] ring-offset-2' : ''}`}>
+                      {useCloudinary && publicId ? <CldImage src={publicId} alt={`${product.name} ${index + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" /> : <Image src={imageUrl} alt={`${product.name} ${index + 1}`} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 30vw" />}
                     </button>
                   );
                 })}
