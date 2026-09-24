@@ -169,7 +169,7 @@ export default function Home() {
                   sizes="(max-width: 1024px) 100vw, 65vw"
                 />
               </div>
-              <div className="px-3 py-4 sm:px-5">
+              <div className="px-3 py-4 text-center lg:text-left sm:px-5">
                 <h3 className="font-display text-[26px] text-[var(--luxe-text)]">{curatedProducts[0].name}</h3>
                 <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-[var(--luxe-outline)]">{curatedProducts[0].subtitle}</p>
               </div>
@@ -194,7 +194,7 @@ export default function Home() {
                       <Heart className="h-3.5 w-3.5" />
                     </button>
                   </div>
-                  <div className="pt-3">
+                  <div className="pt-3 text-center lg:text-left">
                     <h3 className="font-display text-[18px] text-[var(--luxe-text)]">{product.name}</h3>
                   </div>
                 </Link>
