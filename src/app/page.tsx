@@ -44,11 +44,11 @@ export default function Home() {
               width={1600}
               height={920}
               priority
-              className="h-[540px] w-full object-cover object-center sm:h-[640px] lg:h-[760px]"
+              className="h-[100vh] w-full object-cover object-center sm:h-[640px] lg:h-[760px]"
             />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.6)_48%,transparent_78%)]" />
             <div className="absolute inset-0 px-6 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-16">
-              <div className="w-full md:max-w-[360px] pt-16 sm:pt-20 lg:pt-24 text-center md:text-left">
+              <div className="w-full md:max-w-[360px] pt-[30vh] sm:pt-20 lg:pt-24 text-center md:text-left">
                 <p className="text-[10px] uppercase tracking-[0.34em] text-[var(--luxe-primary)]">Est. 1924 · Heritage Home</p>
                 <h1 className="mt-5 font-display text-[42px] leading-[0.98] text-[var(--luxe-text)] sm:text-[56px] lg:text-[64px]">
                   Luminous Living.
