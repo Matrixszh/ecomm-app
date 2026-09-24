@@ -17,20 +17,20 @@ type VendorOrder = {
 };
 
 const ORDER_STATUS_STYLES: Record<VendorOrder['orderStatus'], string> = {
-  placed:     'bg-blue-50 text-blue-700',
+  placed:     'bg-[var(--luxe-primary-container)]/40 text-[var(--luxe-primary)]',
   confirmed:  'bg-green-50 text-green-700',
-  processing: 'bg-yellow-50 text-yellow-700',
-  shipped:    'bg-purple-50 text-purple-700',
+  processing: 'bg-[var(--luxe-gold)]/10 text-[var(--luxe-secondary)]',
+  shipped:    'bg-[var(--luxe-primary-container)]/60 text-[var(--luxe-primary)]',
   delivered:  'bg-green-100 text-green-800',
-  cancelled:  'bg-red-50 text-red-600',
-  returned:   'bg-gray-100 text-gray-600',
+  cancelled:  'bg-[var(--luxe-error)]/5 text-[var(--luxe-error)]',
+  returned:   'bg-[var(--luxe-surface)] text-[var(--luxe-text-muted)]',
 };
 
 const PAYMENT_STATUS_STYLES: Record<VendorOrder['paymentStatus'], string> = {
-  pending:  'bg-yellow-50 text-yellow-700',
+  pending:  'bg-[var(--luxe-gold)]/10 text-[var(--luxe-secondary)]',
   paid:     'bg-green-50 text-green-700',
-  failed:   'bg-red-50 text-red-600',
-  refunded: 'bg-gray-100 text-gray-600',
+  failed:   'bg-[var(--luxe-error)]/5 text-[var(--luxe-error)]',
+  refunded: 'bg-[var(--luxe-surface)] text-[var(--luxe-text-muted)]',
 };
 
 export default function VendorOrdersPage() {
@@ -69,15 +69,15 @@ export default function VendorOrdersPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-[var(--luxe-background)] text-[var(--luxe-text)]">
       <div>
-        <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Vendor</p>
-        <h1 className="mt-1 text-2xl font-playfair text-[#1c1c18]">Orders</h1>
+        <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Vendor</p>
+        <h1 className="mt-1 text-2xl font-display font-normal text-[var(--luxe-primary)]">Orders</h1>
       </div>
 
       {orders.length === 0 ? (
-        <div className="border border-[#d0c5af] bg-white p-12 text-center">
-          <p className="text-sm text-[#7f7663] tracking-[0.18em] uppercase">No orders yet</p>
+        <div className="rounded-lg border border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] p-12 text-center">
+          <p className="text-sm text-[var(--luxe-text-muted)] tracking-[0.18em] uppercase">No orders yet</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -86,12 +86,12 @@ export default function VendorOrdersPage() {
             const myTotal = myItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
             return (
-              <div key={order._id} className="border border-[#d0c5af] bg-white p-6">
+              <div key={order._id} className="rounded-lg border border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] p-6">
                 {/* Header row */}
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs tracking-[0.24em] uppercase text-[#7f7663]">Order</p>
-                    <p className="mt-1 font-mono text-sm text-[#1c1c18]">{order.orderNumber}</p>
+                    <p className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)]">Order</p>
+                    <p className="mt-1 font-mono text-sm text-[var(--luxe-text)]">{order.orderNumber}</p>
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
@@ -99,7 +99,7 @@ export default function VendorOrdersPage() {
                     <select
                       value={order.orderStatus}
                       onChange={(e) => updateStatus(order._id, e.target.value as VendorOrder['orderStatus'])}
-                      className="text-xs tracking-[0.16em] uppercase px-2 py-1 border border-[#d0c5af] bg-white"
+                      className="text-xs tracking-[0.16em] uppercase px-2 py-1 rounded border border-[var(--luxe-outline)] bg-[var(--luxe-surface)] text-[var(--luxe-text)] focus:outline-[var(--luxe-primary)]"
                     >
                       <option value="placed">Placed</option>
                       <option value="confirmed">Confirmed</option>
@@ -120,25 +120,25 @@ export default function VendorOrdersPage() {
                 </div>
 
                 {/* Items */}
-                <div className="mt-4 border-t border-[#d0c5af] pt-4 space-y-2">
+                <div className="mt-4 border-t border-[var(--luxe-outline-light)] pt-4 space-y-2">
                   {myItems.map((item, i) => (
                     <div key={i} className="flex justify-between text-sm">
-                      <span className="text-[#4d4635]">{item.quantity} × {item.name}</span>
-                      <span className="text-[#1c1c18]">₹{(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="text-[var(--luxe-text-muted)]">{item.quantity} × {item.name}</span>
+                      <span className="text-[var(--luxe-text)]">₹{(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Footer */}
-                <div className="mt-4 border-t border-[#d0c5af] pt-4 flex flex-wrap items-center justify-between gap-4 text-sm">
-                  <div className="text-[#7f7663]">
+                <div className="mt-4 border-t border-[var(--luxe-outline-light)] pt-4 flex flex-wrap items-center justify-between gap-4 text-sm">
+                  <div className="text-[var(--luxe-text-muted)]">
                     {order.shippingAddress.name} · {order.shippingAddress.city}, {order.shippingAddress.state}
                   </div>
                   <div className="flex items-center gap-6">
-                    <span className="text-xs text-[#7f7663]">
+                    <span className="text-xs text-[var(--luxe-text-muted)]">
                       {new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </span>
-                    <span className="font-semibold text-[#1c1c18]">₹{myTotal.toFixed(2)}</span>
+                    <span className="font-semibold text-[var(--luxe-text)]">₹{myTotal.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

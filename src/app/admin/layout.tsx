@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex h-screen min-w-0 flex-col overflow-hidden bg-[#fcf9f3] md:flex-row">
+    <div className="pt-[72px] flex h-full min-w-0 flex-col overflow-hidden bg-[#fcf9f3] md:flex-row">
       <SidebarDemo />
       <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-3 sm:p-4 md:p-8">
         <div className="mx-auto mt-6 w-full max-w-7xl md:mt-0">

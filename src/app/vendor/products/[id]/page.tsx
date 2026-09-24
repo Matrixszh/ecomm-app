@@ -63,30 +63,30 @@ export default function VendorProductDetailPage() {
 
   if (!product) return (
     <div className="min-h-[400px] flex items-center justify-center">
-      <p className="text-sm text-red-500">Product not found.</p>
+      <p className="text-sm text-[var(--luxe-error)]">Product not found.</p>
     </div>
   );
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="max-w-5xl mx-auto space-y-8 bg-[var(--luxe-background)] text-[var(--luxe-text)]">
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Link href="/vendor/products" className="flex items-center gap-2 text-sm text-[#7f7663] hover:text-[#1c1c18] transition-colors">
+        <Link href="/vendor/products" className="flex items-center gap-2 text-sm text-[var(--luxe-text-muted)] hover:text-[var(--luxe-text)] transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Back to Products
         </Link>
         <div className="flex items-center gap-3">
           <Link
             href={`/vendor/products/${id}/edit`}
-            className="flex items-center gap-2 px-4 py-2 border border-[#d0c5af] text-[#1c1c18] text-xs tracking-[0.18em] uppercase hover:bg-[#f6f3ed] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] text-[var(--luxe-text)] text-xs tracking-[0.18em] uppercase hover:bg-[var(--luxe-surface)] transition-colors"
           >
             <Pencil className="w-4 h-4" />
             Edit
           </Link>
           <button
             onClick={handleDelete}
-            className="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 text-xs tracking-[0.18em] uppercase hover:bg-red-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--luxe-error)]/20 text-[var(--luxe-error)] text-xs tracking-[0.18em] uppercase hover:bg-[var(--luxe-error)]/5 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             Delete
@@ -98,7 +98,7 @@ export default function VendorProductDetailPage() {
 
         {/* Images */}
         <div className="space-y-3">
-          <div className="aspect-square bg-[#f6f3ed] border border-[#d0c5af] overflow-hidden">
+          <div className="aspect-square rounded-lg bg-[var(--luxe-surface)] border border-[var(--luxe-outline-light)] overflow-hidden">
             {product.images.length > 0 ? (
               <img
                 src={product.images[activeImage]?.url}
@@ -106,7 +106,7 @@ export default function VendorProductDetailPage() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#7f7663] text-xs tracking-[0.18em] uppercase">
+              <div className="w-full h-full flex items-center justify-center text-[var(--luxe-text-muted)] text-xs tracking-[0.18em] uppercase">
                 No Image
               </div>
             )}
@@ -117,8 +117,8 @@ export default function VendorProductDetailPage() {
                 <button
                   key={i}
                   onClick={() => setActiveImage(i)}
-                  className={`w-16 h-16 border overflow-hidden flex-shrink-0 ${
-                    activeImage === i ? 'border-[#d4af37]' : 'border-[#d0c5af]'
+                  className={`w-16 h-16 rounded border overflow-hidden flex-shrink-0 ${
+                    activeImage === i ? 'border-[var(--luxe-gold)]' : 'border-[var(--luxe-outline-light)]'
                   }`}
                 >
                   <img src={img.url} alt={img.alt || ''} className="w-full h-full object-cover" />
@@ -134,19 +134,19 @@ export default function VendorProductDetailPage() {
           {/* Status badges */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className={`text-xs tracking-[0.18em] uppercase px-2 py-1 ${
-              product.isActive ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
+              product.isActive ? 'bg-green-50 text-green-700' : 'bg-[var(--luxe-surface)] text-[var(--luxe-text-muted)]'
             }`}>
               {product.isActive ? 'Active' : 'Inactive'}
             </span>
             <span className={`text-xs tracking-[0.18em] uppercase px-2 py-1 ${
-              product.availabilityStatus === 'in_stock' ? 'bg-blue-50 text-blue-700' :
-              product.availabilityStatus === 'preorder' ? 'bg-yellow-50 text-yellow-700' :
-              'bg-red-50 text-red-700'
+              product.availabilityStatus === 'in_stock' ? 'bg-[var(--luxe-primary-container)]/40 text-[var(--luxe-primary)]' :
+              product.availabilityStatus === 'preorder' ? 'bg-[var(--luxe-gold)]/10 text-[var(--luxe-secondary)]' :
+              'bg-[var(--luxe-error)]/5 text-[var(--luxe-error)]'
             }`}>
               {product.availabilityStatus.replace('_', ' ')}
             </span>
             {product.isFeatured && (
-              <span className="text-xs tracking-[0.18em] uppercase px-2 py-1 bg-[#d4af37]/10 text-[#1c1c18]">
+              <span className="text-xs tracking-[0.18em] uppercase px-2 py-1 bg-[var(--luxe-gold)]/10 text-[var(--luxe-text)]">
                 Featured
               </span>
             )}
@@ -154,30 +154,30 @@ export default function VendorProductDetailPage() {
 
           {/* Name + category */}
           <div>
-            <p className="text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-1">
+            <p className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-1">
               {product.category?.name || 'Uncategorized'}
             </p>
-            <h1 className="text-2xl font-playfair text-[#1c1c18]">{product.name}</h1>
-            {product.brand && <p className="text-sm text-[#4d4635] mt-1">{product.brand}</p>}
+            <h1 className="text-2xl font-display font-normal text-[var(--luxe-text)]">{product.name}</h1>
+            {product.brand && <p className="text-sm text-[var(--luxe-text-muted)] mt-1">{product.brand}</p>}
           </div>
 
           {/* Pricing */}
           <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-semibold text-[#1c1c18]">₹{product.price.toFixed(2)}</span>
+            <span className="text-2xl font-semibold text-[var(--luxe-text)]">₹{product.price.toFixed(2)}</span>
             {product.comparePrice && (
-              <span className="text-sm text-[#7f7663] line-through">₹{product.comparePrice.toFixed(2)}</span>
+              <span className="text-sm text-[var(--luxe-text-muted)] line-through">₹{product.comparePrice.toFixed(2)}</span>
             )}
           </div>
 
           {/* Meta */}
-          <div className="border-t border-[#d0c5af] pt-4 space-y-2">
+          <div className="border-t border-[var(--luxe-outline-light)] pt-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-[#7f7663]">SKU</span>
-              <span className="text-[#1c1c18] font-mono">{product.sku}</span>
+              <span className="text-[var(--luxe-text-muted)]">SKU</span>
+              <span className="text-[var(--luxe-text)] font-mono">{product.sku}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-[#7f7663]">Stock</span>
-              <span className={`font-medium ${product.stock < 10 ? 'text-red-600' : 'text-[#1c1c18]'}`}>
+              <span className="text-[var(--luxe-text-muted)]">Stock</span>
+              <span className={`font-medium ${product.stock < 10 ? 'text-[var(--luxe-error)]' : 'text-[var(--luxe-text)]'}`}>
                 {product.stock} units
               </span>
             </div>
@@ -188,10 +188,10 @@ export default function VendorProductDetailPage() {
             <div className="space-y-3">
               {product.variants.map((v) => (
                 <div key={v.name}>
-                  <p className="text-xs tracking-[0.18em] uppercase text-[#7f7663] mb-2">{v.name}</p>
+                  <p className="text-xs tracking-[0.18em] uppercase text-[var(--luxe-text-muted)] mb-2">{v.name}</p>
                   <div className="flex flex-wrap gap-2">
                     {v.options.map((opt) => (
-                      <span key={opt} className="px-3 py-1 border border-[#d0c5af] text-xs text-[#1c1c18]">
+                      <span key={opt} className="px-3 py-1 rounded border border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] text-xs text-[var(--luxe-text)]">
                         {opt}
                       </span>
                     ))}
@@ -205,7 +205,7 @@ export default function VendorProductDetailPage() {
           {product.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag) => (
-                <span key={tag} className="text-xs text-[#7f7663] bg-[#f6f3ed] px-2 py-1">
+                <span key={tag} className="text-xs text-[var(--luxe-text-muted)] bg-[var(--luxe-surface)] px-2 py-1">
                   #{tag}
                 </span>
               ))}
@@ -216,9 +216,9 @@ export default function VendorProductDetailPage() {
 
       {/* Description */}
       {product.description && (
-        <div className="border-t border-[#d0c5af] pt-8">
-          <p className="text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-3">Description</p>
-          <p className="text-sm text-[#4d4635] leading-relaxed whitespace-pre-line">{product.description}</p>
+        <div className="border-t border-[var(--luxe-outline-light)] pt-8">
+          <p className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-3">Description</p>
+          <p className="text-sm text-[var(--luxe-text-muted)] leading-relaxed whitespace-pre-line">{product.description}</p>
         </div>
       )}
     </div>

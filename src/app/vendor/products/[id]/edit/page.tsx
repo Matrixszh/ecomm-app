@@ -31,7 +31,7 @@ export default function EditProductPage() {
 
   if (notFound || !product) return (
     <div className="min-h-[400px] flex items-center justify-center">
-      <p className="text-sm text-red-500">Product not found.</p>
+      <p className="text-sm text-[var(--luxe-error)]">Product not found.</p>
     </div>
   );
 

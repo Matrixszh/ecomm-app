@@ -44,13 +44,13 @@ const handleProductClick = (id: string) => {
   
 
   if (loading) return <div className="min-h-[400px] flex items-center justify-center"><AppLoader label="Loading products" /></div>;
-  if (error) return <p className="text-sm text-red-500 p-8">{error}</p>;
+  if (error) return <p className="text-sm text-[var(--luxe-error)] p-8">{error}</p>;
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-[#1c1c18]">Products</h1>
+    <div className="space-y-4 bg-[var(--luxe-background)] text-[var(--luxe-text)]">
+      <h1 className="text-2xl font-medium text-[var(--luxe-text)] font-display">Products</h1>
       {products.length === 0 ? (
-        <p className="text-sm text-[#7f7663]">No products yet.</p>
+        <p className="text-sm text-[var(--luxe-text-muted)]">No products yet.</p>
       ) : (
         products.map((product) => (
           <ProductCard key={product._id} product={product} onDelete={handleDelete} onClick={() => handleProductClick(product._id)}/>

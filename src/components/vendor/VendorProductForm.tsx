@@ -151,23 +151,23 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
     setSkuError(taken ? 'SKU already in use' : null);
   };
 
-  const inputClass = 'w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]';
-  const labelClass = 'block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2';
-  const errorClass = 'text-xs text-red-500 mt-1';
+  const inputClass = 'w-full bg-[var(--luxe-white)] border border-[var(--luxe-outline-light)] rounded-md py-3 px-3 text-sm text-[var(--luxe-text)] placeholder:text-[var(--luxe-text-muted)] focus:outline-none focus:border-[var(--luxe-primary)] focus:ring-2 focus:ring-[var(--luxe-primary-container)] transition-colors';
+  const labelClass = 'block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2';
+  const errorClass = 'text-xs text-[var(--luxe-error)] mt-1';
 
   return (
-    <div className="min-h-screen bg-[#fcf9f3] py-12 px-4 sm:px-8">
+    <div className="min-h-screen bg-[var(--luxe-background)] py-12 px-4 sm:px-8">
       <div className="max-w-2xl mx-auto">
-        <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Vendor</p>
-        <h1 className="mt-2 text-3xl font-playfair text-[#1c1c18] mb-8">
+        <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-secondary)]">Vendor</p>
+        <h1 className="mt-2 text-3xl font-display font-normal text-[var(--luxe-text)] mb-8">
           {isEdit ? 'Edit Product' : 'Add New Product'}
         </h1>
 
-        <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }} className="space-y-10">
+        <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }} className="space-y-10 bg-[var(--luxe-white)] border border-[var(--luxe-outline-light)] rounded-lg p-6">
 
           {/* Basic Info */}
           <div className="space-y-6">
-            <p className="text-sm font-bold tracking-[0.24em] uppercase text-[#7f7663] pb-2">Basic Info</p>
+            <p className="text-sm font-display font-medium tracking-[0.24em] uppercase text-[var(--luxe-text)] pb-2">Basic Info</p>
 
             <form.Field
               name="name"
@@ -207,7 +207,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
           {/* Pricing */}
           <div className="space-y-6">
-            <p className="text-sm font-bold tracking-[0.24em] uppercase text-[#7f7663] pb-2">Pricing</p>
+            <p className="text-sm font-display font-medium tracking-[0.24em] uppercase text-[var(--luxe-text)] pb-2">Pricing</p>
             <div className="grid grid-cols-2 gap-6">
               <form.Field
                 name="price"
@@ -249,7 +249,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
           {/* Inventory */}
           <div className="space-y-6">
-            <p className="text-sm font-bold tracking-[0.24em] uppercase text-[#7f7663] pb-2">Inventory</p>
+            <p className="text-sm font-display font-medium tracking-[0.24em] uppercase text-[var(--luxe-text)] pb-2">Inventory</p>
             <div className="grid grid-cols-2 gap-6">
               <form.Field
                 name="sku"
@@ -304,7 +304,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
           {/* Category */}
           <div className="space-y-6">
-            <p className="text-sm font-bold tracking-[0.24em] uppercase text-[#7f7663] pb-2">Category</p>
+            <p className="text-sm font-display font-medium tracking-[0.24em] uppercase text-[var(--luxe-text)] pb-2">Category</p>
 
             <form.Field
               name="category"
@@ -343,7 +343,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
           {/* Images */}
           <div className="space-y-4">
-            <p className="text-xs tracking-[0.24em] uppercase text-[#7f7663] border-b border-[#d0c5af] pb-2">Images</p>
+            <p className="text-xs font-display font-medium tracking-[0.24em] uppercase text-[var(--luxe-text)] border-b border-[var(--luxe-outline-light)] pb-2">Images</p>
             <ImageUploader images={images} onChange={setImages} maxImages={6} folder="products" />
             {images.length === 0 && form.state.submissionAttempts > 0 && (
               <p className={errorClass}>At least one image is required</p>
@@ -352,7 +352,7 @@ export default function VendorProductForm({ initialData = null }: VendorProductF
 
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
-              <button type="submit" disabled={isSubmitting || !!skuError} className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] disabled:opacity-60 transition-colors">
+              <button type="submit" disabled={isSubmitting || !!skuError} className="w-full bg-[var(--luxe-text)] text-[var(--luxe-white)] rounded-md py-4 text-xs tracking-[0.24em] uppercase hover:bg-[var(--luxe-cta-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--luxe-primary)] focus-visible:ring-offset-2 disabled:opacity-60 transition-colors">
                 {isSubmitting ? (isEdit ? 'Saving...' : 'Creating...') : (isEdit ? 'Save Changes' : 'Create Product')}
               </button>
             )}

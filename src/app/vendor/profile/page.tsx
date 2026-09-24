@@ -60,12 +60,12 @@ const Profile = () => {
     };
 
   return (
-    <div className="bg-[#ffffff] border border-[#d0c5af] p-6 md:p-8">
+    <div className="rounded-lg bg-[var(--luxe-white)] text-[var(--luxe-text)] border border-[var(--luxe-outline-light)] p-6 md:p-8">
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Profile</h2>
+        <h2 className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text)] font-display font-normal">Profile</h2>
         <button
           onClick={() => setIsEditing(!isEditing)}
-          className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]"
+          className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text)] underline underline-offset-8 decoration-[var(--luxe-gold)]"
         >
           {isEditing ? 'Cancel' : 'Edit Profile'}
         </button>
@@ -73,7 +73,7 @@ const Profile = () => {
 
       <div className="flex flex-col md:flex-row gap-8">
         <div className="flex-shrink-0 flex flex-col items-center">
-          <div className="w-32 h-32 relative bg-[#f6f3ed] overflow-hidden border border-[#d0c5af] mb-4 flex items-center justify-center">
+          <div className="w-32 h-32 relative rounded-lg bg-[var(--luxe-surface)] overflow-hidden border border-[var(--luxe-outline-light)] mb-4 flex items-center justify-center">
             {avatar.length > 0 ? (
               hasCloudinary ? (
                 <CldImage src={avatar[0].url} alt="Avatar" fill className="object-cover" sizes="128px" />
@@ -81,7 +81,7 @@ const Profile = () => {
                 <Image src={avatar[0].url} alt="Avatar" fill className="object-cover" sizes="128px" />
               )
             ) : (
-              <User className="w-12 h-12 text-[#7f7663]" />
+              <User className="w-12 h-12 text-[var(--luxe-text-muted)]" />
             )}
           </div>
           {isEditing && (
@@ -98,83 +98,83 @@ const Profile = () => {
 
         <div className="flex-1 space-y-6">
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Full Name</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Full Name</label>
             <input
               type="text"
               defaultValue={mongoUser?.name}
               disabled
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Email</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Email</label>
             <input
               type="email"
               defaultValue={mongoUser?.email}
               disabled
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
-            <p className="text-xs text-[#7f7663] mt-2">Email cannot be changed.</p>
+            <p className="text-xs text-[var(--luxe-text-muted)] mt-2">Email cannot be changed.</p>
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store Name</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Store Name</label>
             <input
               type="text"
               value={profileData?.storeName ?? ''}
               readOnly
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store Slug</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Store Slug</label>
             <input
               type="text"
               value={profileData?.storeSlug ?? ''}
               readOnly
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Bio</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               disabled={!isEditing}
-              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37] ${isEditing ? 'border-[#d0c5af]' : 'border-transparent px-0'}`}
+              className={`w-full bg-transparent border-b py-3 px-1 text-sm focus:outline-none focus:border-[var(--luxe-primary)] ${isEditing ? 'border-[var(--luxe-outline-light)]' : 'border-transparent px-0'}`}
               rows={4}
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Total Earnings</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Total Earnings</label>
             <input
               type="text"
               value={profileData ? `$${profileData.totalEarnings?.toFixed(2)}` : ''}
               readOnly
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Pending Payout</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Pending Payout</label>
             <input
               type="text"
               value={profileData ? `$${profileData.pendingPayout?.toFixed(2)}` : ''}
               readOnly
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Account Status</label>
+            <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Account Status</label>
             <input
               type="text"
               value={profileData ? (profileData.isActive ? 'Active' : 'Inactive') : ''}
               readOnly
-              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[#7f7663] cursor-not-allowed"
+              className="w-full bg-transparent border-b border-transparent py-3 px-0 text-sm text-[var(--luxe-text-muted)] cursor-not-allowed"
             />
           </div>
 
@@ -183,7 +183,7 @@ const Profile = () => {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-60"
+                className="rounded-md bg-[var(--luxe-text)] text-[var(--luxe-white)] px-8 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[var(--luxe-cta-hover)] transition-colors disabled:opacity-60"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>

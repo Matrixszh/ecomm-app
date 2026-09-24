@@ -75,19 +75,19 @@ export default function VendorDashboard() {
 
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><AppLoader label="Loading dashboard" /></div>;
-  if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-[var(--luxe-error)]">{error}</div>;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 py-10 space-y-8 bg-[var(--luxe-background)] text-[var(--luxe-text)]">
       {/* Store header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{vendorProfile?.storeName}</h1>
-          <p className="text-sm text-gray-500">/{vendorProfile?.storeSlug}</p>
+          <h1 className="text-2xl font-medium text-[var(--luxe-text)] font-display">{vendorProfile?.storeName}</h1>
+          <p className="text-sm text-[var(--luxe-text-muted)]">/{vendorProfile?.storeSlug}</p>
         </div>
         <Link
           href="/vendor/products/new"
-          className="inline-block bg-[#d4af37] text-[#1c1c18] py-3 px-6 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+          className="inline-block rounded-md bg-[var(--luxe-text)] text-[var(--luxe-white)] py-3 px-6 text-xs tracking-[0.24em] uppercase hover:bg-[var(--luxe-cta-hover)] transition-colors"
         >
           Add Product
         </Link>
@@ -100,18 +100,18 @@ export default function VendorDashboard() {
           { label: 'Total Earnings', value: `$${(vendorProfile?.totalEarnings ?? 0).toFixed(2)}` },
           { label: 'Pending Payout', value: `$${(vendorProfile?.pendingPayout ?? 0).toFixed(2)}` },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <p className="text-sm text-gray-500">{label}</p>
-            <p className="text-2xl font-semibold text-gray-900 mt-1">{value}</p>
+          <div key={label} className="bg-[var(--luxe-white)] border border-[var(--luxe-outline-light)] rounded-lg p-5">
+            <p className="text-sm text-[var(--luxe-text-muted)]">{label}</p>
+            <p className="text-2xl font-semibold text-[var(--luxe-text)] mt-1">{value}</p>
           </div>
         ))}
       </div>
 
       {/* Products list */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Your Products</h2>
+        <h2 className="text-lg font-medium text-[var(--luxe-text)] mb-4 font-display">Your Products</h2>
         {products.length === 0 ? (
-          <p className="text-gray-400 text-sm">No products yet. Add your first one.</p>
+          <p className="text-[var(--luxe-text-muted)] text-sm">No products yet. Add your first one.</p>
         ) : (
 
           products.map((product) => (

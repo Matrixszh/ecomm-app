@@ -1,0 +1,90 @@
+/* Scoped to the vendor shell so shared admin/storefront components retain their styling. */
+.vendor-portal {
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-dm-sans);
+  background: var(--luxe-background);
+  color: var(--luxe-text);
+  font-family: var(--font-dm-sans), Inter, sans-serif;
+}
+
+.vendor-portal :is(h1, h2, h3, .font-display, .font-playfair) {
+  font-family: var(--font-playfair);
+}
+
+.vendor-portal :is(input, select, textarea, button) {
+  font-family: inherit;
+}
+
+.vendor-portal :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--luxe-primary);
+  outline-offset: 3px;
+}
+
+.vendor-portal :is(input, select, textarea) {
+  accent-color: var(--luxe-primary);
+}
+
+.vendor-portal input::placeholder,
+.vendor-portal textarea::placeholder {
+  color: var(--luxe-outline);
+}
+
+.vendor-portal .vendor-sidebar {
+  background: var(--luxe-sidebar);
+  border-color: var(--luxe-outline-light);
+  color: var(--luxe-text-muted);
+}
+
+.vendor-sidebar a,
+.vendor-sidebar a > span,
+.vendor-sidebar svg {
+  color: var(--luxe-text-muted);
+}
+
+.vendor-sidebar .vendor-nav-link {
+  border-radius: 6px;
+  transition: color 200ms, background-color 200ms, box-shadow 200ms;
+}
+
+.vendor-sidebar .vendor-nav-link:hover {
+  background: var(--luxe-white);
+}
+
+.vendor-sidebar .vendor-nav-active {
+  background: var(--luxe-white);
+  box-shadow: inset 2px 0 var(--luxe-gold);
+}
+
+.vendor-sidebar .vendor-nav-active > span,
+.vendor-sidebar .vendor-nav-active svg,
+.vendor-sidebar a:hover > span,
+.vendor-sidebar a:hover svg {
+  color: var(--luxe-primary);
+}
+
+/* The shared sidebar mobile trigger remains in its existing position. */
+.vendor-portal > div:has(> div > button[aria-expanded]) {
+  background: var(--luxe-sidebar);
+  box-shadow: 0 1px 0 var(--luxe-outline-light);
+}
+
+.vendor-portal button[aria-expanded] {
+  color: var(--luxe-primary);
+}
+
+/* Existing shared uploader and sidebar colors, overridden only inside this portal. */
+.vendor-portal [class~="bg-[#f6f3ed]"] { background-color: var(--luxe-surface); }
+.vendor-portal [class~="bg-[#ead9bf]"] { background-color: var(--luxe-primary-container); }
+.vendor-portal [class~="bg-[#d4af37]"] { background-color: var(--luxe-primary-container); }
+.vendor-portal [class~="bg-[#d4af37]/10"] { background-color: color-mix(in srgb, var(--luxe-primary-container) 30%, transparent); }
+.vendor-portal [class~="border-[#d0c5af]"],
+.vendor-portal [class~="border-[#ece3dc]"] { border-color: var(--luxe-outline-light); }
+.vendor-portal [class~="border-[#d4af37]"] { border-color: var(--luxe-primary); }
+.vendor-portal [class~="text-[#7f7663]"],
+.vendor-portal [class~="text-[#958675]"] { color: var(--luxe-outline); }
+.vendor-portal [class~="text-[#1c1c18]"],
+.vendor-portal [class~="text-[#2d251f]"] { color: var(--luxe-text); }
+.vendor-portal [class~="text-[#715b36]"] { color: var(--luxe-primary); }
+.vendor-portal [class~="hover:border-[#d4af37]"]:hover { border-color: var(--luxe-primary); }
+.vendor-portal [class~="hover:bg-[#8f0402]"]:hover { background-color: var(--luxe-error); }
+.vendor-portal [class~="hover:bg-[#f6eee7]"]:hover { background-color: var(--luxe-white); }

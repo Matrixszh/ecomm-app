@@ -173,7 +173,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[var(--luxe-border-rose)]/50 bg-[var(--luxe-white)]/70 shadow-[0_4px_18px_rgba(136,19,55,0.04)] backdrop-blur-md">
+    <nav className="fixed w-full top-0 z-50 border-b border-[var(--luxe-border-rose)] bg-[var(--luxe-white)]/70 shadow-[0_4px_18px_rgba(136,19,55,0.04)] backdrop-blur-md">
       <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[72px] items-center">
           <div className="flex w-full items-center gap-4">

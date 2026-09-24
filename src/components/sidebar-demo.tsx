@@ -43,7 +43,7 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
 
   return (
     <Sidebar open={open} setOpen={setOpen} animate>
-      <SidebarBody className="h-full justify-between gap-8 border-r border-[#d0c5af] bg-[#fffdf9] px-4 py-5">
+      <SidebarBody className={cn('h-full justify-between gap-8 border-r border-[#d0c5af] bg-[#fffdf9] px-4 py-5', variant === 'vendor' && 'vendor-sidebar')}>
         <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
           {open ? <LuxeLogo label={variant === 'vendor' ? 'Vendor Portal' : 'Administration'} /> : <LuxeLogoIcon />}
           <nav className="mt-10 flex flex-col gap-2" aria-label={`${variant} navigation`}>
@@ -66,7 +66,9 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
                   }}
                   className={cn(
                     'rounded-lg px-3 py-3 transition-colors hover:bg-[#f6eee7]',
-                    isActive && 'bg-[#f5eadc]'
+                    isActive && 'bg-[#f5eadc]',
+                                        variant === 'vendor' && 'vendor-nav-link',
+                                        variant === 'vendor' && isActive && 'vendor-nav-active'
                   )}
                 />
               );
@@ -77,9 +79,9 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
         <div className="border-t border-[#ece3dc] pt-4">
           <SidebarLink
             link={{
-              label: variant === 'vendor' ? 'Seller Workspace' : 'Luxe Administration',
+              label: variant === 'vendor' ? 'Seller Workspace' : 'Administration',
               href: basePath,
-              icon: <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#ead9bf] font-display text-xs text-[#715b36]">L</span>,
+              icon: <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#ead9bf] font-display text-xs text-[#715b36]">NM</span>,
             }}
             className="rounded-lg px-3 py-2 hover:bg-[#f6eee7]"
           />
@@ -92,9 +94,9 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
 function LuxeLogo({ label }: { label: string }) {
   return (
     <Link href="/" className="relative z-20 flex items-center gap-3 py-1 text-[#2d251f]">
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">L</span>
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">NM</span>
       <span className="flex flex-col whitespace-pre">
-        <span className="font-display text-lg tracking-[0.12em]">LUXE</span>
+        <span className="font-display text-lg tracking-[0.12em]">NMDecor</span>
         <span className="text-[9px] uppercase tracking-[0.16em] text-[#958675]">{label}</span>
       </span>
     </Link>
@@ -104,7 +106,7 @@ function LuxeLogo({ label }: { label: string }) {
 function LuxeLogoIcon() {
   return (
     <Link href="/" className="relative z-20 flex items-center py-1 text-[#2d251f]">
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">L</span>
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">NM</span>
     </Link>
   );
 }

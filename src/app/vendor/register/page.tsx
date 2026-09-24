@@ -96,29 +96,29 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fcf9f3]">
-      <div className="hidden md:flex md:w-1/2 relative flex-col justify-center items-center p-12 overflow-hidden border-r border-[#d0c5af] bg-[#ffffff]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[var(--luxe-background)]">
+      <div className="hidden md:flex md:w-1/2 relative flex-col justify-center items-center p-12 overflow-hidden border-r border-[var(--luxe-outline-light)] bg-[var(--luxe-white)]">
         <div className="relative z-10 text-center">
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Maison</p>
-          <h1 className="mt-6 text-5xl font-playfair text-[#1c1c18] tracking-[0.18em] uppercase">Maison</h1>
-          <p className="mt-4 text-sm text-[#4d4635] max-w-sm">
+          <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Maison</p>
+          <h1 className="mt-6 text-5xl font-display font-normal text-[var(--luxe-text)] tracking-[0.18em] uppercase">Maison</h1>
+          <p className="mt-4 text-sm text-[var(--luxe-text-muted)] max-w-sm">
             Join the list for early access to launches and private drops.
           </p>
         </div>
       </div>
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
         <div className="w-full max-w-md">
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Become a Seller</p>
-          <h2 className="mt-4 text-3xl font-playfair text-[#1c1c18] mb-2">Create a Seller Account</h2>
-          <p className="text-sm text-[#4d4635] mb-10">Sign up and set up your store.</p>
+          <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Become a Seller</p>
+          <h2 className="mt-4 text-3xl font-display font-normal text-[var(--luxe-text)] mb-2">Create a Seller Account</h2>
+          <p className="text-sm text-[var(--luxe-text-muted)] mb-10">Sign up and set up your store.</p>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Full Name</label>
+              <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Full Name</label>
               <input
                 type="text"
                 required
-                className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)]"
                 placeholder="John Doe"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -126,11 +126,11 @@ export default function Page() {
               />
             </div>
             <div>
-              <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Email</label>
+              <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Email</label>
               <input
                 type="email"
                 required
-                className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)]"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -138,11 +138,11 @@ export default function Page() {
               />
             </div>
             <div>
-              <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Password</label>
+              <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Password</label>
               <input
                 type="password"
                 required
-                className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)]"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -151,16 +151,16 @@ export default function Page() {
             </div>
 
             <div className="pt-4 ">
-              <p className="text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-4">Store Details</p>
+              <p className="text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-4">Store Details</p>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store Name</label>
+                  <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Store Name</label>
                   <input
                     type="text"
                     required
                     minLength={2}
                     maxLength={60}
-                    className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                    className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)]"
                     placeholder="My Awesome Store"
                     value={storeName}
                     onChange={(e) => handleStoreNameChange(e.target.value)}
@@ -168,29 +168,29 @@ export default function Page() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Store URL value</label>
+                  <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">Store URL value</label>
                   <input
                     type="text"
                     required
                     minLength={2}
                     maxLength={40}
                     pattern="[a-z0-9-]+"
-                    className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                    className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)]"
                     placeholder="my-awesome-store"
                     value={storeSlug}
                     onChange={(e) => setStoreSlug(e.target.value)}
                     suppressHydrationWarning
                   />
-                  <p className="text-xs text-[#7f7663] mt-1">/vendors/{storeSlug || 'your-store-name'}</p>
+                  <p className="text-xs text-[var(--luxe-text-muted)] mt-1">/vendors/{storeSlug || 'your-store-name'}</p>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">About Your Store</label>
+                  <label className="block text-xs tracking-[0.24em] uppercase text-[var(--luxe-text-muted)] mb-2">About Your Store</label>
                   <textarea
                     required
                     minLength={20}
                     maxLength={500}
                     rows={3}
-                    className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37] resize-none"
+                    className="w-full bg-transparent border-b border-[var(--luxe-outline-light)] py-3 px-1 text-sm text-[var(--luxe-text)] focus:outline-none focus:border-[var(--luxe-gold)] resize-none"
                     placeholder="Tell customers what your store is about..."
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
@@ -203,16 +203,16 @@ export default function Page() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] disabled:opacity-60 transition-colors mt-2"
+              className="w-full rounded-md bg-[var(--luxe-text)] text-[var(--luxe-white)] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[var(--luxe-cta-hover)] disabled:opacity-60 transition-colors mt-2"
             >
               {submitting ? 'Creating...' : 'Create Seller Account'}
             </button>
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && <p className="text-sm text-[var(--luxe-error)]">{error}</p>}
           </form>
 
-          <p className="mt-10 text-center text-sm text-[#4d4635]">
+          <p className="mt-10 text-center text-sm text-[var(--luxe-text-muted)]">
             Already have an account?{' '}
-            <Link href="/auth/login" className="text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37] font-medium">
+            <Link href="/auth/login" className="text-[var(--luxe-text)] underline underline-offset-8 decoration-[var(--luxe-gold)] font-medium">
               Sign in
             </Link>
           </p>
