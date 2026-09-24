@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
@@ -10,7 +11,14 @@ import {
   IconPackage,
   IconSettings,
   IconShoppingBag,
+  IconUser,
 } from '@tabler/icons-react';
+
+type SidebarVariant = 'admin' | 'vendor';
+
+type SidebarDemoProps = {
+  variant?: SidebarVariant;
+};
 
 const adminLinks = [
   { label: 'Dashboard', href: '/admin', icon: IconDashboard },
@@ -20,18 +28,26 @@ const adminLinks = [
   { label: 'Settings', href: '/admin/settings', icon: IconSettings },
 ];
 
-export default function SidebarDemo() {
+const vendorLinks = [
+  { label: 'Dashboard', href: '/vendor/dashboard', icon: IconDashboard },
+  { label: 'Products', href: '/vendor/products', icon: IconPackage },
+  { label: 'Orders', href: '/vendor/orders', icon: IconShoppingBag },
+  { label: 'Profile', href: '/vendor/profile', icon: IconUser },
+];
+
+export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
   const pathname = usePathname();
-  // Start closed so the mobile drawer does not cover the admin content on first render.
   const [open, setOpen] = useState(false);
+  const links = variant === 'vendor' ? vendorLinks : adminLinks;
+  const basePath = variant === 'vendor' ? '/vendor' : '/admin';
 
   return (
     <Sidebar open={open} setOpen={setOpen} animate>
       <SidebarBody className="h-full justify-between gap-8 border-r border-[#d0c5af] bg-[#fffdf9] px-4 py-5">
         <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
-          {open ? <AdminLogo /> : <AdminLogoIcon />}
-          <nav className="mt-10 flex flex-col gap-2" aria-label="Admin navigation">
-            {adminLinks.map(({ label, href, icon: Icon }) => {
+          {open ? <LuxeLogo label={variant === 'vendor' ? 'Vendor Portal' : 'Administration'} /> : <LuxeLogoIcon />}
+          <nav className="mt-10 flex flex-col gap-2" aria-label={`${variant} navigation`}>
+            {links.map(({ label, href, icon: Icon }) => {
               const isActive = pathname === href || pathname.startsWith(`${href}/`);
               return (
                 <SidebarLink
@@ -61,8 +77,8 @@ export default function SidebarDemo() {
         <div className="border-t border-[#ece3dc] pt-4">
           <SidebarLink
             link={{
-              label: 'Luxe Administration',
-              href: '/admin',
+              label: variant === 'vendor' ? 'Seller Workspace' : 'Luxe Administration',
+              href: basePath,
               icon: <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#ead9bf] font-display text-xs text-[#715b36]">L</span>,
             }}
             className="rounded-lg px-3 py-2 hover:bg-[#f6eee7]"
@@ -73,19 +89,22 @@ export default function SidebarDemo() {
   );
 }
 
-function AdminLogo() {
+function LuxeLogo({ label }: { label: string }) {
   return (
-    <a href="/admin" className="relative z-20 flex items-center gap-3 py-1 text-[#2d251f]">
+    <Link href="/" className="relative z-20 flex items-center gap-3 py-1 text-[#2d251f]">
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">L</span>
-      <span className="whitespace-pre font-display text-lg tracking-[0.12em]">LUXE</span>
-    </a>
+      <span className="flex flex-col whitespace-pre">
+        <span className="font-display text-lg tracking-[0.12em]">LUXE</span>
+        <span className="text-[9px] uppercase tracking-[0.16em] text-[#958675]">{label}</span>
+      </span>
+    </Link>
   );
 }
 
-function AdminLogoIcon() {
+function LuxeLogoIcon() {
   return (
-    <a href="/admin" className="relative z-20 flex items-center py-1 text-[#2d251f]">
+    <Link href="/" className="relative z-20 flex items-center py-1 text-[#2d251f]">
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ead9bf] font-display text-sm text-[#715b36]">L</span>
-    </a>
+    </Link>
   );
 }

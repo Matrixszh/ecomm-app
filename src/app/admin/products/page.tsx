@@ -6,6 +6,7 @@ import { Plus, Search, Edit, Trash2 } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
 import { useAuthStore } from '@/store/authStore';
 import type { CloudinaryImage, ProductSummary } from '@/types';
+import AppLoader from '@/components/AppLoader';
 
 type AdminProductRow = ProductSummary & {
   isActive: boolean;
@@ -105,7 +106,7 @@ export default function AdminProducts() {
                 <tr>
                   <td colSpan={7} className="p-12 text-center text-[#7f7663]">
                     <div className="flex justify-center">
-                      <div className="animate-spin h-8 w-8 border-2 border-[#d0c5af] border-t-[#d4af37]" />
+                      <AppLoader label="Loading products" />
                     </div>
                   </td>
                 </tr>

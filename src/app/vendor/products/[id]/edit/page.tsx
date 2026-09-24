@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
 import VendorProductForm from '@/components/vendor/VendorProductForm';
 import type { ProductDetail } from '@/types';
+import AppLoader from '@/components/AppLoader';
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +25,7 @@ export default function EditProductPage() {
 
   if (loading) return (
     <div className="min-h-[400px] flex items-center justify-center">
-      <p className="text-sm text-[#7f7663] tracking-[0.18em] uppercase">Loading...</p>
+      <AppLoader label="Loading product" />
     </div>
   );
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, X } from 'lucide-react';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
+import AppLoader from '@/components/AppLoader';
 
 type Category = {
   _id: string;
@@ -103,7 +104,7 @@ export default function AdminCategories() {
   if (loading) {
     return (
       <div className="flex justify-center py-24">
-        <div className="animate-spin h-8 w-8 border-2 border-[#d0c5af] border-t-[#d4af37]" />
+        <AppLoader label="Loading categories" />
       </div>
     );
   }

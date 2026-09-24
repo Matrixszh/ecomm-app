@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { UploadCloud, X, Loader2 } from 'lucide-react';
+import { UploadCloud, X } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
 import { useAuthStore } from '@/store/authStore';
 import type { CloudinaryImage } from '@/types';
+import AppLoader from '@/components/AppLoader';
 
 interface ImageUploaderProps {
   images: CloudinaryImage[];
@@ -127,7 +128,7 @@ export default function ImageUploader({
             onClick={() => fileInputRef.current?.click()}
           >
             {uploading ? (
-              <Loader2 className="w-8 h-8 text-[#d4af37] animate-spin mb-2" />
+              <AppLoader label="Uploading" className="mb-2" />
             ) : (
               <>
                 <UploadCloud className="w-8 h-8 text-[#7f7663] mb-2" />

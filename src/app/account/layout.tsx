@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { User, ShoppingBag, Heart, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import AppLoader from '@/components/AppLoader';
 
 const navItems = [
   { name: 'Profile', href: '/account', icon: User },
@@ -26,7 +27,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
   }, [mongoUser, loading, router]);
 
   if (loading || !mongoUser) {
-    return <div className="min-h-[60vh] flex justify-center items-center"><div className="animate-spin h-10 w-10 border-2 border-[#d0c5af] border-t-[#d4af37]"></div></div>;
+    return <div className="min-h-[60vh] flex justify-center items-center"><AppLoader label="Loading account" /></div>;
   }
 
   return (

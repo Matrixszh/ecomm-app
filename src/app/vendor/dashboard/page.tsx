@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 import { auth } from '@/lib/firebase';
 import { useVendorStore } from '@/store/vendorStore';
 import ProductCard from '@/components/vendor/ProductCard';
+import AppLoader from '@/components/AppLoader';
 
 interface Product {
   _id: string;
@@ -73,7 +74,7 @@ export default function VendorDashboard() {
   }, [firebaseUser, fetchVendorEarnings]);
 
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><AppLoader label="Loading dashboard" /></div>;
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
 
   return (

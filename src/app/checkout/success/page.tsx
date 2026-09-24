@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import type { ProductSummary } from '@/types';
+import AppLoader from '@/components/AppLoader';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -97,7 +98,7 @@ function SuccessContent() {
 
 export default function CheckoutSuccess() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-[60vh]"><div className="animate-spin h-10 w-10 border-2 border-[#d0c5af] border-t-[#d4af37]"></div></div>}>
+    <Suspense fallback={<div className="flex justify-center items-center h-[60vh]"><AppLoader label="Loading confirmation" /></div>}>
       <SuccessContent />
     </Suspense>
   );

@@ -2,10 +2,11 @@
 
 import { DollarSign, ShoppingBag, Users, AlertTriangle } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import AppLoader from '@/components/AppLoader';
 
 const RevenueChart = dynamic(() => import('@/components/admin/RevenueChart'), {
   ssr: false,
-  loading: () => <div className="w-full h-full flex items-center justify-center text-gray-500">Loading chart...</div>
+  loading: () => <div className="w-full h-full flex items-center justify-center"><AppLoader label="Loading chart" /></div>
 });
 
 const data = [

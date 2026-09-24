@@ -35,23 +35,23 @@ export const metadata: Metadata = {
 
 function SiteFooter() {
   return (
-    <footer className="mt-auto bg-[#fbf7f2]  ">
-      <div className="mx-auto max-w-full border border-t px-4 border-[#d0c5af] bg-[#fffdfa] py-10 ">
-        <div className="grid gap-10 border-[#ece3dd] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
+    <footer className="mt-auto border-t border-[var(--luxe-border-rose)] bg-[var(--luxe-white)]">
+      <div className="mx-auto max-w-full bg-[var(--luxe-white)] px-4 py-10">
+        <div className="grid gap-10 border-b border-[var(--luxe-border-rose)] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
           <div>
-            <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[#39312a]">
+            <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[var(--luxe-text)]">
               Luxe Heritage
             </Link>
-            <p className="mt-4 max-w-xs text-[11px] leading-5 text-[#9a8f87]">
+            <p className="mt-4 max-w-xs text-[11px] leading-5 text-[var(--luxe-outline)]">
               Defining serene design through collectible forms. Every detail with a story of artistry.
             </p>
           </div>
 
           <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[#7f746b]">Services</h4>
-            <ul className="mt-4 space-y-2 text-[11px] text-[#9a8f87]">
+            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Services</h4>
+            <ul className="mt-4 space-y-2 text-[11px] text-[var(--luxe-outline)]">
               <li>
-                <Link href="/shop" className="hover:text-[#3b332d]">
+                <Link href="/shop" className="transition-colors hover:text-[var(--luxe-secondary)]">
                   Bespoke Interiors
                 </Link>
               </li>
@@ -69,10 +69,10 @@ function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[#7f746b]">Legal</h4>
-            <ul className="mt-4 space-y-2 text-[11px] text-[#9a8f87]">
+            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Legal</h4>
+            <ul className="mt-4 space-y-2 text-[11px] text-[var(--luxe-outline)]">
               <li>
-                <Link href="/account" className="hover:text-[#3b332d]">
+                <Link href="/account" className="transition-colors hover:text-[var(--luxe-secondary)]">
                   Privacy Policy
                 </Link>
               </li>
@@ -90,8 +90,8 @@ function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[#7f746b]">Social</h4>
-            <div className="mt-4 flex gap-3 text-[#9a8f87]">
+            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Social</h4>
+            <div className="mt-4 flex gap-3 text-[var(--luxe-outline)]">
               <a href="#" aria-label="Pinterest" className="rounded-full border border-[#e6dbd4] px-2 py-1 text-[11px] hover:text-[#3b332d]">
                 P
               </a>

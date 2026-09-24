@@ -2,13 +2,14 @@
 
 import { useUIStore } from '@/store/uiStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search as SearchIcon, Loader2 } from 'lucide-react';
+import { X, Search as SearchIcon } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { ProductSummary } from '@/types';
+import AppLoader from '@/components/AppLoader';
 
 type SearchResult = Pick<ProductSummary, '_id' | 'slug' | 'name' | 'price' | 'images'>;
 
@@ -97,7 +98,7 @@ export default function SearchModal() {
                 placeholder="Search pieces..."
                 className="flex-1 bg-transparent text-lg text-[#1c1c18] outline-none placeholder:text-[#7f7663] font-sans"
               />
-              {loading && <Loader2 className="w-5 h-5 text-[#d4af37] animate-spin mr-3" />}
+              {loading && <AppLoader label="Searching" className="mr-3" />}
               <button onClick={closeSearch} className="p-2 text-[#4d4635] hover:text-[#1c1c18] transition-colors">
                 <X className="w-6 h-6" />
               </button>

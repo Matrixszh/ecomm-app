@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
+import AppLoader from '@/components/AppLoader';
 
 type VendorOrder = {
   _id: string;
@@ -63,7 +64,7 @@ export default function VendorOrdersPage() {
 
   if (loading) return (
     <div className="min-h-[400px] flex items-center justify-center">
-      <p className="text-sm text-[#7f7663] tracking-[0.18em] uppercase">Loading...</p>
+      <AppLoader label="Loading orders" />
     </div>
   );
 

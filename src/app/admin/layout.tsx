@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import SidebarDemo from '@/components/sidebar-demo';
+import AppLoader from '@/components/AppLoader';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { mongoUser, isAdmin, loading } = useAuthStore();
@@ -22,7 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading || !isAdmin) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-[#fcf9f3]">
-        <div className="animate-spin h-10 w-10 border-2 border-[#d0c5af] border-t-[#d4af37]" />
+        <AppLoader label="Loading admin" />
       </div>
     );
   }

@@ -149,8 +149,8 @@ export default function Navbar() {
   const linkClass = (active: boolean) =>
     `inline-flex items-center text-[11px] tracking-[0.22em] uppercase pb-2 border-b ${
       active
-        ? 'text-[#c78d4f] border-[#c78d4f]'
-        : 'text-[#6f635a] border-transparent hover:text-[#2f2822] hover:border-[#d3c2a8]'
+        ? 'text-[var(--luxe-secondary)] border-[var(--luxe-secondary)]'
+        : 'text-[var(--luxe-text-muted)] border-transparent hover:text-[var(--luxe-secondary)] hover:border-[var(--luxe-outline-light)]'
     }`;
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#d0c5afz] bg-white">
+    <nav className="sticky top-0 z-50 border-b border-[var(--luxe-border-rose)]/50 bg-[var(--luxe-white)]/70 shadow-[0_4px_18px_rgba(136,19,55,0.04)] backdrop-blur-md">
       <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[72px] items-center">
           <div className="flex w-full items-center gap-4">
@@ -181,7 +181,7 @@ export default function Navbar() {
             <div className="hidden min-w-0 flex-1 items-center gap-7 md:flex">
               <Link
                 href="/"
-                className={`shrink-0 text-[#2a231d] ${
+                className={`shrink-0 text-[var(--luxe-text)] ${
                   isHome
                     ? 'font-display text-base tracking-[0.14em]'
                     : 'font-playfair text-2xl tracking-[0.05em]'
@@ -206,7 +206,7 @@ export default function Navbar() {
             {/* Mobile Navigation */}
             <div className="flex min-w-0 flex-1 items-center gap-3 md:hidden">
               <button
-                className="p-2 text-[#4f443b] hover:text-[#221b16]"
+                className="p-2 text-[var(--luxe-text)] transition-colors hover:text-[var(--luxe-secondary)]"
                 onClick={() => {
                   const nextOpen = !mobileMenuOpen;
 
@@ -243,7 +243,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="hidden h-9 min-w-[250px] items-center gap-2 rounded-full border border-[#634e61] bg-[#fcf8f5] px-4 text-left text-[11px] tracking-[0.04em] text-[#58004d] transition-colors hover:border-[#58004d] md:flex"
+                className="hidden h-9 min-w-[250px] items-center gap-2 rounded-full border border-[var(--luxe-outline-light)] bg-[var(--luxe-surface)] px-4 text-left text-[11px] tracking-[0.04em] text-[var(--luxe-text)] transition-colors hover:border-[var(--luxe-primary)] md:flex"
                 aria-label="Search heritage pieces"
               >
                 <Search
@@ -263,7 +263,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={openSearch}
-                  className="p-2 text-[#58004d] transition-colors hover:text-[#1c1612] md:hidden"
+                  className="p-2 text-[var(--luxe-text)] transition-colors hover:text-[var(--luxe-secondary)] md:hidden"
                   aria-label="Search"
                 >
                   <Search
@@ -276,7 +276,7 @@ export default function Navbar() {
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className="p-2 text-[#4f443b] transition-colors hover:text-[#1c1612]"
+                className="p-2 text-[var(--luxe-text)] transition-colors hover:text-[var(--luxe-secondary)]"
                 aria-label="Wishlist"
               >
                 <Heart
@@ -301,19 +301,19 @@ export default function Navbar() {
                         aria-label="Account menu"
                       >
                         <User
-                          className="h-[18px] w-[18px] text-[#4f443b]"
+                          className="h-[18px] w-[18px] text-[var(--luxe-text)]"
                           strokeWidth={1.6}
                         />
                       </button>
 
                       {dropdownOpen && (
-                        <div className="absolute right-0 z-50 mt-2 w-52 border border-[#d9cdc4] bg-[#fffdf9] py-1 shadow-lg">
-                          <div className="border-b border-[#ece2d9] px-4 py-3">
+                        <div className="absolute right-0 z-50 mt-2 w-52 border border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] py-1 shadow-lg">
+                          <div className="border-b border-[var(--luxe-border-rose)] px-4 py-3">
                             <p className="truncate text-sm font-medium text-[#1c1c18]">
                               {mongoUser.name}
                             </p>
 
-                            <p className="truncate text-xs text-[#7f7663]">
+                            <p className="truncate text-xs text-[var(--luxe-outline)]">
                               {mongoUser.email}
                             </p>
                           </div>

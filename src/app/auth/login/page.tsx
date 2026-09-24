@@ -6,6 +6,7 @@ import { useEffect, Suspense, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import AppLoader from '@/components/AppLoader';
 
 function LoginContent() {
   const { firebaseUser, mongoUser } = useAuthStore();
@@ -146,7 +147,7 @@ function LoginContent() {
 
 export default function Login() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex justify-center items-center"><div className="animate-spin h-10 w-10 border-2 border-[#d0c5af] border-t-[#d4af37]"></div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex justify-center items-center"><AppLoader label="Loading sign in" /></div>}>
       <LoginContent />
     </Suspense>
   );

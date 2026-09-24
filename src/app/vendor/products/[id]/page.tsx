@@ -7,6 +7,7 @@ import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
 import { auth } from '@/lib/firebase';
+import AppLoader from '@/components/AppLoader';
 
 interface ProductDetail {
   _id: string;
@@ -56,7 +57,7 @@ export default function VendorProductDetailPage() {
 
   if (loading) return (
     <div className="min-h-[400px] flex items-center justify-center">
-      <p className="text-sm text-[#7f7663] tracking-[0.18em] uppercase">Loading...</p>
+      <AppLoader label="Loading product" />
     </div>
   );
 

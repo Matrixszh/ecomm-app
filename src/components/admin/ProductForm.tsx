@@ -7,10 +7,11 @@ import { Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import type { CategorySummary, CloudinaryImage, ProductDetail } from '@/types';
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
+import AppLoader from '@/components/AppLoader';
 
 const ImageUploader = dynamic(() => import('@/components/ImageUploader'), {
   ssr: false,
-  loading: () => <div className="h-32 bg-[#e5e2dc] animate-pulse flex items-center justify-center text-[#7f7663] text-xs tracking-[0.24em] uppercase">Loading uploader...</div>
+  loading: () => <div className="h-32 flex items-center justify-center"><AppLoader label="Loading uploader" /></div>
 });
 
 type ProductFormProps = {

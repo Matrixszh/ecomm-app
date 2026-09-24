@@ -7,6 +7,7 @@ import { fetchWithAuth } from '@/lib/fetchWithAuth';
 import ProductCard from '@/components/vendor/ProductCard';
 import type { ProductSummary } from '@/types';
 import { useRouter } from 'next/navigation';
+import AppLoader from '@/components/AppLoader';
 
 export default function VendorProductsPage() {
   const { firebaseUser } = useAuthStore();
@@ -42,7 +43,7 @@ const handleProductClick = (id: string) => {
   }
   
 
-  if (loading) return <p className="text-sm text-[#7f7663] p-8">Loading...</p>;
+  if (loading) return <div className="min-h-[400px] flex items-center justify-center"><AppLoader label="Loading products" /></div>;
   if (error) return <p className="text-sm text-red-500 p-8">{error}</p>;
 
   return (

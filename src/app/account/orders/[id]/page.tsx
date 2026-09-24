@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import OrderStatusBadge from '@/components/OrderStatusBadge';
 import { ArrowLeft, Package, MapPin, CreditCard } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
+import AppLoader from '@/components/AppLoader';
 
 type OrderItem = {
   product: string;
@@ -73,7 +74,7 @@ export default function OrderDetail() {
   }, [firebaseUser, orderId]);
 
   if (loading) {
-    return <div className="p-12 flex justify-center"><div className="animate-spin h-8 w-8 border-2 border-[#d0c5af] border-t-[#d4af37]"></div></div>;
+    return <div className="p-12 flex justify-center"><AppLoader label="Loading order" /></div>;
   }
 
   if (notFound) {
