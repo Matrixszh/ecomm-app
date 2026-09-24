@@ -124,7 +124,7 @@ export default function RootLayout({
         <Suspense fallback={<div className="h-[92px] w-full bg-[#f6e7eb]" />}>
           <Navbar />
         </Suspense>
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main className="pt-[72px] flex flex-1 flex-col">{children}</main>
         <CartDrawer />
         <SearchModal />
         <Toast />
