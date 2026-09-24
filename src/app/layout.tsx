@@ -37,12 +37,12 @@ function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-[var(--luxe-border-rose)] bg-[var(--luxe-white)]">
       <div className="mx-auto max-w-full bg-[var(--luxe-white)] px-4 py-10">
-        <div className="grid gap-10 border-b border-[var(--luxe-border-rose)] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
+        <div className="grid gap-10 border-b border-[var(--luxe-border-rose)] pb-8 text-center md:grid-cols-[1.3fr_1fr_1fr_0.8fr] md:text-left">
           <div>
             <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[var(--luxe-text)]">
               NM Decor
             </Link>
-            <p className="mt-4 max-w-xs text-[11px] leading-5 text-[var(--luxe-outline)]">
+            <p className="mx-auto mt-4 max-w-xs text-[11px] leading-5 text-[var(--luxe-outline)] md:mx-0">
               Defining serene design through collectible forms. Every detail with a story of artistry.
             </p>
           </div>
@@ -91,7 +91,7 @@ function SiteFooter() {
 
           <div>
             <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Social</h4>
-            <div className="mt-4 flex gap-3 text-[var(--luxe-outline)]">
+            <div className="mt-4 flex justify-center gap-3 text-[var(--luxe-outline)] md:justify-start">
               <a href="#" aria-label="Pinterest" className="rounded-full border border-[#e6dbd4] px-2 py-1 text-[11px] hover:text-[#3b332d]">
                 P
               </a>
