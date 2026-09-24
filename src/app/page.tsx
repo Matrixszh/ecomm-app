@@ -112,7 +112,7 @@ export default function Home() {
         </section>
 
         <section id="design-philosophy" className="border-t border-[var(--luxe-outline-light)] bg-[#faeaed] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid items-center gap-1 lg:grid-cols-[1.45fr_0.9fr] h-[50vh]">
+          <div className="grid items-center gap-1 lg:grid-cols-[1.45fr_0.9fr] h-[80vh] lg:h-[50vh]">
             <div className="grid gap-1 sm:grid-cols-1 pr-0 sm:pr-5 ">
               <div className="relative min-h-[260px] overflow-hidden bg-[var(--luxe-deep-burgundy)] sm:min-h-[500px]">
                 <Image
