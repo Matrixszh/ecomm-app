@@ -16,8 +16,8 @@ const categories = [
 
 const curatedProducts = [
   { name: 'Travertine Wave Table', subtitle: 'Sculpted center piece', href: '/shop/testing-1789224138013', image: '/wave.jpg' },
-  { name: 'Aurora Glass Vessel', href: '/shop', image: '/herojewel.jpeg' },
-  { name: 'Obsidia Table Lamp', href: '/shop', image: '/cat2.jpeg' },
+  { name: 'Aurora Glass Vessel', href: '/shop', image: '/vase.jpg' },
+  { name: 'Obsidia Table Lamp', href: '/shop', image: '/lamp.jpg' },
 ];
 
 export default function Home() {
@@ -46,19 +46,19 @@ export default function Home() {
               priority
               className="h-[540px] w-full object-cover object-center sm:h-[640px] lg:h-[760px]"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.2)_48%,transparent_78%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.6)_48%,transparent_78%)]" />
             <div className="absolute inset-0 px-6 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-16">
-              <div className="max-w-[360px] pt-16 sm:pt-20 lg:pt-24">
+              <div className="w-full md:max-w-[360px] pt-16 sm:pt-20 lg:pt-24 text-center md:text-left">
                 <p className="text-[10px] uppercase tracking-[0.34em] text-[var(--luxe-primary)]">Est. 1924 · Heritage Home</p>
                 <h1 className="mt-5 font-display text-[42px] leading-[0.98] text-[var(--luxe-text)] sm:text-[56px] lg:text-[64px]">
                   Luminous Living.
                   <br />
                   <span className="italic">Artisan Form.</span>
                 </h1>
-                <p className="mt-5 max-w-[290px] text-[13px] leading-6 text-[var(--luxe-text-muted)] sm:text-sm">
+                <p className="mt-5 w-full md:max-w-[290px] text-[13px] leading-6 text-[var(--luxe-text-muted)] sm:text-sm">
                   Discover the sculptural Series — a study in proportion, hand-finished in walnut, alabaster and oak.
                 </p>
-                <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="mt-8 flex flex-wrap items-center gap-4 justify-center md:justify-start">
                   <Link
                     href="/shop"
                     className="inline-flex items-center justify-center rounded-full bg-[var(--luxe-cta)] px-6 py-3 text-[11px] font-medium text-[var(--luxe-white)] transition-colors hover:bg-[var(--luxe-cta-hover)]"
@@ -126,8 +126,8 @@ export default function Home() {
 
             </div>
 
-            <div className="justify-self-end">
-              <h2 className="font-display center text-[34px] leading-none text-[var(--luxe-text)] sm:text-[40px]">
+            <div className="justify-self-center lg:justify-self-end text-center lg:text-left">
+              <h2 className="font-display text-[34px] leading-none text-[var(--luxe-text)] sm:text-[40px]">
                 The Design
                 <br />
                 <span className="italic text-[var(--luxe-dark-rose)]">Philosophy</span>
@@ -136,23 +136,23 @@ export default function Home() {
                 Every object at LUXE is curated for its soul. We partner with heritage workshops across the globe to bring you pieces that balance timeless architectural principles with modern comfort.
               </p>
               <ul className="mt-6 space-y-4 text-[12px] text-[var(--luxe-text-muted)]">
-                <li className="flex items-center gap-3">
+                <li className="flex items-center gap-3 justify-center lg:justify-start">
                   <span className="text-[var(--luxe-primary)]">λ</span>
-                  Architectural integrity
+                  <span className="ml-1">Architectural integrity</span>
                 </li>
-                <li className="flex items-center gap-3">
+                <li className="flex items-center gap-3 justify-center lg:justify-start">
                   <span className="text-[var(--luxe-primary)]">□</span>
-                  Ethically sourced raw materials
+                  <span className="ml-1">Ethically sourced raw materials</span>
                 </li>
               </ul>
-              <Link href="/shop" className="mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-[var(--luxe-primary)] transition-colors hover:text-[var(--luxe-secondary)]">
+              <Link href="/shop" className="pl-8 mt-6 lg:mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-[var(--luxe-primary)] transition-colors hover:text-[var(--luxe-secondary)] mx-auto lg:mx-0">
                 Explore Our Atelier <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="border-t border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+        <section className="border-t border-[var(--luxe-outline-light)] bg-[var(--luxe-white)] px-4 py-[5vh] sm:px-6 lg:px-8 lg:py-16">
           <div className="text-center">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--luxe-primary)]">Signature Series</p>
             <h2 className="mt-4 font-display text-[34px] text-[var(--luxe-text)] sm:text-[40px]">The Curated Home</h2>
@@ -178,13 +178,13 @@ export default function Home() {
             <div className="space-y-5">
               {curatedProducts.slice(1).map((product) => (
                 <Link key={product.name} href={product.href} className="group block border border-[var(--luxe-border-soft)] bg-[var(--luxe-surface)] p-4 shadow-[0_8px_24px_rgba(136,19,55,0.04)]">
-                  <div className="relative aspect-[1.18] overflow-hidden bg-[var(--luxe-surface-alt)]">
+                  <div className="relative aspect-[1.03] overflow-hidden bg-[var(--luxe-surface-alt)]">
                     <Image
                       src={product.image}
                       alt={product.name}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                      sizes="(max-width: 1024px) 100vw, 30vw"
+                      sizes="(max-width: 1024px) 100vw, 20vw"
                     />
                     <button
                       type="button"
