@@ -43,7 +43,7 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
 
   return (
     <Sidebar open={open} setOpen={setOpen} animate>
-      <SidebarBody className={cn('h-full justify-between gap-8 border-r border-[#d0c5af] bg-[#fffdf9] px-4 py-5', variant === 'vendor' && 'vendor-sidebar')}>
+      <SidebarBody className={cn('fixed h-full justify-between gap-8 border-r border-[#d0c5af] bg-[#fffdf9] px-4 py-5', variant === 'vendor' && 'vendor-sidebar', variant === 'admin' && 'admin-sidebar')}>
         <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
           {open ? <LuxeLogo label={variant === 'vendor' ? 'Vendor Portal' : 'Administration'} /> : <LuxeLogoIcon />}
           <nav className="mt-10 flex flex-col gap-2" aria-label={`${variant} navigation`}>
@@ -67,8 +67,10 @@ export default function SidebarDemo({ variant = 'admin' }: SidebarDemoProps) {
                   className={cn(
                     'rounded-lg px-3 py-3 transition-colors hover:bg-[#f6eee7]',
                     isActive && 'bg-[#f5eadc]',
-                                        variant === 'vendor' && 'vendor-nav-link',
-                                        variant === 'vendor' && isActive && 'vendor-nav-active'
+                    variant === 'vendor' && 'vendor-nav-link',
+                    variant === 'vendor' && isActive && 'vendor-nav-active',
+                    variant === 'admin' && 'admin-nav-link',
+                    variant === 'admin' && isActive && 'admin-nav-active'
                   )}
                 />
               );

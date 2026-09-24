@@ -63,27 +63,27 @@ export default function AdminProducts() {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Admin</p>
-          <h1 className="mt-4 text-3xl font-playfair text-[#1c1c18]">Products</h1>
+          <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-text-muted)">Admin</p>
+          <h1 className="mt-4 text-3xl font-display text-(--luxe-text)">Products</h1>
         </div>
         <Link 
           href="/admin/products/new"
-          className="bg-[#d4af37] text-[#1c1c18] px-8 py-4 text-xs tracking-[0.24em] uppercase flex items-center gap-2 hover:bg-[#c29a30] transition-colors"
+          className="bg-(--luxe-cta) text-(--luxe-white) px-8 py-4 text-xs tracking-[0.24em] uppercase flex items-center gap-2 hover:bg-(--luxe-cta-hover) transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Product
         </Link>
       </div>
 
-      <div className="bg-[#ffffff] border border-[#d0c5af] overflow-hidden">
-        <div className="p-4 border-b border-[#d0c5af] flex items-center">
+      <div className="bg-(--luxe-white) border border-(--luxe-outline-light) overflow-hidden">
+        <div className="p-4 border-b border-(--luxe-outline-light) flex items-center">
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7f7663]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--luxe-text-muted)" />
             <input 
               type="text" 
               placeholder="Search products..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent border-b border-[#d0c5af] py-3 pl-10 pr-4 text-sm text-[#1c1c18] placeholder:text-[#7f7663] focus:outline-none focus:border-[#d4af37]"
+              className="w-full bg-transparent border-b border-(--luxe-outline-light) py-3 pl-10 pr-4 text-sm text-(--luxe-text) placeholder:text-(--luxe-text-muted) focus:outline-none focus:border-(--luxe-primary)"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function AdminProducts() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#fcf9f3] text-[#7f7663] text-xs tracking-[0.24em] uppercase border-b border-[#d0c5af]">
+              <tr className="bg-(--luxe-background) text-(--luxe-text-muted) text-xs tracking-[0.24em] uppercase border-b border-(--luxe-outline-light)">
                 <th className="p-4 font-medium">Image</th>
                 <th className="p-4 font-medium">Name</th>
                 <th className="p-4 font-medium">Category</th>
@@ -101,10 +101,10 @@ export default function AdminProducts() {
                 <th className="p-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#d0c5af] text-sm">
+            <tbody className="divide-y divide-(--luxe-outline-light) text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-12 text-center text-[#7f7663]">
+                  <td colSpan={7} className="p-12 text-center text-(--luxe-text-muted)">
                     <div className="flex justify-center">
                       <AppLoader label="Loading products" />
                     </div>
@@ -112,49 +112,49 @@ export default function AdminProducts() {
                 </tr>
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-12 text-center text-[#7f7663]">No products found.</td>
+                  <td colSpan={7} className="p-12 text-center text-(--luxe-text-muted)">No products found.</td>
                 </tr>
               ) : (
                 products.map((product) => (
-                  <tr key={product._id} className="hover:bg-[#f6f3ed] transition-colors">
+                  <tr key={product._id} className="hover:bg-(--luxe-surface) transition-colors">
                     <td className="p-4">
-                      <div className="w-12 h-12 relative bg-[#f6f3ed] border border-[#d0c5af] overflow-hidden">
+                      <div className="w-12 h-12 relative bg-(--luxe-surface) border border-(--luxe-outline-light) overflow-hidden">
                         {product.images?.[0]?.url ? (
                           <CldImage src={product.images[0].url} alt={product.name} fill className="object-cover" sizes="48px" />
                         ) : null}
                       </div>
                     </td>
-                    <td className="p-4 font-medium text-[#1c1c18] max-w-xs truncate">{product.name}</td>
-                    <td className="p-4 text-[#4d4635] capitalize">{product.category?.name || 'N/A'}</td>
-                    <td className="p-4 text-[#1c1c18]">₹{product.price}</td>
+                    <td className="p-4 font-medium text-(--luxe-text) max-w-xs truncate">{product.name}</td>
+                    <td className="p-4 text-(--luxe-text-muted) capitalize">{product.category?.name || 'N/A'}</td>
+                    <td className="p-4 text-(--luxe-text)">₹{product.price}</td>
                     <td className="p-4">
                       <span className={`px-3 py-1 text-[11px] tracking-[0.18em] uppercase border ${
                         product.stock > 10
-                          ? 'bg-[#ffffff] border-[#d0c5af] text-[#2f6f44]'
+                          ? 'bg-(--luxe-white) border-(--luxe-outline-light) text-(--luxe-primary)'
                           : product.stock > 0
-                            ? 'bg-[#ffffff] border-[#d0c5af] text-[#735c00]'
-                            : 'bg-[#ffffff] border-[#d0c5af] text-[#8f0402]'
+                            ? 'bg-(--luxe-white) border-(--luxe-outline-light) text-(--luxe-secondary)'
+                            : 'bg-(--luxe-white) border-(--luxe-outline-light) text-(--luxe-error)'
                       }`}>
                         {product.stock} in stock
                       </span>
                     </td>
                     <td className="p-4">
                       {product.isActive ? (
-                        <span className="text-[#2f6f44] text-xs tracking-[0.18em] uppercase flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-[#2f6f44]" /> Active
+                        <span className="text-(--luxe-primary) text-xs tracking-[0.18em] uppercase flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-(--luxe-primary)" /> Active
                         </span>
                       ) : (
-                        <span className="text-[#7f7663] text-xs tracking-[0.18em] uppercase flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-[#7f7663]" /> Draft
+                        <span className="text-(--luxe-text-muted) text-xs tracking-[0.18em] uppercase flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-(--luxe-text-muted)" /> Draft
                         </span>
                       )}
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <Link href={`/admin/products/${product._id}/edit`} className="p-2 text-[#7f7663] hover:text-[#1c1c18] transition-colors hover:bg-[#f6f3ed]">
+                        <Link href={`/admin/products/${product._id}/edit`} className="p-2 text-(--luxe-text-muted) hover:text-(--luxe-text) transition-colors hover:bg-(--luxe-surface)">
                           <Edit className="w-4 h-4" />
                         </Link>
-                        <button onClick={() => handleDelete(product._id)} className="p-2 text-[#7f7663] hover:text-[#8f0402] transition-colors hover:bg-[#f6f3ed]">
+                        <button onClick={() => handleDelete(product._id)} className="p-2 text-(--luxe-text-muted) hover:text-(--luxe-error) transition-colors hover:bg-(--luxe-surface)">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>

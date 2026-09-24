@@ -1,4 +1,8 @@
 /* Scoped to the vendor shell so shared admin/storefront components retain their styling. */
+body:has(.vendor-portal) > footer {
+  position: relative;
+  z-index: 60;
+}
 .vendor-portal {
   --font-playfair: 'Playfair Display', Georgia, serif;
   --font-sans: var(--font-dm-sans);

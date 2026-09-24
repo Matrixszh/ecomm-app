@@ -21,20 +21,20 @@ type OrderRow = {
 const ORDER_STATUSES = ['placed', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'] as const;
 
 const STATUS_STYLES: Record<string, string> = {
-  placed:     'text-[#1a4a8a] border-[#1a4a8a]',
-  confirmed:  'text-[#735c00] border-[#735c00]',
-  processing: 'text-[#735c00] border-[#735c00]',
-  shipped:    'text-[#4d4635] border-[#4d4635]',
-  delivered:  'text-[#2f6f44] border-[#2f6f44]',
-  cancelled:  'text-[#8f0402] border-[#8f0402]',
-  returned:   'text-[#7f7663] border-[#7f7663]',
+  placed:     'text-(--luxe-primary) border-(--luxe-primary)',
+  confirmed:  'text-(--luxe-secondary) border-(--luxe-secondary)',
+  processing: 'text-(--luxe-secondary) border-(--luxe-secondary)',
+  shipped:    'text-(--luxe-text-muted) border-(--luxe-text-muted)',
+  delivered:  'text-(--luxe-primary) border-(--luxe-primary)',
+  cancelled:  'text-(--luxe-error) border-(--luxe-error)',
+  returned:   'text-(--luxe-text-muted) border-(--luxe-text-muted)',
 };
 
 const PAYMENT_STYLES: Record<string, string> = {
-  pending:  'text-[#735c00]',
-  paid:     'text-[#2f6f44]',
-  failed:   'text-[#8f0402]',
-  refunded: 'text-[#7f7663]',
+  pending:  'text-(--luxe-secondary)',
+  paid:     'text-(--luxe-primary)',
+  failed:   'text-(--luxe-error)',
+  refunded: 'text-(--luxe-text-muted)',
 };
 
 export default function AdminOrders() {
@@ -99,27 +99,27 @@ export default function AdminOrders() {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Admin</p>
-          <h1 className="mt-4 text-3xl font-playfair text-[#1c1c18]">Orders</h1>
+          <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-text-muted)">Admin</p>
+          <h1 className="mt-4 text-3xl font-display text-(--luxe-text)">Orders</h1>
         </div>
       </div>
 
-      <div className="bg-[#ffffff] border border-[#d0c5af] overflow-hidden">
-        <div className="p-4 border-b border-[#d0c5af] flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="bg-(--luxe-white) border border-(--luxe-outline-light) overflow-hidden">
+        <div className="p-4 border-b border-(--luxe-outline-light) flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7f7663]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--luxe-text-muted)" />
             <input
               type="text"
               placeholder="Search by order number..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent border-b border-[#d0c5af] py-3 pl-10 pr-4 text-sm text-[#1c1c18] placeholder:text-[#7f7663] focus:outline-none focus:border-[#d4af37]"
+              className="w-full bg-transparent border-b border-(--luxe-outline-light) py-3 pl-10 pr-4 text-sm text-(--luxe-text) placeholder:text-(--luxe-text-muted) focus:outline-none focus:border-(--luxe-primary)"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-transparent border-b border-[#d0c5af] py-3 px-2 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37] capitalize"
+            className="bg-transparent border-b border-(--luxe-outline-light) py-3 px-2 text-sm text-(--luxe-text) focus:outline-none focus:border-(--luxe-primary) capitalize"
           >
             <option value="">All Statuses</option>
             {ORDER_STATUSES.map((s) => (
@@ -131,7 +131,7 @@ export default function AdminOrders() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#fcf9f3] text-[#7f7663] text-xs tracking-[0.24em] uppercase border-b border-[#d0c5af]">
+              <tr className="bg-(--luxe-background) text-(--luxe-text-muted) text-xs tracking-[0.24em] uppercase border-b border-(--luxe-outline-light)">
                 <th className="p-4 font-medium">Order #</th>
                 <th className="p-4 font-medium">Customer</th>
                 <th className="p-4 font-medium">Date</th>
@@ -140,10 +140,10 @@ export default function AdminOrders() {
                 <th className="p-4 font-medium">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#d0c5af] text-sm">
+            <tbody className="divide-y divide-(--luxe-outline-light) text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="p-12 text-center text-[#7f7663]">
+                  <td colSpan={6} className="p-12 text-center text-(--luxe-text-muted)">
                     <div className="flex justify-center">
                       <AppLoader label="Loading orders" />
                     </div>
@@ -151,22 +151,22 @@ export default function AdminOrders() {
                 </tr>
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-12 text-center text-[#7f7663]">No orders found.</td>
+                  <td colSpan={6} className="p-12 text-center text-(--luxe-text-muted)">No orders found.</td>
                 </tr>
               ) : (
                 orders.map((order) => (
-                  <tr key={order._id} className="hover:bg-[#f6f3ed] transition-colors">
-                    <td className="p-4 font-mono text-xs text-[#4d4635]">{order.orderNumber}</td>
+                  <tr key={order._id} className="hover:bg-(--luxe-surface) transition-colors">
+                    <td className="p-4 font-mono text-xs text-(--luxe-text-muted)">{order.orderNumber}</td>
                     <td className="p-4">
-                      <div className="text-[#1c1c18] font-medium">{order.user?.name || '—'}</div>
-                      <div className="text-[#7f7663] text-xs">{order.user?.email}</div>
+                      <div className="text-(--luxe-text) font-medium">{order.user?.name || '—'}</div>
+                      <div className="text-(--luxe-text-muted) text-xs">{order.user?.email}</div>
                     </td>
-                    <td className="p-4 text-[#7f7663] text-xs">
+                    <td className="p-4 text-(--luxe-text-muted) text-xs">
                       {new Date(order.createdAt).toLocaleDateString('en-IN', {
                         day: 'numeric', month: 'short', year: 'numeric',
                       })}
                     </td>
-                    <td className="p-4 text-[#1c1c18] font-medium">₹{order.totalAmount.toLocaleString()}</td>
+                    <td className="p-4 text-(--luxe-text) font-medium">₹{order.totalAmount.toLocaleString()}</td>
                     <td className="p-4">
                       <span className={`text-xs tracking-[0.18em] uppercase ${PAYMENT_STYLES[order.paymentStatus]}`}>
                         {order.paymentStatus}
@@ -177,10 +177,10 @@ export default function AdminOrders() {
                         value={order.orderStatus}
                         disabled={updatingId === order._id}
                         onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
-                        className={`bg-transparent border px-2 py-1 text-[11px] tracking-[0.18em] uppercase focus:outline-none focus:border-[#d4af37] disabled:opacity-50 ${STATUS_STYLES[order.orderStatus]}`}
+                        className={`bg-transparent border px-2 py-1 text-[11px] tracking-[0.18em] uppercase focus:outline-none focus:border-(--luxe-primary) disabled:opacity-50 ${STATUS_STYLES[order.orderStatus]}`}
                       >
                         {ORDER_STATUSES.map((s) => (
-                          <option key={s} value={s} className="capitalize text-[#1c1c18]">{s}</option>
+                          <option key={s} value={s} className="capitalize text-(--luxe-text)">{s}</option>
                         ))}
                       </select>
                     </td>
@@ -192,20 +192,20 @@ export default function AdminOrders() {
         </div>
 
         {totalPages > 1 && (
-          <div className="p-4 border-t border-[#d0c5af] flex items-center justify-between text-sm text-[#7f7663]">
+          <div className="p-4 border-t border-(--luxe-outline-light) flex items-center justify-between text-sm text-(--luxe-text-muted)">
             <span>Page {page} of {totalPages}</span>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 hover:bg-[#f6f3ed] disabled:opacity-30 transition-colors"
+                className="p-2 hover:bg-(--luxe-surface) disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 hover:bg-[#f6f3ed] disabled:opacity-30 transition-colors"
+                className="p-2 hover:bg-(--luxe-surface) disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

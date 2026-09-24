@@ -1,0 +1,104 @@
+/* Admin-only visual theme; does not affect storefront or vendor routes. */
+body:has(.admin-portal) > footer {
+  position: relative;
+  z-index: 60;
+}
+.admin-portal {
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-dm-sans);
+  background: var(--luxe-background);
+  color: var(--luxe-text);
+  font-family: var(--font-dm-sans), Inter, sans-serif;
+}
+
+.admin-portal :is(h1, h2, h3, .font-display, .font-playfair) {
+  font-family: var(--font-playfair);
+  font-weight: 400;
+}
+
+.admin-portal :is(input, select, textarea, button) {
+  font-family: inherit;
+}
+
+.admin-portal :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--luxe-primary);
+  outline-offset: 3px;
+}
+
+.admin-portal :is(input, select, textarea) {
+  accent-color: var(--luxe-primary);
+}
+
+.admin-portal input::placeholder,
+.admin-portal textarea::placeholder {
+  color: var(--luxe-outline);
+}
+
+.admin-portal .admin-sidebar {
+  background: var(--luxe-sidebar);
+  border-color: var(--luxe-outline-light);
+  color: var(--luxe-text-muted);
+}
+
+.admin-sidebar a,
+.admin-sidebar a > span,
+.admin-sidebar svg {
+  color: var(--luxe-text-muted);
+}
+
+.admin-sidebar nav a {
+  border-radius: 6px;
+  transition: color 200ms, background-color 200ms, box-shadow 200ms;
+}
+
+.admin-sidebar nav a:hover {
+  background: var(--luxe-white);
+  color: var(--luxe-primary);
+}
+
+.admin-sidebar .admin-nav-active {
+  background: var(--luxe-white);
+  box-shadow: inset 2px 0 var(--luxe-gold);
+}
+
+.admin-sidebar .bg-\[\#ead9bf\] {
+  background: var(--luxe-primary-container);
+}
+
+/* Shared admin product form and legacy utility colors, scoped to admin only. */
+.admin-portal [class~="bg-[#fcf9f3]"] { background-color: var(--luxe-background); }
+.admin-portal [class~="bg-[#ffffff]"] { background-color: var(--luxe-white); }
+.admin-portal [class~="bg-[#f6f3ed]"] { background-color: var(--luxe-surface); }
+.admin-portal [class~="border-[#d0c5af]"],
+.admin-portal [class~="border-[#ece3dc]"] { border-color: var(--luxe-outline-light); }
+.admin-portal [class~="border-[#d4af37]"] { border-color: var(--luxe-primary); }
+.admin-portal [class~="text-[#7f7663]"] { color: var(--luxe-outline); }
+.admin-portal [class~="text-[#4d4635]"] { color: var(--luxe-text-muted); }
+.admin-portal [class~="text-[#1c1c18]"] { color: var(--luxe-text); }
+.admin-portal [class~="text-[#d4af37]"] { color: var(--luxe-gold); }
+.admin-portal [class~="bg-[#d4af37]"] { background-color: var(--luxe-cta); color: var(--luxe-white); }
+.admin-portal [class~="bg-[#d4af37]/10"] { background-color: color-mix(in srgb, var(--luxe-primary-container) 30%, transparent); }
+.admin-portal [class~="hover:bg-[#f6eee7]"]:hover { background-color: var(--luxe-white); }
+.admin-sidebar .admin-nav-active {
+  background: var(--luxe-white);
+  box-shadow: inset 2px 0 var(--luxe-gold);
+}
+.admin-sidebar .admin-nav-active > span,
+.admin-sidebar .admin-nav-active svg,
+.admin-sidebar a:hover > span,
+.admin-sidebar a:hover svg { color: var(--luxe-primary); }
+.admin-portal [class~="text-[#876c32]"] { color: var(--luxe-primary); }
+.admin-portal [class~="bg-[#ead9bf]"] { background-color: var(--luxe-primary-container); }
+.admin-portal [class~="border-[#ece3dc]"] { border-color: var(--luxe-outline-light); }
+.admin-portal [class~="text-[#715b36]"] { color: var(--luxe-primary); }
+.admin-portal [class~="text-[#2d251f]"] { color: var(--luxe-text); }
+.admin-portal [class~="text-[#958675]"] { color: var(--luxe-outline); }
+.admin-portal [class~="bg-[#d4af37]"][class~="text-[#1c1c18]"] { color: var(--luxe-white); }
+.admin-portal [class~="border-[#d0c5af]"][class~="bg-[#ffffff]"] { border-color: color-mix(in srgb, var(--luxe-outline-light) 45%, transparent); }
+.admin-portal [class~="bg-[#ffffff]"][class~="p-6"] { box-shadow: 0 4px 18px rgba(45, 19, 29, 0.035); }
+.admin-portal [class~="hover:bg-[#c29a30]"]:hover { background-color: var(--luxe-cta-hover); }
+.admin-portal [class~="hover:border-[#d4af37]"]:hover { border-color: var(--luxe-primary); }
+.admin-portal [class~="focus:border-[#d4af37]"]:focus { border-color: var(--luxe-primary); }
+.admin-portal [class~="hover:bg-[#f6f3ed]"]:hover { background-color: var(--luxe-surface); }
+.admin-portal [class~="hover:text-[#1c1c18]"]:hover { color: var(--luxe-primary); }
+.admin-portal [class~="hover:text-[#8f0402]"]:hover { color: var(--luxe-error); }

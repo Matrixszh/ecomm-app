@@ -23,7 +23,7 @@ const VendorLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   }
 
   return (
-    <div className="vendor-portal pt-[72px] flex min-h-[calc(100vh-104px)] min-w-0 flex-1 flex-col overflow-hidden bg-[var(--luxe-background)] md:flex-row">
+    <div className="vendor-portal flex min-h-[calc(100vh-104px)] min-w-0 flex-1 flex-col overflow-hidden bg-[var(--luxe-background)] md:flex-row">
       <SidebarDemo variant="vendor" />
       <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-3 sm:p-4 md:p-8">{children}</main>
     </div>
