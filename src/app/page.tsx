@@ -80,7 +80,7 @@ export default function Home() {
 
         <section className="bg-[var(--luxe-white)] px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
           <div className="flex items-end justify-between gap-6">
-            <div>
+            <div className="w-full text-center sm:w-auto sm:text-left">
               <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--luxe-primary)]">The Curation</p>
               <h2 className="mt-4 font-display text-[34px] text-[var(--luxe-text)] sm:text-[40px]">Curated Categories</h2>
             </div>
