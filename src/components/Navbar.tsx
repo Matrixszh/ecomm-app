@@ -187,7 +187,7 @@ export default function Navbar() {
                     : 'font-playfair text-2xl tracking-[0.05em]'
                 }`}
               >
-                {isHome ? 'LUXE' : 'THE ATELIER'}
+                {isHome ? 'NMDecor' : 'NMDecor'}
               </Link>
 
               <div className="flex min-w-0 items-center gap-6">
@@ -233,7 +233,7 @@ export default function Navbar() {
                     : 'tracking-[0.08em]'
                 }`}
               >
-                {isHome ? 'LUXE' : 'THE ATELIER'}
+                {isHome ? 'NMDecor' : 'NMDecor'}
               </Link>
             </div>
 

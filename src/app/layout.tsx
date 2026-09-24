@@ -40,7 +40,7 @@ function SiteFooter() {
         <div className="grid gap-10 border-b border-[var(--luxe-border-rose)] pb-8 md:grid-cols-[1.3fr_1fr_1fr_0.8fr]">
           <div>
             <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[var(--luxe-text)]">
-              Luxe Heritage
+              NM Decor
             </Link>
             <p className="mt-4 max-w-xs text-[11px] leading-5 text-[var(--luxe-outline)]">
               Defining serene design through collectible forms. Every detail with a story of artistry.
@@ -106,7 +106,7 @@ function SiteFooter() {
         </div>
 
         <div className="pt-5 text-center text-[10px] uppercase tracking-[0.18em] text-[#a3978d]">
-          © 2026 Luxe Heritage Home. All rights reserved.
+          © 2026 NM Company. All rights reserved.
         </div>
       </div>
     </footer>

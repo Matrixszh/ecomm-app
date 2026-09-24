@@ -111,7 +111,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="design-philosophy" className="border-t border-[var(--luxe-outline-light)] bg-[var(--luxe-surface)] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+        <section id="design-philosophy" className="border-t border-[var(--luxe-outline-light)] bg-[#faeaed] px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid items-center gap-1 lg:grid-cols-[1.45fr_0.9fr] h-[50vh]">
             <div className="grid gap-1 sm:grid-cols-1 pr-0 sm:pr-5 ">
               <div className="relative min-h-[260px] overflow-hidden bg-[var(--luxe-deep-burgundy)] sm:min-h-[500px]">
@@ -133,7 +133,7 @@ export default function Home() {
                 <span className="italic text-[var(--luxe-dark-rose)]">Philosophy</span>
               </h2>
               <p className="mt-5 text-sm leading-6 text-[var(--luxe-text-muted)]">
-                Every object at LUXE is curated for its soul. We partner with heritage workshops across the globe to bring you pieces that balance timeless architectural principles with modern comfort.
+                Every object at NM Decor is curated for its soul. We partner with heritage workshops across the globe to bring you pieces that balance timeless architectural principles with modern comfort.
               </p>
               <ul className="mt-6 space-y-4 text-[12px] text-[var(--luxe-text-muted)]">
                 <li className="flex items-center gap-3 justify-center lg:justify-start">
