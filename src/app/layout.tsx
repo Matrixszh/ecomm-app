@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import SearchModal from '@/components/SearchModal';
 import Toast from '@/components/Toast';
+import SiteReveal from '@/components/SiteReveal';
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
 
@@ -24,12 +25,12 @@ const dmSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Maison | Luxury E-Commerce',
-  description: 'A luxury e-commerce experience with boutique craftsmanship.',
+  title: 'NM Decor',
+  description: 'An e-commerce platform for all your furninshing needs.',
   openGraph: {
-    title: 'Maison | Luxury E-Commerce',
-    description: 'A luxury e-commerce experience with boutique craftsmanship.',
-    images: [{ url: 'https://res.cloudinary.com/demo/image/upload/sample.jpg' }],
+    title: 'NM Decor',
+    description: 'An e-commerce platform for all your furninshing needs',
+    images: [{ url: 'https://res.cloudinary.com/dldywjxm1/image/upload/v1790374939/gemini-svg_urt6pr.svg' }],
   },
 };
 
@@ -129,6 +130,7 @@ export default function RootLayout({
         <SearchModal />
         <Toast />
         <SiteFooter />
+        <SiteReveal />
       </body>
     </html>
   );

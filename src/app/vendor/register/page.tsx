@@ -129,16 +129,16 @@ export default function Page() {
           paused={false}
         />
       </div>
-      <div className="relative z-10 hidden md:flex md:w-2/5 flex-col justify-center items-center p-12 overflow-hidden border-r border-(--luxe-outline-light) bg-(--luxe-white)/75 backdrop-blur-sm">
+      <div className="relative z-10  md:flex md:w-2/5 flex-col justify-center items-center p-12 overflow-hidden border-r border-(--luxe-outline-light) bg-(--luxe-white)/5 backdrop-blur-sm">
         <div className="relative z-10 text-center">
-          <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Maison</p>
-          <h1 className="mt-6 text-5xl font-display font-normal text-[var(--luxe-text)] tracking-[0.18em] uppercase">Maison</h1>
-          <p className="mt-4 text-sm text-[var(--luxe-text-muted)] max-w-sm">
-            Join the list for early access to launches and private drops.
+          <p className="text-xs tracking-[0.28em] uppercase text-white">NM Decor</p>
+          <h1 className="mt-6 text-5xl font-display font-normal text-white tracking-[0.18em] uppercase">NM decor</h1>
+          <p className="mt-4 text-sm text-white max-w-sm">
+            Join for early access to launches and private drops.
           </p>
         </div>
       </div>
-      <div className="relative z-10 w-full md:w-3/5 flex flex-col justify-center items-center p-8 sm:p-12 bg-(--luxe-background)/85 backdrop-blur-sm">
+      <div className="relative z-10 w-full md:w-3/5 flex flex-col justify-center items-center p-8 sm:p-12 bg-(--luxe-background)/55 backdrop-blur-sm">
         <div className="w-full max-w-xl">
           <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Become a Seller</p>
           <h2 className="mt-4 text-3xl font-display font-normal text-[var(--luxe-text)] mb-2">Create a Seller Account</h2>
