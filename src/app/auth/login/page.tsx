@@ -67,7 +67,7 @@ function LoginContent() {
   };
 
   return (
-    <div className="relative isolate min-h-screen flex flex-col md:flex-row overflow-hidden bg-(--luxe-background)">
+    <div className="relative isolate h-full flex flex-col md:flex-row overflow-hidden bg-(--luxe-background)">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
         <GhostFibers
           lineColor="#785460"
@@ -113,7 +113,7 @@ function LoginContent() {
           <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-outline)">Sign In</p>
           <h2 className="mt-4 text-3xl font-playfair text-(--luxe-text) mb-2">Welcome Back</h2>
           <p className="text-sm text-(--luxe-text-muted) mb-10">Sign in to continue.</p>
-          
+
           <div className="space-y-6">
             <div className="w-full bg-(--luxe-white) border border-(--luxe-outline-light) text-(--luxe-outline) font-medium py-4 text-center text-sm">
               Google Sign-In is disabled
@@ -164,7 +164,7 @@ function LoginContent() {
               </button>
             </form>
           </div>
-          
+
           <p className="mt-10 text-center text-sm text-(--luxe-text-muted)">
             Do not have an account?{' '}
             <Link href="/auth/register" className="text-(--luxe-text) underline underline-offset-8 decoration-(--luxe-gold) font-medium">

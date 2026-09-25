@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import SidebarDemo from '@/components/sidebar-demo';
 import { useVendorStore } from '@/store/vendorStore';
 import { useAuthStore } from '@/store/authStore';
@@ -10,6 +11,8 @@ import '@fontsource/playfair-display/600.css';
 import './vendor-theme.css';
 
 const VendorLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const pathname = usePathname();
+  const isVendorRegistration = pathname === '/vendor/register';
   const { vendorProfile, loading, fetchVendorProfile } = useVendorStore();
   const firebaseUser = useAuthStore((state) => state.firebaseUser);
 
@@ -23,9 +26,9 @@ const VendorLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   }
 
   return (
-    <div className="vendor-portal flex min-h-[calc(100vh-104px)] min-w-0 flex-1 flex-col overflow-hidden bg-[var(--luxe-background)] md:flex-row">
-      <SidebarDemo variant="vendor" />
-      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-3 sm:p-4 md:p-8">{children}</main>
+    <div className="vendor-portal flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[var(--luxe-background)] md:flex-row">
+      {!isVendorRegistration && <SidebarDemo variant="vendor" />}
+      <main className="h-full min-w-0 flex-1 overflow-y-auto">{children}</main>
     </div>
   );
 };

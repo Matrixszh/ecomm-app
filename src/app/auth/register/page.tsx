@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import GhostFibers from '@/components/GhostFibers';
 
 export default function Register() {
   const { firebaseUser, mongoUser } = useAuthStore();
@@ -50,8 +51,39 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fcf9f3]">
-      <div className="hidden md:flex md:w-1/2 relative flex-col justify-center items-center p-12 overflow-hidden border-r border-[#d0c5af] bg-[#ffffff]">
+    <div className="relative isolate h-full flex flex-col md:flex-row overflow-hidden bg-(--luxe-background)">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <GhostFibers
+          lineColor="#785460"
+          glowColor="#f4c6d4"
+          speed={0.83}
+          scale={2}
+          rotation={0}
+          rotationSpeed={0.25}
+          layers={4}
+          waveAmplitude={0.015}
+          waveFrequency={3}
+          waveSpeed={0.15}
+          layerSpeed={0.08}
+          twist={0.1}
+          twistFrequency={5}
+          twistSpeed={1.2}
+          lineFrequency={5}
+          lineSpacing={2}
+          lineSharpness={16}
+          glowFalloff={10}
+          glowIntensity={1.6}
+          brightness={2}
+          blueBoost={1.25}
+          vignette={0.8}
+          grain={0.05}
+          dpr={1}
+          lightMode={false}
+          fps={60}
+          paused={false}
+        />
+      </div>
+      <div className="relative z-10 hidden md:flex md:w-1/2 flex-col justify-center items-center p-12 overflow-hidden border-r border-(--luxe-outline-light) bg-(--luxe-white)/75 backdrop-blur-sm">
         <div className="relative z-10 text-center">
           <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Maison</p>
           <h1 className="mt-6 text-5xl font-playfair text-[#1c1c18] tracking-[0.18em] uppercase">Maison</h1>
@@ -60,12 +92,28 @@ export default function Register() {
           </p>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
+      <div className="relative z-10 w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12 bg-(--luxe-background)/85 backdrop-blur-sm">
         <div className="w-full max-w-md">
           <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Create Account</p>
           <h2 className="mt-4 text-3xl font-playfair text-[#1c1c18] mb-2">Create an Account</h2>
-          <p className="text-sm text-[#4d4635] mb-10">Sign up to get started.</p>
-          
+          <p className="text-sm text-[#4d4635] mb-6">Sign up to get started.</p>
+
+          <div className="mb-8 grid grid-cols-2 gap-3" aria-label="Choose account type">
+            <Link
+              href="/auth/register"
+              aria-current="page"
+              className="border border-[var(--luxe-outline-light)] bg-[var(--luxe-primary-container)] px-4 py-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-[var(--luxe-primary)] transition-colors"
+            >
+              Customer
+            </Link>
+            <Link
+              href="/vendor/register"
+              className="border border-[var(--luxe-outline-light)] bg-white px-4 py-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-[var(--luxe-text-muted)] transition-colors hover:border-[var(--luxe-primary)] hover:text-[var(--luxe-primary)]"
+            >
+              Vendor
+            </Link>
+          </div>
+
           <div className="space-y-6">
             <div className="w-full bg-[#ffffff] border border-[#d0c5af] text-[#7f7663] font-medium py-4 text-center text-sm">
               Google Sign-In is disabled
@@ -124,7 +172,7 @@ export default function Register() {
               {error && <p className="text-sm text-red-500">{error}</p>}
             </form>
           </div>
-          
+
           <p className="mt-10 text-center text-sm text-[#4d4635]">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37] font-medium">

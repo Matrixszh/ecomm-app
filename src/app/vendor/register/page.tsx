@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import GhostFibers from '@/components/GhostFibers';
 
 export default function Page() {
   const { firebaseUser, mongoUser } = useAuthStore();
@@ -22,7 +23,7 @@ export default function Page() {
   useEffect(() => {
     if (mongoUser?.role === 'vendor') {
       router.push('/vendor/dashboard');
-    } 
+    }
   }, [firebaseUser, mongoUser, router]);
 
   const handleStoreNameChange = (val: string) => {
@@ -96,8 +97,39 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[var(--luxe-background)]">
-      <div className="hidden md:flex md:w-1/2 relative flex-col justify-center items-center p-12 overflow-hidden border-r border-[var(--luxe-outline-light)] bg-[var(--luxe-white)]">
+    <div className="relative isolate h-full flex flex-col md:flex-row overflow-hidden bg-(--luxe-background)">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <GhostFibers
+          lineColor="#785460"
+          glowColor="#f4c6d4"
+          speed={0.83}
+          scale={2}
+          rotation={0}
+          rotationSpeed={0.25}
+          layers={4}
+          waveAmplitude={0.015}
+          waveFrequency={3}
+          waveSpeed={0.15}
+          layerSpeed={0.08}
+          twist={0.1}
+          twistFrequency={5}
+          twistSpeed={1.2}
+          lineFrequency={5}
+          lineSpacing={2}
+          lineSharpness={16}
+          glowFalloff={10}
+          glowIntensity={1.6}
+          brightness={2}
+          blueBoost={1.25}
+          vignette={0.8}
+          grain={0.05}
+          dpr={1}
+          lightMode={false}
+          fps={60}
+          paused={false}
+        />
+      </div>
+      <div className="relative z-10 hidden md:flex md:w-2/5 flex-col justify-center items-center p-12 overflow-hidden border-r border-(--luxe-outline-light) bg-(--luxe-white)/75 backdrop-blur-sm">
         <div className="relative z-10 text-center">
           <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Maison</p>
           <h1 className="mt-6 text-5xl font-display font-normal text-[var(--luxe-text)] tracking-[0.18em] uppercase">Maison</h1>
@@ -106,11 +138,27 @@ export default function Page() {
           </p>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
-        <div className="w-full max-w-md">
+      <div className="relative z-10 w-full md:w-3/5 flex flex-col justify-center items-center p-8 sm:p-12 bg-(--luxe-background)/85 backdrop-blur-sm">
+        <div className="w-full max-w-xl">
           <p className="text-xs tracking-[0.28em] uppercase text-[var(--luxe-text-muted)]">Become a Seller</p>
           <h2 className="mt-4 text-3xl font-display font-normal text-[var(--luxe-text)] mb-2">Create a Seller Account</h2>
-          <p className="text-sm text-[var(--luxe-text-muted)] mb-10">Sign up and set up your store.</p>
+          <p className="text-sm text-[var(--luxe-text-muted)] mb-6">Sign up and set up your store.</p>
+
+          <div className="mb-8 grid grid-cols-2 gap-3" aria-label="Choose account type">
+            <Link
+              href="/auth/register"
+              className="border border-(--luxe-outline-light) bg-white px-4 py-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-(--luxe-text-muted) transition-colors hover:border-(--luxe-primary) hover:text-(--luxe-primary)"
+            >
+              Customer
+            </Link>
+            <Link
+              href="/vendor/register"
+              aria-current="page"
+              className="border border-(--luxe-outline-light) bg-(--luxe-primary-container) px-4 py-3 text-center text-xs font-medium uppercase tracking-[0.14em] text-(--luxe-primary) transition-colors"
+            >
+              Vendor
+            </Link>
+          </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
