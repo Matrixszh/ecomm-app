@@ -30,22 +30,22 @@ function SuccessContent() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16 flex flex-col min-h-[60vh]">
       <div className="text-center">
-        <div className="text-base font-playfair tracking-[0.28em] uppercase text-[#1c1c18]">Maison</div>
+        <div className="text-base font-playfair tracking-[0.28em] uppercase text-(--luxe-text)">Maison</div>
 
         <motion.div
           initial={{ scale: 0.98, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="mt-10 inline-flex items-center justify-center w-16 h-16 border border-[#d0c5af] bg-[#ffffff]"
+          className="mt-10 inline-flex items-center justify-center w-16 h-16 border border-(--luxe-outline-light) bg-(--luxe-white)"
         >
-          <Check className="w-8 h-8 text-[#d4af37]" />
+          <Check className="w-8 h-8 text-(--luxe-primary)" />
         </motion.div>
 
         <motion.h1
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="mt-10 text-4xl font-playfair text-[#1c1c18]"
+          className="mt-10 text-4xl font-playfair text-(--luxe-text)"
         >
           Your Order is Confirmed
         </motion.h1>
@@ -54,26 +54,26 @@ function SuccessContent() {
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.18 }}
-          className="mt-4 text-sm text-[#4d4635]"
+          className="mt-4 text-sm text-(--luxe-text-muted)"
         >
-          Order <span className="font-medium text-[#1c1c18]">{orderId}</span>. A confirmation email has been sent.
+          Order <span className="font-medium text-(--luxe-text)">{orderId}</span>. A confirmation email has been sent.
         </motion.p>
 
-        <div className="mt-10 border border-[#d0c5af] bg-[#f6f3ed] px-6 py-5 inline-block">
-          <p className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Estimated Delivery</p>
-          <p className="mt-2 text-sm text-[#1c1c18]">3–5 business days</p>
+        <div className="mt-10 border border-(--luxe-outline-light) bg-(--luxe-surface) px-6 py-5 inline-block">
+          <p className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted)">Estimated Delivery</p>
+          <p className="mt-2 text-sm text-(--luxe-text)">3–5 business days</p>
         </div>
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/account/orders"
-            className="bg-[#d4af37] text-[#1c1c18] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+            className="bg-(--luxe-cta) text-(--luxe-white) px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors"
           >
             Track Order
           </Link>
           <Link
             href="/shop"
-            className="border border-[#d0c5af] text-[#1c1c18] px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+            className="border border-(--luxe-outline-light) text-(--luxe-text) px-10 py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-surface) transition-colors"
           >
             Continue Shopping
           </Link>
@@ -82,7 +82,7 @@ function SuccessContent() {
 
       {recommended.length > 0 ? (
         <div className="mt-16">
-          <h2 className="text-xl font-playfair text-[#1c1c18]">You May Also Like</h2>
+          <h2 className="text-xl font-playfair text-(--luxe-text)">You May Also Like</h2>
           <div className="mt-8 flex gap-6 overflow-x-auto pb-2">
             {recommended.map((p) => (
               <div key={p._id} className="min-w-[260px] max-w-[260px]">

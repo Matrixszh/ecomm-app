@@ -6,6 +6,7 @@ import { useEffect, Suspense, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import GhostFibers from '@/components/GhostFibers';
 import AppLoader from '@/components/AppLoader';
 
 function LoginContent() {
@@ -66,42 +67,73 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fcf9f3]">
-      <div className="hidden md:flex md:w-1/2 relative flex-col justify-center items-center p-12 overflow-hidden border-r border-[#d0c5af] bg-[#ffffff]">
+    <div className="relative isolate min-h-screen flex flex-col md:flex-row overflow-hidden bg-(--luxe-background)">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <GhostFibers
+          lineColor="#785460"
+          glowColor="#f4c6d4"
+          speed={0.83}
+          scale={2}
+          rotation={0}
+          rotationSpeed={0.25}
+          layers={4}
+          waveAmplitude={0.015}
+          waveFrequency={3}
+          waveSpeed={0.15}
+          layerSpeed={0.08}
+          twist={0.1}
+          twistFrequency={5}
+          twistSpeed={1.2}
+          lineFrequency={5}
+          lineSpacing={2}
+          lineSharpness={16}
+          glowFalloff={10}
+          glowIntensity={1.6}
+          brightness={2}
+          blueBoost={1.25}
+          vignette={0.8}
+          grain={0.05}
+          dpr={1}
+          lightMode={false}
+          fps={60}
+          paused={false}
+        />
+      </div>
+      <div className="relative z-10 hidden md:flex md:w-1/2 flex-col justify-center items-center p-12 overflow-hidden border-r border-(--luxe-outline-light) bg-(--luxe-white)/75 backdrop-blur-sm">
         <div className="relative z-10 text-center">
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Maison</p>
-          <h1 className="mt-6 text-5xl font-playfair text-[#1c1c18] tracking-[0.18em] uppercase">Maison</h1>
-          <p className="mt-4 text-sm text-[#4d4635] max-w-sm">
+          <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-outline)">Maison</p>
+          <h1 className="mt-6 text-5xl font-playfair text-(--luxe-text) tracking-[0.18em] uppercase">Maison</h1>
+          <p className="mt-4 text-sm text-(--luxe-text-muted) max-w-sm">
             A curated selection with an editorial sensibility.
           </p>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
+      <div className="relative z-10 w-full md:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12 bg-(--luxe-background)/85 backdrop-blur-sm">
         <div className="w-full max-w-md">
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Sign In</p>
-          <h2 className="mt-4 text-3xl font-playfair text-[#1c1c18] mb-2">Welcome Back</h2>
-          <p className="text-sm text-[#4d4635] mb-10">Sign in to continue.</p>
+          <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-outline)">Sign In</p>
+          <h2 className="mt-4 text-3xl font-playfair text-(--luxe-text) mb-2">Welcome Back</h2>
+          <p className="text-sm text-(--luxe-text-muted) mb-10">Sign in to continue.</p>
           
           <div className="space-y-6">
-            <div className="w-full bg-[#ffffff] border border-[#d0c5af] text-[#7f7663] font-medium py-4 text-center text-sm">
+            <div className="w-full bg-(--luxe-white) border border-(--luxe-outline-light) text-(--luxe-outline) font-medium py-4 text-center text-sm">
               Google Sign-In is disabled
             </div>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#d0c5af]"></div>
+                <div className="w-full border-t border-(--luxe-outline-light)"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-[#fcf9f3] text-xs tracking-[0.24em] uppercase text-[#7f7663]">Email</span>
+                <span className="px-4 bg-(--luxe-background) text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Email</span>
               </div>
             </div>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663] mb-2">Email</label>
+                <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline) mb-2">Email</label>
                 <input
                   type="email"
-                  className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                  className="w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm text-(--luxe-text) focus:outline-none focus:border-(--luxe-primary)"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -110,32 +142,32 @@ function LoginContent() {
               </div>
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Password</label>
-                  <Link href="/auth/forgot-password" className="text-xs tracking-[0.18em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]">Forgot?</Link>
+                  <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Password</label>
+                  <Link href="/auth/forgot-password" className="text-xs tracking-[0.18em] uppercase text-(--luxe-text) underline underline-offset-8 decoration-(--luxe-gold)">Forgot?</Link>
                 </div>
                 <input
                   type="password"
-                  className="w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm text-[#1c1c18] focus:outline-none focus:border-[#d4af37]"
+                  className="w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm text-(--luxe-text) focus:outline-none focus:border-(--luxe-primary)"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   suppressHydrationWarning={true}
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-(--luxe-error)">{error}</p>}
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] disabled:opacity-60 transition-colors"
+                className="w-full bg-(--luxe-cta) text-(--luxe-white) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) disabled:opacity-60 transition-colors"
               >
                 {submitting ? 'Signing In...' : 'Sign In'}
               </button>
             </form>
           </div>
           
-          <p className="mt-10 text-center text-sm text-[#4d4635]">
+          <p className="mt-10 text-center text-sm text-(--luxe-text-muted)">
             Do not have an account?{' '}
-            <Link href="/auth/register" className="text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37] font-medium">
+            <Link href="/auth/register" className="text-(--luxe-text) underline underline-offset-8 decoration-(--luxe-gold) font-medium">
               Sign up
             </Link>
           </p>

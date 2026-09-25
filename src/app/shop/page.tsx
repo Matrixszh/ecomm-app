@@ -76,31 +76,31 @@ function ShopContent() {
     : 'Heritage Home Collections';
 
   return (
-    <div className="bg-[#fbf8f5] px-3 pb-0 sm:px-5 lg:px-6">
-      <div className="mx-auto min-h-[calc(100vh-100px)] max-w-[1420px] bg-[#fffdfb] px-6 pb-24 pt-10 sm:px-10 lg:px-14 lg:pt-12">
+    <div className="bg-(--luxe-background) px-3 pb-0 sm:px-5 lg:px-6">
+      <div className="mx-auto min-h-[calc(100vh-100px)] max-w-[1420px] bg-(--luxe-white) px-6 pb-24 pt-10 sm:px-10 lg:px-14 lg:pt-12">
         <header className="max-w-[760px]">
-          <h1 className="font-display text-[43px] leading-[1.02] text-[#29231f] sm:text-[50px] lg:text-[56px]">
+          <h1 className="font-display text-[43px] leading-[1.02] text-(--luxe-text) sm:text-[50px] lg:text-[56px]">
             {categoryName}
           </h1>
-          <p className="mt-4 max-w-[650px] text-[15px] leading-6 text-[#948985] sm:text-base">
+          <p className="mt-4 max-w-[650px] text-[15px] leading-6 text-(--luxe-text-muted) sm:text-base">
             Curating a sanctuary of architectural silhouettes and artisanal textures for the contemporary dwelling.
           </p>
         </header>
 
-        <div className="mt-12 flex items-center justify-between border-b border-[#eee7e2] pb-4 md:hidden">
+        <div className="mt-12 flex items-center justify-between border-b border-(--luxe-outline-light) pb-4 md:hidden">
           <button
             type="button"
             onClick={() => setShowFilters(true)}
-            className="text-[11px] uppercase tracking-[0.22em] text-[#806d52]"
+            className="text-[11px] uppercase tracking-[0.22em] text-(--luxe-text-muted) focus:text-(--luxe-primary)"
           >
             Filters
           </button>
-          <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[#806d52]">
+          <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-(--luxe-text-muted)">
             Sort by
             <select
               value={currentSort}
               onChange={(event) => updateFilter('sort', event.target.value)}
-              className="bg-transparent text-[11px] uppercase tracking-[0.12em] text-[#7d6c55] focus:outline-none"
+              className="bg-transparent text-[11px] uppercase tracking-[0.12em] text-(--luxe-text-muted) focus:outline-none focus:text-(--luxe-primary)"
             >
               <option value="newest">Newest</option>
               <option value="price_asc">Price (Low)</option>
@@ -113,19 +113,19 @@ function ShopContent() {
         <div className="mt-10 grid gap-8 md:grid-cols-[210px_minmax(0,1fr)] lg:gap-32">
           <aside
             className={`${
-              showFilters ? 'fixed inset-0 z-[60] translate-x-0 bg-[#fffdfb] p-8' : 'hidden'
+              showFilters ? 'fixed inset-0 z-[60] translate-x-0 bg-(--luxe-white) p-8' : 'hidden'
             } left-0 top-0 md:static md:block md:bg-transparent md:p-0`}
           >
             <div className="mb-8 flex items-center justify-between md:hidden">
-              <span className="text-[11px] uppercase tracking-[0.24em] text-[#806d52]">Filters</span>
+              <span className="text-[11px] uppercase tracking-[0.24em] text-(--luxe-text-muted)">Filters</span>
               <button type="button" onClick={() => setShowFilters(false)} aria-label="Close filters">
-                <X className="h-5 w-5 text-[#6c5e55]" />
+                <X className="h-5 w-5 text-(--luxe-text-muted)" />
               </button>
             </div>
 
             <div className="space-y-8">
               <div>
-                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Material</h2>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-(--luxe-secondary)">Material</h2>
                 <div className="mt-5 space-y-4">
                   {['raw-marble', 'smoked-oak', 'hand-thrown-ceramic', 'brushed-brass'].map((value) => {
                     const label = value
@@ -133,17 +133,17 @@ function ShopContent() {
                       .map((part) => part[0].toUpperCase() + part.slice(1))
                       .join(' ');
                     return (
-                      <label key={value} className="flex cursor-pointer items-center gap-3 text-[14px] text-[#6d625d]">
+                      <label key={value} className="flex cursor-pointer items-center gap-3 text-[14px] text-(--luxe-text-muted)">
                         <input
                           type="checkbox"
                           checked={material === value}
                           onChange={() => setMaterial(material === value ? '' : value)}
                           className="peer sr-only"
                         />
-                        <span className="flex h-[14px] w-[14px] items-center justify-center rounded-[2px] border border-[#d9d0cb] text-[10px] text-white peer-checked:border-[#80662e] peer-checked:bg-[#80662e]">
+                        <span className="flex h-[14px] w-[14px] items-center justify-center rounded-[2px] border border-(--luxe-outline-light) text-[10px] text-(--luxe-white) peer-checked:border-(--luxe-primary) peer-checked:bg-(--luxe-primary)">
                           {material === value ? '✓' : ''}
                         </span>
-                        <span className={material === value ? 'font-medium text-[#876c32]' : ''}>{label}</span>
+                        <span className={material === value ? 'font-medium text-(--luxe-primary)' : ''}>{label}</span>
                       </label>
                     );
                   })}
@@ -151,12 +151,12 @@ function ShopContent() {
               </div>
 
               <div>
-                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Category</h2>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-(--luxe-secondary)">Category</h2>
                 <div className="mt-5 space-y-4">
                   <button
                     type="button"
                     onClick={() => updateFilter('category', '')}
-                    className={`block text-left text-[14px] ${!currentCategory ? 'font-medium text-[#876c32]' : 'text-[#6d625d]'}`}
+                    className={`block text-left text-[14px] ${!currentCategory ? 'font-medium text-(--luxe-primary)' : 'text-(--luxe-text-muted)'}`}
                   >
                     All Collections
                   </button>
@@ -165,7 +165,7 @@ function ShopContent() {
                       key={category._id}
                       type="button"
                       onClick={() => updateFilter('category', category.slug)}
-                      className={`block text-left text-[14px] ${currentCategory === category.slug ? 'font-medium text-[#876c32]' : 'text-[#6d625d]'}`}
+                      className={`block text-left text-[14px] ${currentCategory === category.slug ? 'font-medium text-(--luxe-primary)' : 'text-(--luxe-text-muted)'}`}
                     >
                       {category.name}
                     </button>
@@ -174,10 +174,10 @@ function ShopContent() {
               </div>
 
               <div>
-                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#8c7449]">Price Range</h2>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-(--luxe-secondary)">Price Range</h2>
                 <div className="mt-5 px-1">
-                  <div className="h-[3px] rounded-full bg-[#e5dfdc]" />
-                  <div className="mt-3 flex justify-between text-[13px] text-[#6d625d]">
+                  <div className="h-[3px] rounded-full bg-(--luxe-outline-light)" />
+                  <div className="mt-3 flex justify-between text-[13px] text-(--luxe-text-muted)">
                     <span>$200</span>
                     <span>$15,000+</span>
                   </div>
@@ -191,7 +191,7 @@ function ShopContent() {
                   router.push('/shop');
                   setShowFilters(false);
                 }}
-                className="w-full bg-[#211e1d] py-3 text-[11px] uppercase tracking-[0.2em] text-[#fffaf7] transition-colors hover:bg-[#423a35]"
+                className="w-full bg-(--luxe-cta) py-3 text-[11px] uppercase tracking-[0.2em] text-(--luxe-white) transition-colors hover:bg-(--luxe-cta-hover)"
               >
                 Apply Filters
               </button>
@@ -199,14 +199,14 @@ function ShopContent() {
           </aside>
 
           <section className="min-w-0">
-            <div className="mb-8 hidden items-center justify-between border-b border-[#eee7e2] pb-4 md:flex">
-              <p className="text-[14px] text-[#948985]">Showing {products.length ? (currentPage - 1) * 6 + 1 : 0}–{Math.min(currentPage * 6, total)} of {total || 0} products</p>
-              <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#806d52]">
+            <div className="mb-8 hidden items-center justify-between border-b border-(--luxe-outline-light) pb-4 md:flex">
+              <p className="text-[14px] text-(--luxe-text-muted)">Showing {products.length ? (currentPage - 1) * 6 + 1 : 0}–{Math.min(currentPage * 6, total)} of {total || 0} products</p>
+              <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-(--luxe-text-muted)">
                 Sort by:
                 <select
                   value={currentSort}
                   onChange={(event) => updateFilter('sort', event.target.value)}
-                  className="appearance-none bg-transparent pr-5 text-[11px] uppercase tracking-[0.18em] text-[#806d52] focus:outline-none"
+                  className="appearance-none bg-transparent pr-5 text-[11px] uppercase tracking-[0.18em] text-(--luxe-text-muted) focus:outline-none focus:text-(--luxe-primary)"
                 >
                   <option value="newest">Newest</option>
                   <option value="price_asc">Price (Low)</option>
@@ -234,21 +234,21 @@ function ShopContent() {
               </div>
             ) : (
               <div className="py-24 text-center">
-                <h3 className="font-display text-2xl text-[#2f2822]">No results</h3>
-                <p className="mt-3 text-sm text-[#81756e]">Adjust filters to refine your selection.</p>
-                <button type="button" onClick={() => router.push('/shop')} className="mt-7 text-[11px] uppercase tracking-[0.2em] text-[#876c32] underline underline-offset-8">
+                <h3 className="font-display text-2xl text-(--luxe-text)">No results</h3>
+                <p className="mt-3 text-sm text-(--luxe-text-muted)">Adjust filters to refine your selection.</p>
+                <button type="button" onClick={() => router.push('/shop')} className="mt-7 text-[11px] uppercase tracking-[0.2em] text-(--luxe-primary) underline underline-offset-8 focus:text-(--luxe-gold)">
                   Clear all filters
                 </button>
               </div>
             )}
 
             {totalPages > 1 && (
-              <nav className="mt-20 flex items-center justify-center gap-6 text-[11px] uppercase tracking-[0.18em] text-[#978b84]" aria-label="Pagination">
+              <nav className="mt-20 flex items-center justify-center gap-6 text-[11px] uppercase tracking-[0.18em] text-(--luxe-outline)" aria-label="Pagination">
                 <button type="button" onClick={() => setPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} className="disabled:opacity-30" aria-label="Previous page">
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 {Array.from({ length: Math.min(totalPages, 3) }, (_, index) => index + 1).map((page) => (
-                  <button key={page} type="button" onClick={() => setPage(page)} className={page === currentPage ? 'border-b-2 border-[#a0803e] pb-2 font-semibold text-[#876c32]' : ''}>
+                  <button key={page} type="button" onClick={() => setPage(page)} className={page === currentPage ? 'border-b-2 border-(--luxe-gold) pb-2 font-semibold text-(--luxe-primary)' : ''}>
                     {String(page).padStart(2, '0')}
                   </button>
                 ))}
@@ -266,7 +266,7 @@ function ShopContent() {
 
 export default function Shop() {
   return (
-    <Suspense fallback={<div className="bg-[#fbf8f5] px-6 py-12"><ProductGridSkeleton count={6} /></div>}>
+    <Suspense fallback={<div className="bg-(--luxe-background) px-6 py-12"><ProductGridSkeleton count={6} /></div>}>
       <ShopContent />
     </Suspense>
   );

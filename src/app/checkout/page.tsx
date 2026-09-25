@@ -111,8 +111,8 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-playfair text-[#1c1c18] mb-4">Your Bag is Empty</h1>
-        <Link href="/shop" className="text-xs tracking-[0.24em] uppercase text-[#1c1c18] underline underline-offset-8 decoration-[#d4af37]">
+        <h1 className="text-3xl font-playfair text-(--luxe-text) mb-4">Your Bag is Empty</h1>
+        <Link href="/shop" className="text-xs tracking-[0.24em] uppercase text-(--luxe-text) underline underline-offset-8 decoration-(--luxe-gold)">
           Continue Shopping
         </Link>
       </div>
@@ -234,7 +234,7 @@ export default function CheckoutPage() {
         modal: {
           ondismiss: () => setLoading(false),
         },
-        theme: { color: '#D4AF37' },
+        theme: { color: '#785460' },
       });
 
       rzp.open();
@@ -251,14 +251,14 @@ export default function CheckoutPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-20 w-full">
       <div className="flex items-end justify-between gap-8">
         <div>
-          <p className="text-xs tracking-[0.28em] uppercase text-[#7f7663]">Secure Checkout</p>
-          <h1 className="mt-4 text-3xl md:text-4xl font-playfair text-[#1c1c18]">Checkout</h1>
+          <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-outline)">Secure Checkout</p>
+          <h1 className="mt-4 text-3xl md:text-4xl font-playfair text-(--luxe-text)">Checkout</h1>
         </div>
       </div>
 
       <div className="mt-10 flex flex-col lg:flex-row gap-12">
         <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-[#d0c5af] pb-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-(--luxe-outline-light) pb-6">
             {[
               { n: 1, label: 'Shipping' },
               { n: 2, label: 'Delivery' },
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
                 type="button"
                 onClick={() => setStep(s.n)}
                 className={`text-xs tracking-[0.24em] uppercase pb-2 border-b-2 transition-colors ${
-                  step === s.n ? 'text-[#1c1c18] border-[#d4af37]' : 'text-[#7f7663] border-transparent hover:text-[#1c1c18]'
+                  step === s.n ? 'text-(--luxe-primary) border-(--luxe-primary)' : 'text-(--luxe-outline) border-transparent hover:text-(--luxe-text)'
                 }`}
               >
                 {s.label}
@@ -280,22 +280,22 @@ export default function CheckoutPage() {
           <div className="mt-10">
             {step === 1 && (
               <div className="space-y-10">
-                <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
+                <div className="border border-(--luxe-outline-light) bg-(--luxe-white) p-8">
                   <div className="flex items-center justify-between gap-6">
-                    <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Account</h2>
-                    {mongoUser ? <CheckCircle className="w-5 h-5 text-[#735c00]" /> : null}
+                    <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text)">Account</h2>
+                    {mongoUser ? <CheckCircle className="w-5 h-5 text-(--luxe-primary)" /> : null}
                   </div>
                   <div className="mt-6">
                     {mongoUser ? (
-                      <p className="text-sm text-[#4d4635]">
-                        Signed in as <span className="text-[#1c1c18]">{mongoUser.email}</span>
+                      <p className="text-sm text-(--luxe-text-muted)">
+                        Signed in as <span className="text-(--luxe-text)">{mongoUser.email}</span>
                       </p>
                     ) : (
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-                        <p className="text-sm text-[#4d4635]">Please sign in to continue.</p>
+                        <p className="text-sm text-(--luxe-text-muted)">Please sign in to continue.</p>
                         <Link
                           href="/auth/login?redirect=/checkout"
-                          className="inline-flex items-center justify-center bg-[#d4af37] text-[#1c1c18] px-6 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                          className="inline-flex items-center justify-center bg-(--luxe-cta) text-(--luxe-white) px-6 py-3 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors"
                         >
                           Sign In
                         </Link>
@@ -304,49 +304,49 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
-                  <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Shipping</h2>
+                <div className="border border-(--luxe-outline-light) bg-(--luxe-white) p-8">
+                  <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text)">Shipping</h2>
 
                   <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">First Name</label>
-                      <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">First Name</label>
+                      <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Last Name</label>
-                      <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Last Name</label>
+                      <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Address</label>
-                      <input value={line1} onChange={(e) => setLine1(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Address</label>
+                      <input value={line1} onChange={(e) => setLine1(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Address (Optional)</label>
-                      <input value={line2} onChange={(e) => setLine2(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Address (Optional)</label>
+                      <input value={line2} onChange={(e) => setLine2(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
 
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">City</label>
-                      <input value={city} onChange={(e) => setCity(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">City</label>
+                      <input value={city} onChange={(e) => setCity(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">State</label>
-                      <input value={stateName} onChange={(e) => setStateName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">State</label>
+                      <input value={stateName} onChange={(e) => setStateName(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">PIN</label>
-                      <input value={pincode} onChange={(e) => setPincode(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">PIN</label>
+                      <input value={pincode} onChange={(e) => setPincode(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
 
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Country</label>
-                      <input value={country} onChange={(e) => setCountry(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Country</label>
+                      <input value={country} onChange={(e) => setCountry(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-[0.24em] uppercase text-[#7f7663]">Phone</label>
-                      <input value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-3 w-full bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]" />
+                      <label className="block text-xs tracking-[0.24em] uppercase text-(--luxe-outline)">Phone</label>
+                      <input value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-3 w-full bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)" />
                     </div>
                   </div>
 
@@ -354,7 +354,7 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="w-full bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                      className="w-full bg-(--luxe-cta) text-(--luxe-white) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors"
                     >
                       Continue to Delivery
                     </button>
@@ -364,8 +364,8 @@ export default function CheckoutPage() {
             )}
 
             {step === 2 && (
-              <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
-                <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Delivery</h2>
+              <div className="border border-(--luxe-outline-light) bg-(--luxe-white) p-8">
+                <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text)">Delivery</h2>
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                   {[
                     { id: 'concierge', title: 'Boutique Concierge', meta: 'White-glove delivery' },
@@ -377,11 +377,11 @@ export default function CheckoutPage() {
                       type="button"
                       onClick={() => setDeliveryOption(opt.id as typeof deliveryOption)}
                       className={`text-left border p-6 transition-colors ${
-                        deliveryOption === opt.id ? 'border-[#d4af37] bg-[#fcf9f3]' : 'border-[#d0c5af] hover:bg-[#f6f3ed]'
+                        deliveryOption === opt.id ? 'border-(--luxe-primary) bg-(--luxe-primary-container)' : 'border-(--luxe-outline-light) hover:bg-(--luxe-surface)'
                       }`}
                     >
-                      <p className="text-sm font-playfair text-[#1c1c18]">{opt.title}</p>
-                      <p className="mt-2 text-xs tracking-[0.18em] uppercase text-[#7f7663]">{opt.meta}</p>
+                      <p className="text-sm font-playfair text-(--luxe-text)">{opt.title}</p>
+                      <p className="mt-2 text-xs tracking-[0.18em] uppercase text-(--luxe-outline)">{opt.meta}</p>
                     </button>
                   ))}
                 </div>
@@ -390,14 +390,14 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="flex-1 border border-[#d0c5af] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+                    className="flex-1 border border-(--luxe-outline-light) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-surface) transition-colors"
                   >
                     Back
                   </button>
                   <button
                     type="button"
                     onClick={() => setStep(3)}
-                    className="flex-1 bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors"
+                    className="flex-1 bg-(--luxe-cta) text-(--luxe-white) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors"
                   >
                     Continue to Payment
                   </button>
@@ -406,13 +406,13 @@ export default function CheckoutPage() {
             )}
 
             {step === 3 && (
-              <div className="border border-[#d0c5af] bg-[#ffffff] p-8">
-                <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Payment</h2>
+              <div className="border border-(--luxe-outline-light) bg-(--luxe-white) p-8">
+                <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text)">Payment</h2>
                 <div className="mt-8 space-y-4">
-                  <label className="flex items-center justify-between gap-4 border border-[#d0c5af] p-5 cursor-pointer hover:bg-[#f6f3ed] transition-colors">
+                  <label className="flex items-center justify-between gap-4 border border-(--luxe-outline-light) p-5 cursor-pointer hover:bg-(--luxe-surface) transition-colors">
                     <div>
-                      <p className="text-sm text-[#1c1c18]">Cash on Delivery</p>
-                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-[#7f7663]">Pay at delivery</p>
+                      <p className="text-sm text-(--luxe-text)">Cash on Delivery</p>
+                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-(--luxe-outline)">Pay at delivery</p>
                     </div>
                     <input
                       type="radio"
@@ -420,14 +420,14 @@ export default function CheckoutPage() {
                       value="cod"
                       checked={paymentMethod === 'cod'}
                       onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
-                      className="accent-[#d4af37]"
+                      className="accent-(--luxe-primary)"
                     />
                   </label>
 
-                  <label className="flex items-center justify-between gap-4 border border-[#d0c5af] p-5 cursor-pointer hover:bg-[#f6f3ed] transition-colors">
+                  <label className="flex items-center justify-between gap-4 border border-(--luxe-outline-light) p-5 cursor-pointer hover:bg-(--luxe-surface) transition-colors">
                     <div>
-                      <p className="text-sm text-[#1c1c18]">Pay Online</p>
-                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-[#7f7663]">Razorpay</p>
+                      <p className="text-sm text-(--luxe-text)">Pay Online</p>
+                      <p className="mt-1 text-xs tracking-[0.18em] uppercase text-(--luxe-outline)">Razorpay</p>
                     </div>
                     <input
                       type="radio"
@@ -435,7 +435,7 @@ export default function CheckoutPage() {
                       value="razorpay"
                       checked={paymentMethod === 'razorpay'}
                       onChange={(e) => setPaymentMethod(e.target.value as 'cod' | 'razorpay')}
-                      className="accent-[#d4af37]"
+                      className="accent-(--luxe-primary)"
                     />
                   </label>
                 </div>
@@ -444,7 +444,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="flex-1 border border-[#d0c5af] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#f6f3ed] transition-colors"
+                    className="flex-1 border border-(--luxe-outline-light) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-surface) transition-colors"
                     disabled={loading}
                   >
                     Back
@@ -453,7 +453,7 @@ export default function CheckoutPage() {
                     type="button"
                     onClick={handlePlaceOrder}
                     disabled={loading}
-                    className="flex-1 bg-[#d4af37] text-[#1c1c18] py-4 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                    className="flex-1 bg-(--luxe-cta) text-(--luxe-white) py-4 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors disabled:opacity-70"
                   >
                     {loading ? 'Processing' : 'Place Order'}
                   </button>
@@ -464,25 +464,25 @@ export default function CheckoutPage() {
         </div>
 
         <div className="w-full lg:w-[360px] flex-shrink-0">
-          <details className="lg:hidden border border-[#d0c5af] bg-[#ffffff]">
-            <summary className="cursor-pointer px-6 py-5 text-xs tracking-[0.24em] uppercase text-[#1c1c18]">
+          <details className="lg:hidden border border-(--luxe-outline-light) bg-(--luxe-white)">
+            <summary className="cursor-pointer px-6 py-5 text-xs tracking-[0.24em] uppercase text-(--luxe-text)">
               Order Summary
             </summary>
             <div className="px-6 pb-6">
               <div className="space-y-3">
                 {items.map((item, idx) => (
                   <div key={idx} className="flex justify-between gap-6 text-sm">
-                    <span className="text-[#4d4635] line-clamp-1">{item.quantity} × {item.name}</span>
-                    <span className="text-[#1c1c18]">₹{(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="text-(--luxe-text-muted) line-clamp-1">{item.quantity} × {item.name}</span>
+                    <span className="text-(--luxe-text)">₹{(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 border-t border-[#d0c5af] pt-5 space-y-2 text-sm">
-                <div className="flex justify-between text-[#4d4635]">
+              <div className="mt-6 border-t border-(--luxe-outline-light) pt-5 space-y-2 text-sm">
+                <div className="flex justify-between text-(--luxe-text-muted)">
                   <span>Subtotal</span>
                   <span>₹{totalPrice().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-[#4d4635]">
+                <div className="flex justify-between text-(--luxe-text-muted)">
                   <span>Shipping</span>
                   <span>Free</span>
                 </div>
@@ -494,44 +494,44 @@ export default function CheckoutPage() {
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Promo code"
-                    className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
+                    className="flex-1 bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)"
                   />
                   <button
                     onClick={promoApplied ? () => { setPromoApplied(false); setDiscount(0); setPromoCode(''); } : handleApplyPromo}
                     disabled={promoLoading}
-                    className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                    className="bg-(--luxe-cta) text-(--luxe-white) px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors disabled:opacity-70"
                   >
                     {promoLoading ? 'Applying...' : promoApplied ? 'Remove' : 'Apply'}
                   </button>
                 </div>
-                {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
-                {promoApplied && <p className="mt-2 text-xs text-green-700">−₹{discount.toFixed(2)} discount applied</p>}
+                {promoError && <p className="mt-2 text-xs text-(--luxe-error)">{promoError}</p>}
+                {promoApplied && <p className="mt-2 text-xs text-(--luxe-secondary)">−₹{discount.toFixed(2)} discount applied</p>}
               </div>
 
-              <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
-                <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
-                <span className="text-lg font-playfair text-[#1c1c18]">₹{(totalPrice() - discount).toFixed(2)}</span>
+              <div className="mt-5 border-t border-(--luxe-outline-light) pt-5 flex justify-between items-center">
+                <span className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted)">Total</span>
+                <span className="text-lg font-playfair text-(--luxe-text)">₹{(totalPrice() - discount).toFixed(2)}</span>
               </div>
             </div>
           </details>
 
-          <div className="hidden lg:block border border-[#d0c5af] bg-[#ffffff] p-8 sticky top-24">
-            <h2 className="text-xs tracking-[0.24em] uppercase text-[#1c1c18]">Order Summary</h2>
+          <div className="hidden lg:block border border-(--luxe-outline-light) bg-(--luxe-white) p-8 sticky top-24">
+            <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text)">Order Summary</h2>
             <div className="mt-6 space-y-3">
               {items.map((item, idx) => (
                 <div key={idx} className="flex justify-between gap-6 text-sm">
-                  <span className="text-[#4d4635] line-clamp-1">{item.quantity} × {item.name}</span>
-                  <span className="text-[#1c1c18]">₹{(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="text-(--luxe-text-muted) line-clamp-1">{item.quantity} × {item.name}</span>
+                  <span className="text-(--luxe-text)">₹{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 border-t border-[#d0c5af] pt-5 space-y-2 text-sm">
-              <div className="flex justify-between text-[#4d4635]">
+            <div className="mt-6 border-t border-(--luxe-outline-light) pt-5 space-y-2 text-sm">
+              <div className="flex justify-between text-(--luxe-text-muted)">
                 <span>Subtotal</span>
                 <span>₹{totalPrice().toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#4d4635]">
+              <div className="flex justify-between text-(--luxe-text-muted)">
                 <span>Shipping</span>
                 <span>Free</span>
               </div>
@@ -544,23 +544,23 @@ export default function CheckoutPage() {
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
                   placeholder="Promo code"
-                  className="flex-1 bg-transparent border-b border-[#d0c5af] py-3 px-1 text-sm focus:outline-none focus:border-[#d4af37]"
+                  className="flex-1 bg-transparent border-b border-(--luxe-outline-light) py-3 px-1 text-sm focus:outline-none focus:border-(--luxe-primary)"
                 />
                 <button
                   onClick={promoApplied ? () => { setPromoApplied(false); setDiscount(0); setPromoCode(''); } : handleApplyPromo}
                   disabled={promoLoading}
-                  className="bg-[#d4af37] text-[#1c1c18] px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-[#c29a30] transition-colors disabled:opacity-70"
+                  className="bg-(--luxe-cta) text-(--luxe-white) px-4 py-3 text-xs tracking-[0.24em] uppercase hover:bg-(--luxe-cta-hover) transition-colors disabled:opacity-70"
                 >
                   {promoLoading ? 'Applying...' : promoApplied ? 'Remove' : 'Apply'}
                 </button>
               </div>
-              {promoError && <p className="mt-2 text-xs text-red-600">{promoError}</p>}
-              {promoApplied && <p className="mt-2 text-xs text-green-700">−₹{discount.toFixed(2)} discount applied</p>}
+              {promoError && <p className="mt-2 text-xs text-(--luxe-error)">{promoError}</p>}
+              {promoApplied && <p className="mt-2 text-xs text-(--luxe-secondary)">−₹{discount.toFixed(2)} discount applied</p>}
             </div>
 
-            <div className="mt-5 border-t border-[#d0c5af] pt-5 flex justify-between items-center">
-              <span className="text-xs tracking-[0.24em] uppercase text-[#4d4635]">Total</span>
-              <span className="text-lg font-playfair text-[#1c1c18]">₹{(totalPrice() - discount).toFixed(2)}</span>
+            <div className="mt-5 border-t border-(--luxe-outline-light) pt-5 flex justify-between items-center">
+              <span className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted)">Total</span>
+              <span className="text-lg font-playfair text-(--luxe-text)">₹{(totalPrice() - discount).toFixed(2)}</span>
             </div>
           </div>
         </div>
