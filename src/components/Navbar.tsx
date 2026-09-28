@@ -50,22 +50,22 @@ export default function Navbar() {
     ? [
         {
           href: '/shop',
-          label: 'Collections',
+          label: 'Shop',
           active: false,
         },
         {
           href: '/shop?category=accessories',
-          label: 'Atelier',
+          label: 'About',
           active: false,
         },
         {
           href: '/#design-philosophy',
-          label: 'Heritage',
+          label: 'Gifts',
           active: false,
         },
         {
           href: '/shop?category=gifts',
-          label: 'Designers',
+          label: 'Premium',
           active: false,
         },
       ]
@@ -108,19 +108,19 @@ export default function Navbar() {
     ? [
         {
           href: '/shop',
-          label: 'Collections',
+          label: 'Shop',
         },
         {
           href: '/shop?category=accessories',
-          label: 'Atelier',
+          label: 'About',
         },
         {
           href: '/#design-philosophy',
-          label: 'Heritage',
+          label: 'Gifts',
         },
         {
           href: '/shop?category=gifts',
-          label: 'Designers',
+          label: 'Premium',
         },
       ]
     : [
