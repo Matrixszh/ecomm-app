@@ -146,7 +146,7 @@ export default function Home() {
                 </li>
               </ul>
               <Link href="/shop" className="pl-8 mt-6 lg:mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-[var(--luxe-primary)] transition-colors hover:text-[var(--luxe-secondary)] mx-auto lg:mx-0">
-                Explore Our Atelier <ArrowRight className="h-3.5 w-3.5" />
+                Explore Our Store <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
