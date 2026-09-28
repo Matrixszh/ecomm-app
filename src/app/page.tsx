@@ -70,7 +70,7 @@ export default function Home() {
                     className="inline-flex items-center gap-2 text-[11px] tracking-[0.08em] text-[var(--luxe-secondary)] transition-colors hover:text-[var(--luxe-primary)]"
                   >
                     <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--luxe-secondary)] text-[var(--luxe-secondary)] transition-colors hover:bg-[var(--luxe-secondary)] hover:text-[var(--luxe-white)]">→</span>
-                    Our Atelier
+                    Our Store
                   </Link>
                 </div>
               </div>
