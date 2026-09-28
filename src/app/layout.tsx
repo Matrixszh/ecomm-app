@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NM Decor',
     description: 'An e-commerce platform for all your furninshing needs',
-    images: [{ url: 'https://res.cloudinary.com/dldywjxm1/image/upload/v1790374939/gemini-svg_urt6pr.svg' }],
+    images: [{ url: 'https://res.cloudinary.com/dldywjxm1/image/upload/v1790607052/gemini-svg_urt6pr_zpbpjs.jpg' }],
   },
 };
 
