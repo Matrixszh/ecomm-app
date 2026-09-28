@@ -11,7 +11,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#d0c5af" />
-        <XAxis dataKey="name" stroke="#7f7663" />
+        <XAxis dataKey="name" stroke="#7f7663" interval="preserveStartEnd" minTickGap={16} />
         <YAxis stroke="#7f7663" />
         <Tooltip 
           contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #d0c5af', color: '#1c1c18' }}

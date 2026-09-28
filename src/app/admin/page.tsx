@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { DollarSign, ShoppingBag, Users, AlertTriangle } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import AppLoader from '@/components/AppLoader';
@@ -9,29 +10,86 @@ const RevenueChart = dynamic(() => import('@/components/admin/RevenueChart'), {
   loading: () => <div className="w-full h-full flex items-center justify-center"><AppLoader label="Loading chart" /></div>
 });
 
-const data = [
-  { name: 'Jan', revenue: 4000 },
-  { name: 'Feb', revenue: 3000 },
-  { name: 'Mar', revenue: 2000 },
-  { name: 'Apr', revenue: 2780 },
-  { name: 'May', revenue: 1890 },
-  { name: 'Jun', revenue: 2390 },
-  { name: 'Jul', revenue: 3490 },
-];
+type DashboardData = {
+  stats: {
+    totalRevenue: number;
+    totalOrders: number;
+    newUsers: number;
+    previousMonthUsers: number;
+    lowStockProducts: number;
+  };
+  revenueByMonth: { name: string; revenue: number }[];
+  recentOrders: {
+    orderNumber: string;
+    amount: number;
+    status: string;
+    createdAt: string | null;
+  }[];
+};
 
-const recentOrders = [
-  { orderNumber: 'ORD-1042', amount: 3890, timeAgo: '2 hours ago', status: 'Paid' },
-  { orderNumber: 'ORD-1039', amount: 1250, timeAgo: '4 hours ago', status: 'Paid' },
-  { orderNumber: 'ORD-1031', amount: 4999, timeAgo: 'Yesterday', status: 'Paid' },
-  { orderNumber: 'ORD-1028', amount: 2140, timeAgo: '2 days ago', status: 'Paid' },
-  { orderNumber: 'ORD-1021', amount: 1650, timeAgo: '3 days ago', status: 'Paid' },
-];
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(amount);
+
+const formatTimeAgo = (dateString: string | null) => {
+  if (!dateString) return 'Date unavailable';
+
+  const timestamp = new Date(dateString).getTime();
+  if (Number.isNaN(timestamp)) return 'Date unavailable';
+
+  const minutesAgo = Math.max(0, Math.floor((Date.now() - timestamp) / 60_000));
+  if (minutesAgo < 1) return 'Just now';
+  if (minutesAgo < 60) return `${minutesAgo}m ago`;
+  if (minutesAgo < 1_440) return `${Math.floor(minutesAgo / 60)}h ago`;
+  if (minutesAgo < 43_200) return `${Math.floor(minutesAgo / 1_440)}d ago`;
+  return new Date(timestamp).toLocaleDateString();
+};
+
+const formatUserChange = (current: number, previous: number) => {
+  if (previous === 0) return current === 0 ? 'No new accounts this month' : 'No new accounts last month';
+  const percentage = Math.round(((current - previous) / previous) * 1000) / 10;
+  return `${percentage > 0 ? '+' : ''}${percentage}% from last month`;
+};
 
 export default function AdminDashboard() {
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadDashboard = async () => {
+      try {
+        const response = await fetch('/api/admin/dashboard', { cache: 'no-store' });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(typeof result.error === 'string' ? result.error : 'Unable to load dashboard data.');
+        }
+        if (active) setDashboard(result as DashboardData);
+      } catch (err: unknown) {
+        if (active) {
+          setError(err instanceof Error ? err.message : 'Unable to load dashboard data.');
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    void loadDashboard();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <div>
       <p className="text-xs tracking-[0.28em] uppercase text-(--luxe-text-muted)">Admin</p>
       <h1 className="mt-4 text-3xl font-display text-(--luxe-text) mb-10">Dashboard</h1>
+      {error && <p role="alert" className="mb-6 border border-(--luxe-error) bg-(--luxe-error-container) px-4 py-3 text-sm text-(--luxe-error)">{error}</p>}
       
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -42,10 +100,8 @@ export default function AdminDashboard() {
               <DollarSign className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-display text-(--luxe-text)">₹1,24,500</p>
-          <p className="text-sm text-(--luxe-primary) mt-2 flex items-center gap-1">
-            <span>+12.5%</span> <span className="text-(--luxe-text-muted)">from last month</span>
-          </p>
+          <p className="text-2xl font-display text-(--luxe-text)">{loading ? 'Loading…' : dashboard ? formatCurrency(dashboard.stats.totalRevenue) : '—'}</p>
+          <p className="text-sm text-(--luxe-text-muted) mt-2">Revenue from paid orders</p>
         </div>
         
         <div className="bg-(--luxe-white) border border-(--luxe-outline-light) p-6">
@@ -55,10 +111,8 @@ export default function AdminDashboard() {
               <ShoppingBag className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-display text-(--luxe-text)">342</p>
-          <p className="text-sm text-(--luxe-primary) mt-2 flex items-center gap-1">
-            <span>+5.2%</span> <span className="text-(--luxe-text-muted)">from last month</span>
-          </p>
+          <p className="text-2xl font-display text-(--luxe-text)">{loading ? 'Loading…' : dashboard ? dashboard.stats.totalOrders.toLocaleString('en-IN') : '—'}</p>
+          <p className="text-sm text-(--luxe-text-muted) mt-2">All recorded orders</p>
         </div>
 
         <div className="bg-(--luxe-white) border border-(--luxe-outline-light) p-6">
@@ -68,10 +122,8 @@ export default function AdminDashboard() {
               <Users className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-display text-(--luxe-text)">1,204</p>
-          <p className="text-sm text-(--luxe-error) mt-2 flex items-center gap-1">
-            <span>-2.1%</span> <span className="text-(--luxe-text-muted)">from last month</span>
-          </p>
+          <p className="text-2xl font-display text-(--luxe-text)">{loading ? 'Loading…' : dashboard ? dashboard.stats.newUsers.toLocaleString('en-IN') : '—'}</p>
+          <p className="text-sm text-(--luxe-text-muted) mt-2">{dashboard ? formatUserChange(dashboard.stats.newUsers, dashboard.stats.previousMonthUsers) : 'New customer accounts this month'}</p>
         </div>
 
         <div className="bg-(--luxe-white) border border-(--luxe-outline-light) p-6">
@@ -81,19 +133,23 @@ export default function AdminDashboard() {
               <AlertTriangle className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-display text-(--luxe-text)">12</p>
-          <p className="text-sm text-(--luxe-text-muted) mt-2 flex items-center gap-1">
-            Items need restocking
-          </p>
+          <p className="text-2xl font-display text-(--luxe-text)">{loading ? 'Loading…' : dashboard ? dashboard.stats.lowStockProducts.toLocaleString('en-IN') : '—'}</p>
+          <p className="text-sm text-(--luxe-text-muted) mt-2">Active products with 1–5 units</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chart */}
         <div className="lg:col-span-2 bg-(--luxe-white) border border-(--luxe-outline-light) p-6">
-          <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted) mb-6">Revenue Overview</h2>
+          <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted) mb-6">Revenue Overview · Last 13 Months</h2>
           <div className="h-80 w-full">
-            <RevenueChart data={data} />
+            {loading ? (
+              <div className="flex h-full items-center justify-center"><AppLoader label="Loading dashboard data" /></div>
+            ) : dashboard ? (
+              <RevenueChart data={dashboard.revenueByMonth} />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-(--luxe-text-muted)">Revenue data is unavailable.</div>
+            )}
           </div>
         </div>
 
@@ -101,18 +157,24 @@ export default function AdminDashboard() {
         <div className="bg-(--luxe-white) border border-(--luxe-outline-light) p-6">
           <h2 className="text-xs tracking-[0.24em] uppercase text-(--luxe-text-muted) mb-6">Recent Orders</h2>
           <div className="space-y-4">
-            {recentOrders.map((o) => (
+            {dashboard?.recentOrders.map((o) => (
               <div key={o.orderNumber} className="flex items-center justify-between p-4 bg-(--luxe-background) border border-(--luxe-outline-light)">
                 <div>
                   <p className="font-medium text-(--luxe-text)">{o.orderNumber}</p>
-                  <p className="text-xs text-(--luxe-text-muted)">{o.timeAgo}</p>
+                  <p className="text-xs text-(--luxe-text-muted)">{formatTimeAgo(o.createdAt)}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-(--luxe-text)">₹{o.amount}</p>
+                  <p className="font-medium text-(--luxe-text)">{formatCurrency(o.amount)}</p>
                   <span className="text-[11px] tracking-[0.18em] uppercase px-3 py-1 bg-(--luxe-white) border border-(--luxe-outline-light) text-(--luxe-primary)">{o.status}</span>
                 </div>
               </div>
             ))}
+            {!loading && dashboard?.recentOrders.length === 0 && (
+              <p className="py-6 text-center text-sm text-(--luxe-text-muted)">No orders have been placed yet.</p>
+            )}
+            {!loading && !dashboard && !error && (
+              <p className="py-6 text-center text-sm text-(--luxe-text-muted)">Recent orders are unavailable.</p>
+            )}
           </div>
         </div>
       </div>
