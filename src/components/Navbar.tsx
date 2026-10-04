@@ -330,6 +330,16 @@ export default function Navbar() {
                             </Link>
                           )}
 
+                          {mongoUser.role === 'vendor' && (
+                            <Link
+                              href="/vendor/dashboard"
+                              onClick={() => setDropdownOpen(false)}
+                              className="block px-4 py-2 text-sm text-[#4d4635] hover:bg-[#fcf9f3] hover:text-[#1c1c18]"
+                            >
+                              Vendor Dashboard
+                            </Link>
+                          )}
+
                           <Link
                             href="/account"
                             onClick={() =>
@@ -441,6 +451,19 @@ export default function Navbar() {
                             className="block px-3 py-2 text-sm text-[#4d4635] hover:text-[#1c1c18]"
                           >
                             Admin Dashboard
+                          </Link>
+                        )}
+
+                        {mongoUser.role === 'vendor' && (
+                          <Link
+                            href="/vendor/dashboard"
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setMobileAccountOpen(false);
+                            }}
+                            className="block px-3 py-2 text-sm text-[#4d4635] hover:text-[#1c1c18]"
+                          >
+                            Vendor Dashboard
                           </Link>
                         )}
 

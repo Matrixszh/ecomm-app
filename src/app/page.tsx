@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Heart } from 'lucide-react';
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
+
 
 const categories = [
   { name: 'Furniture', pieces: '', href: '/shop?category=furniture', image: '/herobg.jpg' },
@@ -21,17 +20,6 @@ const curatedProducts = [
 ];
 
 export default function Home() {
-  const { mongoUser } = useAuthStore();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (mongoUser?.role === 'vendor') {
-      router.push('/vendor/dashboard');
-    }
-  }, [mongoUser, router]);
-
-  if (mongoUser?.role === 'vendor') return null;
-
   return (
     <div className="bg-[var(--luxe-background)] pb-0">
       <div className="mx-auto w-full overflow-hidden rounded-b-[20px] bg-[var(--luxe-white)] shadow-[0_10px_30px_rgba(136,19,55,0.05)]">
