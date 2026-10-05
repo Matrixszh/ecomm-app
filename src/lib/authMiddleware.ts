@@ -49,12 +49,19 @@ type RouteHandler<C extends Record<string, unknown>> = (
 type WithAuth<C extends Record<string, unknown>> = C & { auth: DecodedIdToken };
 
 export function requireAuth<C extends Record<string, unknown>>(
-  handler: RouteHandler<WithAuth<C>>
+  handler: RouteHandler<WithAuth<C>>,
+  options: { allowUnverified?: boolean } = {}
 ): RouteHandler<C> {
   return async (req: NextRequest, context: C) => {
     const decodedToken = await verifyToken(req);
     if (!decodedToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (decodedToken.email_verified !== true && !options.allowUnverified) {
+      return NextResponse.json(
+        { error: 'Email verification required', code: 'EMAIL_NOT_VERIFIED' },
+        { status: 403 }
+      );
     }
 
     return handler(req, { ...context, auth: decodedToken } as WithAuth<C>);
@@ -84,6 +91,12 @@ export function requireRole<C extends Record<string, unknown>>(
     const decodedToken = await verifyToken(req);
     if (!decodedToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (decodedToken.email_verified !== true) {
+      return NextResponse.json(
+        { error: 'Email verification required', code: 'EMAIL_NOT_VERIFIED' },
+        { status: 403 }
+      );
     }
 
     await connectDB();

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { getFirebaseAuthErrorMessage, sendVerificationEmail } from '@/lib/emailVerification';
 import GhostFibers from '@/components/GhostFibers';
 
 export default function Register() {
@@ -18,10 +19,15 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (firebaseUser || mongoUser) {
+    if (submitting) return;
+    if (firebaseUser && !firebaseUser.emailVerified) {
+      const params = new URLSearchParams({ redirect: '/' });
+      if (firebaseUser.email) params.set('email', firebaseUser.email);
+      router.replace(`/auth/verify-email?${params.toString()}`);
+    } else if (firebaseUser || mongoUser) {
       router.push('/');
     }
-  }, [firebaseUser, mongoUser, router]);
+  }, [firebaseUser, mongoUser, router, submitting]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,15 +42,25 @@ export default function Register() {
       if (cred.user && name) {
         await updateProfile(cred.user, { displayName: name });
       }
-      const token = await auth.currentUser?.getIdToken();
+      let verificationEmailSent = true;
+      try {
+        await sendVerificationEmail(cred.user, '/');
+      } catch {
+        verificationEmailSent = false;
+      }
+      const token = await cred.user.getIdToken();
       if (token) {
         const secure = window.location.protocol === 'https:' ? '; Secure' : '';
         document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
       }
-      router.push('/');
+      const verificationParams = new URLSearchParams({
+        email: cred.user.email || email,
+        redirect: '/',
+        emailSent: verificationEmailSent ? '1' : '0',
+      });
+      router.replace(`/auth/verify-email?${verificationParams.toString()}`);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to create account';
-      setError(msg);
+      setError(getFirebaseAuthErrorMessage(err, 'Failed to create account. Please try again.'));
     } finally {
       setSubmitting(false);
     }

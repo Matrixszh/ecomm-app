@@ -46,4 +46,4 @@ export const POST = requireAuth(async (req: NextRequest, { auth }) => {
   await session.endSession();
 
   return NextResponse.json({ profile }, { status: 201 });
-});
+}, { allowUnverified: true });

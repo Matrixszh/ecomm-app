@@ -9,12 +9,13 @@ const JWKS = createRemoteJWKSet(
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Protect specific routes
-  const isProtected = pathname.startsWith('/account') || 
-                      pathname.startsWith('/admin') || 
-                      pathname.startsWith('/vendor') ||
-                      pathname.startsWith('/checkout') || 
-                      pathname.startsWith('/wishlist'); 
+  // Keep vendor onboarding public while protecting the vendor workspace.
+  const isVendorRegistration = pathname === '/vendor/register';
+  const isProtected = pathname.startsWith('/account') ||
+                      pathname.startsWith('/admin') ||
+                      (pathname.startsWith('/vendor') && !isVendorRegistration) ||
+                      pathname.startsWith('/checkout') ||
+                      pathname.startsWith('/wishlist');
 
 
   if (!isProtected) {
@@ -35,10 +36,16 @@ export async function middleware(request: NextRequest) {
       throw new Error('Firebase Project ID is not set');
     }
 
-    await jwtVerify(token, JWKS, {
+    const { payload } = await jwtVerify(token, JWKS, {
       issuer: `https://securetoken.google.com/${projectId}`,
       audience: projectId,
     });
+
+    if (payload.email_verified !== true) {
+      const url = new URL('/auth/verify-email', request.url);
+      url.searchParams.set('redirect', `${pathname}${request.nextUrl.search}`);
+      return NextResponse.redirect(url);
+    }
 
     return NextResponse.next();
   } catch (error) {

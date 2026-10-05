@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { getFirebaseAuthErrorMessage, sendVerificationEmail } from '@/lib/emailVerification';
 import GhostFibers from '@/components/GhostFibers';
 
 export default function Page() {
@@ -21,10 +22,15 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (mongoUser?.role === 'vendor') {
-      router.push('/vendor/dashboard');
+    if (submitting || mongoUser?.role !== 'vendor') return;
+    if (firebaseUser && !firebaseUser.emailVerified) {
+      const params = new URLSearchParams({ redirect: '/vendor/dashboard' });
+      if (firebaseUser.email) params.set('email', firebaseUser.email);
+      router.replace(`/auth/verify-email?${params.toString()}`);
+      return;
     }
-  }, [firebaseUser, mongoUser, router]);
+    router.push('/vendor/dashboard');
+  }, [firebaseUser, mongoUser, router, submitting]);
 
   const handleStoreNameChange = (val: string) => {
     setStoreName(val);
@@ -39,8 +45,14 @@ export default function Page() {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(cred.user, { displayName: name });
+      let verificationEmailSent = true;
+      try {
+        await sendVerificationEmail(cred.user, '/vendor/dashboard');
+      } catch {
+        verificationEmailSent = false;
+      }
 
-      const token = await auth.currentUser?.getIdToken();
+      const token = await cred.user.getIdToken();
       if (token) {
         const secure = window.location.protocol === 'https:' ? '; Secure' : '';
         document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
@@ -87,10 +99,14 @@ export default function Page() {
       const { setUser } = useAuthStore.getState();
       setUser(cred.user, updatedUserData.user);
 
-      router.push('/vendor/dashboard');
+      const verificationParams = new URLSearchParams({
+        email: cred.user.email || email,
+        redirect: '/vendor/dashboard',
+        emailSent: verificationEmailSent ? '1' : '0',
+      });
+      router.replace(`/auth/verify-email?${verificationParams.toString()}`);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to create account';
-      setError(msg);
+      setError(getFirebaseAuthErrorMessage(err, 'Failed to create account. Please try again.'));
     } finally {
       setSubmitting(false);
     }

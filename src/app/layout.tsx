@@ -36,78 +36,203 @@ export const metadata: Metadata = {
 
 function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-[var(--luxe-border-rose)] bg-[var(--luxe-white)]">
-      <div className="mx-auto max-w-full bg-[var(--luxe-white)] px-4 py-10">
-        <div className="grid gap-10 border-b border-[var(--luxe-border-rose)] pb-8 text-center md:grid-cols-[1.3fr_1fr_1fr_0.8fr] md:text-left">
-          <div>
-            <Link href="/" className="font-display text-sm uppercase tracking-[0.14em] text-[var(--luxe-text)]">
-              NM Decor
+    <footer className="mt-auto bg-[#430F1B] text-[#E8DCD7]">
+      <div className="mx-auto max-w-[1250px] px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
+
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.5fr_0.7fr_1.15fr_0.9fr] md:gap-12 lg:gap-16">
+
+          {/* Brand */}
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <Link
+              href="/"
+              className="group flex flex-col items-center md:items-start"
+            >
+              <span className="font-display text-[13px] uppercase tracking-[0.16em] text-[#E8DCD7]">
+                NM
+              </span>
+
+              <span className="mt-[-2px] font-display text-[27px] leading-none tracking-[0.08em] text-[#E8DCD7]">
+                DECOR
+              </span>
             </Link>
-            <p className="mx-auto mt-4 max-w-xs text-[11px] leading-5 text-[var(--luxe-outline)] md:mx-0">
-              Defining serene design through collectible forms. Every detail with a story of artistry.
+
+            <p className="mt-3 max-w-[210px] text-[11px] leading-[1.7] text-[#C7B4B1]">
+              Defining serene design through collectible forms.
+              Every detail with a story of artistry.
             </p>
-          </div>
 
-          <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Services</h4>
-            <ul className="mt-4 space-y-2 text-[11px] text-[var(--luxe-outline)]">
-              <li>
-                <Link href="/shop" className="transition-colors hover:text-[var(--luxe-secondary)]">
-                  Bespoke Interiors
-                </Link>
-              </li>
-              <li>
-                <Link href="/account/orders" className="hover:text-[#3b332d]">
-                  Restoration
-                </Link>
-              </li>
-              <li>
-                <Link href="/vendor/register" className="hover:text-[#3b332d]">
-                  White Glove Delivery
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Legal</h4>
-            <ul className="mt-4 space-y-2 text-[11px] text-[var(--luxe-outline)]">
-              <li>
-                <Link href="/account" className="transition-colors hover:text-[var(--luxe-secondary)]">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop" className="hover:text-[#3b332d]">
-                  Terms of Sale
-                </Link>
-              </li>
-              <li>
-                <Link href="/account/orders" className="hover:text-[#3b332d]">
-                  Delivery Standards
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-[11px] uppercase tracking-[0.18em] text-[var(--luxe-text)]">Social</h4>
-            <div className="mt-4 flex justify-center gap-3 text-[var(--luxe-outline)] md:justify-start">
-              <a href="#" aria-label="Pinterest" className="rounded-full border border-[#e6dbd4] px-2 py-1 text-[11px] hover:text-[#3b332d]">
+            {/* Social Icons */}
+            <div className="mt-4 flex items-center gap-3">
+              <a
+                href="#"
+                aria-label="Pinterest"
+                className="text-[11px] text-[#C7B4B1] transition-colors hover:text-[#F1E7E3]"
+              >
                 P
               </a>
-              <a href="#" aria-label="Instagram" className="rounded-full border border-[#e6dbd4] px-2 py-1 text-[11px] hover:text-[#3b332d]">
-                I
+
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="text-[11px] text-[#C7B4B1] transition-colors hover:text-[#F1E7E3]"
+              >
+                F
               </a>
-              <a href="#" aria-label="Mail" className="rounded-full border border-[#e6dbd4] px-2 py-1 text-[11px] hover:text-[#3b332d]">
-                @
+
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="text-[11px] text-[#C7B4B1] transition-colors hover:text-[#F1E7E3]"
+              >
+                ◎
+              </a>
+
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="text-[11px] text-[#C7B4B1] transition-colors hover:text-[#F1E7E3]"
+              >
+                in
               </a>
             </div>
           </div>
+
+          {/* Pages */}
+          <div>
+            <h4 className="text-[11px] uppercase tracking-[0.12em] text-[#E8DCD7]">
+              Pages
+            </h4>
+
+            <ul className="mt-5 space-y-3 text-[11px] text-[#C7B4B1]">
+              <li>
+                <Link
+                  href="/shop"
+                  className="transition-colors hover:text-[#F1E7E3]"
+                >
+                  Services
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/shop"
+                  className="transition-colors hover:text-[#F1E7E3]"
+                >
+                  Flotte
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/"
+                  className="transition-colors hover:text-[#F1E7E3]"
+                >
+                  Actualités
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/about"
+                  className="transition-colors hover:text-[#F1E7E3]"
+                >
+                  La Maison
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/contact"
+                  className="transition-colors hover:text-[#F1E7E3]"
+                >
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-[11px] uppercase tracking-[0.12em] text-[#E8DCD7]">
+              Contact
+            </h4>
+
+            <div className="mt-5 space-y-3 text-[11px] text-[#C7B4B1]">
+              <a
+                href="mailto:contact@nmdecor.com"
+                className="block uppercase transition-colors hover:text-[#F1E7E3]"
+              >
+                contact@nmdecor.com
+              </a>
+
+              <p className="uppercase">
+                36 Rue de Scheffer, 75016 Paris
+              </p>
+            </div>
+          </div>
+
+          {/* WhatsApp */}
+          <div className="flex flex-col items-center md:items-start">
+            <a
+              href="https://wa.me/"
+              className="inline-flex items-center gap-2 bg-[#62303D] px-4 py-2.5 text-[10px] uppercase tracking-[0.05em] text-[#E8DCD7] transition-colors hover:bg-[#713B49]"
+            >
+              <span className="text-[12px]">◉</span>
+              Écrivez-nous sur WhatsApp
+            </a>
+
+            <a
+              href="tel:+33123456789"
+              className="mt-2 text-[11px] text-[#E8DCD7] underline underline-offset-4 transition-colors hover:text-white"
+            >
+              +33 6 65 79 17 73
+            </a>
+          </div>
         </div>
 
-        <div className="pt-5 text-center text-[10px] uppercase tracking-[0.18em] text-[#a3978d]">
-          © 2026 NM Company. All rights reserved.
+        {/* Bottom Divider */}
+        <div className="mt-12 flex items-center gap-4">
+          <div className="h-px flex-1 bg-[#67303D]" />
+
+          <span className="shrink-0 font-display text-[10px] uppercase tracking-[0.12em] text-[#A98E91]">
+            Transport & Conciergerie
+          </span>
+
+          <div className="h-px flex-1 bg-[#67303D]" />
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-5 flex flex-col items-center justify-between gap-4 text-[10px] text-[#A98E91] md:flex-row">
+
+          {/* Legal */}
+          <div className="flex flex-wrap justify-center gap-x-3 gap-y-2 md:justify-start">
+            <Link
+              href="/legal"
+              className="underline-offset-2 transition-colors hover:text-[#E8DCD7] hover:underline"
+            >
+              Mentions Légales
+            </Link>
+
+            <Link
+              href="/privacy"
+              className="underline-offset-2 transition-colors hover:text-[#E8DCD7] hover:underline"
+            >
+              Politique de confidentialité
+            </Link>
+
+            <Link
+              href="/terms"
+              className="underline-offset-2 transition-colors hover:text-[#E8DCD7] hover:underline"
+            >
+              CGU
+            </Link>
+          </div>
+
+          {/* Copyright */}
+          <p className="text-center md:text-right">
+            © 2026 NM Decor. Tous droits réservés
+          </p>
         </div>
       </div>
     </footer>

@@ -8,6 +8,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import GhostFibers from '@/components/GhostFibers';
 import AppLoader from '@/components/AppLoader';
+import { getFirebaseAuthErrorMessage } from '@/lib/emailVerification';
 
 function LoginContent() {
   const { firebaseUser, mongoUser } = useAuthStore();
@@ -26,7 +27,11 @@ function LoginContent() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (firebaseUser && mongoUser) {
+    if (firebaseUser && !firebaseUser.emailVerified) {
+      const params = new URLSearchParams({ redirect });
+      if (firebaseUser.email) params.set('email', firebaseUser.email);
+      router.replace(`/auth/verify-email?${params.toString()}`);
+    } else if (firebaseUser && mongoUser) {
       router.push(redirect);
     }
   }, [firebaseUser, mongoUser, router, redirect]);
@@ -40,13 +45,18 @@ function LoginContent() {
     }
     setSubmitting(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      const token = await auth.currentUser?.getIdToken();
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      const token = await credential.user.getIdToken();
       if (token) {
         const secure = window.location.protocol === 'https:' ? '; Secure' : '';
         document.cookie = `firebaseToken=${token}; path=/; max-age=3600; SameSite=Lax${secure}`;
       }
-      // redirect handled by useEffect once mongoUser loads with correct role
+      if (!credential.user.emailVerified) {
+        const params = new URLSearchParams({ redirect });
+        if (credential.user.email) params.set('email', credential.user.email);
+        router.replace(`/auth/verify-email?${params.toString()}`);
+      }
+      // verified-user redirect is handled by useEffect once mongoUser loads
     } catch (err: unknown) {
       const firebaseCode = typeof err === 'object' && err !== null && 'code' in err
         ? String((err as { code?: unknown }).code)
@@ -59,7 +69,7 @@ function LoginContent() {
         'auth/too-many-requests': 'Too many sign-in attempts. Please try again later.',
         'auth/operation-not-allowed': 'Email/password sign-in is not enabled for this Firebase project.',
       };
-      const msg = messages[firebaseCode] || (err instanceof Error ? err.message : 'Failed to sign in');
+      const msg = messages[firebaseCode] || getFirebaseAuthErrorMessage(err, 'Failed to sign in. Please try again.');
       setError(msg);
     } finally {
       setSubmitting(false);
